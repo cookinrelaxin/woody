@@ -10,6 +10,8 @@ analyzer.
 The purpose of a WoodyRDL file is to completely describe a set of tokens, which
 are usually intended to be the tokens of a programming language.
 
+## Examples
+
 See example.woody for an example of a basic WoodyRDL file.
 
 ## Specification
@@ -17,6 +19,10 @@ See example.woody for an example of a basic WoodyRDL file.
 Tokens are described by means of a "regular description", which is simply a
 context-free grammar with the property that each non-terminal must be defined
 before it is used.
+
+### Question
+
+How do we deal with regular expressions?
 
 Non-terminals are defined as follows:
 
