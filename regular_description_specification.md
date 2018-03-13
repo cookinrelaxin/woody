@@ -10,6 +10,8 @@ For reference, we compile every token class below, in lexing order:
 identifier        => identifier-head­identifier-character*
 string            => quote character+ quote
 arrow             => helper_arrow | token_arrow
+range             => character minus character
+hash              => '#'
 bar               => '|'
 star              => '*'
 plus              => '+'
@@ -22,7 +24,6 @@ left_parenthesis  => '('
 right_parenthesis => ')'
 left_bracket      => '['
 right_bracket     => ']'
-minus             => '-'
 semicolon         => ';'
 
 We also have the token class `erroneous`, which comprises any single character
@@ -35,11 +36,14 @@ rules. However, whitespace and comments should be considered insignificant.
 
 ### Whitespace grammar
 
+insignificant   -> whitespace | comment
+
 whitespace      -> whitespace-item+
 whitespace-item -> U+0000 | U+0009 | U+000B | U+000C | U+0020
-                 | line-break­| comment
+                 | line-break
 line-break      -> U+000A | U+000D | U+000D U+000A
-comment         -> ';'­comment-text­line-break
+
+comment         -> '#'­comment-text­line-break
 comment-text    -> [^U+000A U+000D]*
 
 ## Identifiers
@@ -136,8 +140,9 @@ left_parenthesis    => '('
 right_parenthesis   => ')'
 left_bracket        => '['
 right_bracket       => ']'
-minus               => '-'
 semicolon           => ';'
+
+minus               -> '-'
 
 repetition_operator -> star | plus | question
 position_operator  -> caret | dollar
@@ -163,9 +168,12 @@ set                 -> positive_set | negative_set
 positive-set        -> left_bracket set_item* right_bracket
 negative-set        -> left_bracket caret set_item* right_bracket
 set-item            -> range | character
-range               -> character minus character
+range               => character minus character
 
 ## Notes
+
+TODO: Make it possible to specify unicode codepoints in the format U+hhhhhh,
+where h is a hex digit.
 
 We impose the further restriction that each non-terminal must be fully defined
 before it is used.
@@ -174,8 +182,11 @@ The only escaped characters are literal characters, which are escaped group-wise
 by surrounding them with '. Hence, if α and β are strings, then 'α''β' has an
 identical meaning to 'αβ'.
 
+TODO: What about in sets?
+
 `character` is undefined above, but it may be any unicode character. Any occurennce
-of the character ' in a string must be escaped with a backslash.
+of the character ' in a string must be escaped with a backslash. Any occurennce
+in a range must be escaped with a backslash?
 
 The point of escaping literal characters is to make it possible to read
 indentifiers embedded within regular expressions.
