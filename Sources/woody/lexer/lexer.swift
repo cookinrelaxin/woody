@@ -51,41 +51,45 @@ fileprivate extension Lexer
 
         switch inputScalar
         {
-        case "u" where isHexDigit(data[nextDot]):
+        case hexPrefix where isHexDigit(data[nextDot]):
             token = try recognizeCodepoint(startDot)
 
         case let s where isIdentifierHead(s):
             token = try recognizeIdentifier(startDot)
 
+        case let s where isStandardSetHead(s):
+            token = try recognizeStandardSet(startDot)
+
         case "-" where data[nextDot] == ">":
             moveDot()
-            token = .helperArrow(info(startDot))
+            token = .helperDefinitionMarker(info(startDot))
 
         case "=" where data[nextDot] == ">":
             moveDot()
-            token = .tokenArrow(info(startDot))
+            token = .tokenDefinitionMarker(info(startDot))
 
-        case ";" : token = .semicolon(info(startDot))
-        case "(" : token = .leftParenthesis(info(startDot))
-        case ")" : token = .rightParenthesis(info(startDot))
-        case "|" : token = .bar(info(startDot))
-        case "*" : token = .star(info(startDot))
-        case "+" : token = .plus(info(startDot))
-        case "?" : token = .question(info(startDot))
-        case "^" : token = .caret(info(startDot))
-        case "$" : token = .dollar(info(startDot))
+        case ruleTerminator      : token = .ruleTerminator(info(startDot))
+        case groupLeftDelimiter  : token = .groupLeftDelimiter(info(startDot))
+        case groupRightDelimiter : token = .groupRightDelimiter(info(startDot))
+        case unionOperator       : token = .unionOperator(info(startDot))
+        case zeroOrMoreOperator  : token = .zeroOrMoreOperator(info(startDot))
+        case oneOrMoreOperator   : token = .oneOrMoreOperator(info(startDot))
+        case zeroOrOneOperator   : token = .zeroOrOneOperator(info(startDot))
+        case lineHeadOperator    : token = .lineHeadOperator(info(startDot))
+        case lineTailOperator    : token = .lineTailOperator(info(startDot))
+        case stringDelimiter     : token = try recognizeString(startDot)
+        case setMinus            : token = .setMinus(info(startDot))
+        case setSeparator        : token = .setSeparator(info(startDot))
+        case rangeSeparator      : token = .rangeSeparator(info(startDot))
 
-        case "\"":
-            token = try recognizeString(startDot)
+        case bracketedSetLeftDelimiter:
+            token = .bracketedSetLeftDelimiter(info(startDot))
+        case bracketedSetRightDelimiter:
+            token = .bracketedSetRightDelimiter(info(startDot))
 
-        case "'":
+        case characterLiteralMarker:
             moveDot()
             token = .character(info(startDot))
-
-        case "{" : token = .leftBracket(info(startDot))
-        case "}" : token = .rightBracket(info(startDot))
-
-        case "," : token = .setSeparator(info(startDot))
 
         default: token = .erroneous(info(startDot))
         }
@@ -110,7 +114,7 @@ fileprivate extension Lexer
     {
         try skipWhitespace()
 
-        while try inputScalar() == hash
+        while try inputScalar() == commentMarker
         {
             moveDot()
 
@@ -152,10 +156,17 @@ fileprivate extension Lexer
         return .character(info(startDot))
     }
 
-    func recognizeString(_ startDot: Dot) -> Token
+    func recognizeString(_ startDot: Dot) throws -> Token
     {
+        moveDot()
+
         while !isStringTerminator(try inputScalar()) { moveDot() }
 
         return .string(info(startDot))
+    }
+
+    func recognizeStandardSet(_ startDot: Dot) throws -> Token
+    {
+        return .unicode(info(startDot))
     }
 }

@@ -28,11 +28,11 @@ func isIdentifierHead(_ scalar: Scalar) -> Bool
 {
     switch scalar.value
     {
-        case 0x0041...0x005A, 0x0061...0x007A     : return true
+        case 0x0061...0x007A     : return true
 
         case underscore.value                     : return true
 
-        case 0x00A8, 0x00AA, 0x00AD, 0x00AF,
+        case 0x00A8, 0x00AA, 0x00AF,
              0x00B2...0x00B5, 0x00B7...0x00BA     : return true
 
         case 0x00BC...0x00BE, 0x00C0...0x00D6,
@@ -78,6 +78,19 @@ func isIdentifierHead(_ scalar: Scalar) -> Bool
     }
 }
 
+func isIdentifierCharacter(_ scalar: Scalar) -> Bool
+{
+    switch scalar.value
+    {
+        case _ where isIdentifierHead(scalar) : return true
+        case 0x0041...0x005A                  : return true
+        case _ where isDigit(scalar)          : return true
+        case 0x0300...0x036F, 0x1DC0...0x1DFF,
+             0x20D0...0x20FF, 0xFE20...0xFE2F : return true
+        default                               : return false
+    }
+}
+
 func isDigit(_ scalar: Scalar) -> Bool
 {
     let value = scalar.value
@@ -99,14 +112,22 @@ func isHexDigit(_ scalar: Scalar) -> Bool
 
 }
 
-func isIdentifierCharacter(_ scalar: Scalar) -> Bool
+
+func isStringTerminator(_ scalar: Scalar) -> Bool
+{
+    switch scalar
+    {
+        case "\""                        : return true
+        case _ where isLinebreak(scalar) : return true
+        default                          : return false
+    }
+}
+
+func isStandardSetHead(_ scalar: Scalar) -> Bool
 {
     switch scalar.value
     {
-        case _ where isIdentifierHead(scalar) : return true
-        case _ where isDigit(scalar)          : return true
-        case 0x0300...0x036F, 0x1DC0...0x1DFF,
-             0x20D0...0x20FF, 0xFE20...0xFE2F : return true
-        default                               : return false
+        case 0x0041...0x005A : return true
+        default              : return false
     }
 }

@@ -7,26 +7,26 @@ grammar. Non-terminals are denoted in camel-case.
 The rules below whose arrows are of the form '=>' indicate token class definitions.
 For reference, we compile every token class below, in lexing order:
 
-identifier       => identifierHead­identifierCharacter*
-helperArrow      => '->'
-tokenArrow       => '=>'
-semicolon        => ';'
-leftParenthesis  => '('
-rightParenthesis => ')'
-bar              => '|'
-star             => '*'
-plus             => '+'
-question         => '?'
-caret            => '^'
-dollar           => '$'
-string           => doubleQuote character+ doubleQuote
-unicode          => u | period
-ascii            => 'A'
-character        => character_literal | codepoint
-leftBracket      => '{'
-rightBracket     => '}'
-setSeparator     => ','
-dash             => '-'
+identifier                  => identifierHead­identifierCharacter*
+helperDefinitionMarker      => '->'
+tokenDefinitionMarker       => '=>'
+ruleTerminator              => ';'
+groupLeftDelimiter          => '('
+groupRightDelimiter         => ')'
+unionOperator               => '|'
+zeroOrMoreOperator          => '*'
+oneOrMoreOperator           => '+'
+zeroOrOneOperator           => '?'
+lineHeadOperator            => '^'
+lineTailOperator            => '$'
+string                      => stringDelimiter stringCharacter+ stringDelimiter
+setMinus                    => '\'
+unicode                     => 'U' | '.'
+character                   => characterLiteral | codepoint
+rangeSeparator              => '-'
+bracketedSetLeftDelimiter   => '{'
+bracketedSetRightDelimiter  => '}'
+setSeparator                => ','
 
 We also have the token class `erroneous`, which comprises any single character
 which is not in another token class.
@@ -42,26 +42,28 @@ whitespaceItem -> U+0000 | U+0009 | U+000B | U+000C | U+0020
                 | lineBreak
 lineBreak      -> U+000A | U+000D | U+000D U+000A
 
-comment     -> '#'­commentText­lineBreak
-commentText -> [^U+000A U+000D]*
+comment       -> commentMarker­commentText­lineBreak
+commentMarker -> '#'
+commentText   -> [^U+000A U+000D]*
 
 ## Identifiers
 
 Woody uses identifiers to represent non-terminals. The identifier grammar is
-based on that of Swift.
+based on that of Swift, but it deviates in places. For example, the soft hyphen
+U+00AD is not considered to be an identifier character.
 
 ### Identifier grammar
 
 identifier => identifierHead­identifierCharacter*
 
-#### Basic Latin
-identifierHead -> U+0041-U+005A | U+0061-U+007A
+#### Basic Latin / Lowercase only
+identifierHead -> U+0061-U+007A
 
 identifierHead -> _­
 
 #### Misc. Latin-1 Supplement
 
-identifierHead -> U+00A8 | U+00AA | U+00AD | U+00AF | U+00B2–U+00B5 | U+00B7–U+00BA
+identifierHead -> U+00A8 | U+00AA | U+00AF | U+00B2–U+00B5 | U+00B7–U+00BA
 identifierHead -> U+00BC–U+00BE | U+00C0–U+00D6 | U+00D8–U+00F6 | U+00F8–U+00FF
 
 #### Latin Extended A & B, IPA Extensions, and misc. Spacing Modifier Letters
@@ -88,7 +90,6 @@ Skip mongolian separators
 #### Mongolian, ...
 identifierHead -> U+180F–U+1DBF
 
-
 identifierHead -> U+200B–U+200D | U+202A–U+202E | U+203F–U+2040 | U+2054
                  | U+2060–U+206F
 
@@ -113,8 +114,8 @@ identifierHead -> U+90000–U+9FFFD | U+A0000–U+AFFFD | U+B0000–U+BFFFD
 
 identifierHead -> U+D0000–U+DFFFD | U+E0000–U+EFFFD
 
-identifierCharacter -> identifierHead­
-
+identifierCharacter -> identifierHead
+identifierCharacter -> U+0041-U+005A
 identifierCharacter -> [0-9]
 
 identifierCharacter -> U+0300–U+036F | U+1DC0–U+1DFF | U+20D0–U+20FF
@@ -126,75 +127,72 @@ identifierCharacter -> U+0300–U+036F | U+1DC0–U+1DFF | U+20D0–U+20FF
 
 #### Rules
 
-regularDescription -> rule+
-rule            -> identifier arrow regex semicolon
-regex           -> groupedRegex | ungroupedRegex
-groupedRegex    -> leftParenthesis regex rightParenthesis
-ungroupedRegex  -> union | simpleRegex
-union           -> regex bar simpleRegex
-simpleRegex     -> concatenation | basicRegex
-concatenation   -> simpleRegex basicRegex
-basicRegex      -> elementaryRegex repetitionOperator?
-elementaryRegex -> positionOperator | string | identifier | set
+regularDescription  -> rule+
+rule                -> identifier definitionMarker regex ruleTerminator
+regex               -> groupedRegex | ungroupedRegex
+groupedRegex        -> groupLeftDelimiter regex groupRightDelimiter
+ungroupedRegex      -> union | simpleRegex
+union               -> regex unionOperator simpleRegex
+simpleRegex         -> concatenation | basicRegex
+concatenation       -> simpleRegex basicRegex
+basicRegex          -> elementaryRegex repetitionOperator?
+elementaryRegex     -> positionOperator | string | identifier | set
 
 #### Rule Symbols
 In order of appearance in the "Rules" section
 
-arrow -> helperArrow | tokenArrow
-    helperArrow => '->'
-    tokenArrow  => '=>'
+definitionMarker -> helperDefinitionMarker | tokenDefinitionMarker
+    helperDefinitionMarker => '->'
+    tokenDefinitionMarker  => '=>'
 
-semicolon => ';'
+ruleTerminator => ';'
 
-leftParenthesis  => '('
-rightParenthesis => ')'
+groupLeftDelimiter  => '('
+groupRightDelimiter => ')'
 
-bar => '|'
+unionOperator => '|'
 
-repetitionOperator -> star | plus | question
-    star     => '*'
-    plus     => '+'
-    question => '?'
+repetitionOperator -> zeroOrMoreOperator | oneOrMoreOperator | zeroOrOneOperator
+    zeroOrMoreOperator     => '*'
+    oneOrMoreOperator     => '+'
+    zeroOrOneOperator => '?'
 
-positionOperator -> caret | dollar
-    caret  => '^'
-    dollar => '$'
+positionOperator -> lineHeadOperator | lineTailOperator
+    lineHeadOperator  => '^'
+    lineTailOperator  => '$'
 
-string => doubleQuote character+ doubleQuote
-    doubleQuote -> '"'
+string => stringDelimiter stringCharacter+ stringDelimiter
+    stringDelimiter -> '"'
+    stringCharacter -> .
 
 #### Sets
 
-set          -> simpleSet (minus simpleSet)?
+set          -> simpleSet (setMinus simpleSet)?
 simpleSet    -> standardSet | literalSet
-standardSet  -> Unicode | ASCII
+standardSet  -> Unicode
 literalSet   -> basicSet | bracketedSet
 basicSet     -> character | range
-bracketedSet -> leftBracket basicSetList rightBracket
+bracketedSet -> bracketedSetLeftDelimiter basicSetList bracketedSetRightDelimiter
 basicSetList -> basicSet | basicSet basicSetSeparator basicSetList
 
 #### Set symbols
 
-minus -> '\'
+setMinus => '\'
 
 The set of all Unicode codepoints
-unicode => u | period
-    u       -> 'U'
-    period  -> '.'
+unicode => 'U' | '.'
 
-The set of all ASCII codepoints
-ascii => 'A'
+character => characterLiteral | codepoint
+    characterLiteral -> characterLiteralMarker .
+        characterLiteralMarker -> '''
+    codepoint -> hexPrefix digits
+    hexPrefix -> 'u'
 
-character => character_literal | codepoint
-    character_literal -> quote .
-        quote -> '''
-    codepoint         -> 'u' digits
+range -> character rangeSeparator character
+    rangeSeparator => '-'
 
-range -> character dash character
-    dash => '-'
-
-leftBracket => '{'
-rightBracket => '}'
+bracketedSetLeftDelimiter => '{'
+bracketedSetRightDelimiter => '}'
 
 setSeparator => ','
 
@@ -208,22 +206,10 @@ digits   -> hexDigit hexDigit hexDigit hexDigit hexDigit
 digits   -> hexDigit hexDigit hexDigit hexDigit hexDigit hexDigit
 hexDigit -> [0-9a-fA-F]
 
-## Notes
+## TODOs
 
 TODO: Clarify the string grammar, specifically regarding escape characters.
+TODO: Rename tokens and other symbols to be character independent. e.g. rename
+'semicolon' to 'ruleTerminator'.
 
-We impose the further restriction that each non-terminal must be fully defined
-before it is used.
-
-The only escaped characters are literal characters, which are escaped group-wise
-by surrounding them with '. Hence, if α and β are strings, then 'α''β' has an
-identical meaning to 'αβ'.
-
-TODO: What about in sets?
-
-`character` is undefined above, but it may be any unicode character. Any occurennce
-of the character ' in a string must be escaped with a backslash. Any occurennce
-in a range must be escaped with a backslash?
-
-The point of escaping literal characters is to make it possible to read
-indentifiers embedded within regular expressions.
+## Misc. notes
