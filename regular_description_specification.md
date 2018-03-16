@@ -131,7 +131,9 @@ regularDescription  -> rule possible_rules
 rule                -> identifier definitionMarker regex ruleTerminator
 possible_rules      -> rule*
 regex               -> groupedRegex | ungroupedRegex
-groupedRegex        -> groupLeftDelimiter regex groupRightDelimiter
+groupedRegex        -> groupLeftDelimiter
+                        regex
+                       groupRightDelimiter repetitionOperator?
 ungroupedRegex      -> union | simpleRegex
 union               -> simpleRegex unionOperator regex
 simpleRegex         -> concatenation | basicRegex
@@ -173,9 +175,9 @@ setSubtraction -> setMinus simpleSet
 simpleSet      -> standardSet | literalSet
 standardSet    -> Unicode
 literalSet     -> basicSet | bracketedSet
-basicSet       -> character | range
+basicSet       -> range | character
 bracketedSet   -> bracketedSetLeftDelimiter basicSetList bracketedSetRightDelimiter
-basicSetList   -> basicSet | basicSets
+basicSetList   -> basicSets | basicSet
 basicSets      -> basicSet setSeparator basicSetList
 
 #### Set symbols

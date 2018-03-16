@@ -60,6 +60,7 @@ extension RegularDescription: CustomDebugStringConvertible
 indirect enum Rule: Nonterminal, Equatable
 {
     case cat(Identifier, DefinitionMarker, Regex, RuleTerminator)
+
     func print(_ indentation: Swift.String) -> Swift.String
     {
         switch self
@@ -137,17 +138,29 @@ extension Regex: CustomDebugStringConvertible
 
 indirect enum GroupedRegex: Nonterminal, Equatable
 {
-    case cat(GroupLeftDelimiter, Regex, GroupRightDelimiter)
+    case cat(GroupLeftDelimiter, Regex, GroupRightDelimiter, RepetitionOperator?)
     func print(_ indentation: Swift.String) -> Swift.String
     {
         switch self
         {
-        case let .cat(groupLeftDelimiter, regex, groupRightDelimiter):
+        case let .cat(groupLeftDelimiter, regex, groupRightDelimiter,
+        repetitionOperator):
+            if repetitionOperator == nil
+            {
+                return indentation+"""
+                (groupedRegex
+                    \(groupLeftDelimiter.print(indentation+standardIndentation))
+                    \(regex.print(indentation+standardIndentation))
+                    \(groupRightDelimiter.print(indentation+standardIndentation)))
+                """
+            }
+
             return indentation+"""
             (groupedRegex
                 \(groupLeftDelimiter.print(indentation+standardIndentation))
                 \(regex.print(indentation+standardIndentation))
-                \(groupRightDelimiter.print(indentation+standardIndentation)))
+                \(groupRightDelimiter.print(indentation+standardIndentation))
+                \(repetitionOperator!.print(indentation+standardIndentation)))
             """
         }
     }
@@ -547,22 +560,23 @@ extension LiteralSet: CustomDebugStringConvertible
 
 indirect enum BasicSet: Nonterminal, Equatable
 {
-    case character(Character)
     case range(Range)
+    case character(Character)
+
     func print(_ indentation: Swift.String) -> Swift.String
     {
         switch self
         {
+        case let .range(range):
+            return indentation+"""
+            (basicSet
+                \(range.print(indentation+standardIndentation)))
+            """
+
         case let .character(character):
             return indentation+"""
             (basicSet
                 \(character.print(indentation+standardIndentation)))
-            """
-
-        case let .range(range):
-            return indentation+"""
-            (range
-                \(range.print(indentation+standardIndentation)))
             """
         }
     }
@@ -600,22 +614,22 @@ extension BracketedSet: CustomDebugStringConvertible
 
 indirect enum BasicSetList: Nonterminal, Equatable
 {
-    case basicSet(BasicSet)
     case basicSets(BasicSets)
+    case basicSet(BasicSet)
     func print(_ indentation: Swift.String) -> Swift.String
     {
         switch self
         {
-        case let .basicSet(basicSet):
-            return indentation+"""
-            (basicSetList
-                \(basicSet.print(indentation+standardIndentation)))
-            """
-
         case let .basicSets(basicSets):
             return indentation+"""
             (basicSetList
                 \(basicSets.print(indentation+standardIndentation)))
+            """
+
+        case let .basicSet(basicSet):
+            return indentation+"""
+            (basicSetList
+                \(basicSet.print(indentation+standardIndentation)))
             """
         }
     }

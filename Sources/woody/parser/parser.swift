@@ -85,8 +85,10 @@ extension Parser
         let _groupLeftDelimiter  = try groupLeftDelimiter()
         let _regex               = try regex()
         let _groupRightDelimiter = try groupRightDelimiter()
+        let _repetitionOperator  = try? repetitionOperator()
 
-        return .cat(_groupLeftDelimiter, _regex, _groupRightDelimiter)
+        return .cat(_groupLeftDelimiter, _regex, _groupRightDelimiter,
+            _repetitionOperator)
     }
 
     func ungroupedRegex() throws -> UngroupedRegex
@@ -243,11 +245,11 @@ extension Parser
     {
         let _dot = dot
 
-        if let n = try? character() { return .character(n) }
+        if let n = try? range() { return .range(n) }
 
         dot = _dot
 
-        return .range(try range())
+        return .character(try character())
     }
 
     func bracketedSet() throws -> BracketedSet
@@ -264,11 +266,11 @@ extension Parser
     {
         let _dot = dot
 
-        if let n = try? basicSet() { return .basicSet(n) }
+        if let n = try? basicSets() { return .basicSets(n) }
 
         dot = _dot
 
-        return .basicSets(try basicSets())
+        return .basicSet(try basicSet())
     }
 
     func basicSets() throws -> BasicSets
@@ -282,9 +284,9 @@ extension Parser
 
     func range() throws -> Range
     {
-        let _character_1      = try character()
+        let _character_1    = try character()
         let _rangeSeparator = try rangeSeparator()
-        let _character_2      = try character()
+        let _character_2    = try character()
 
         return .cat(_character_1, _rangeSeparator, _character_2)
     }

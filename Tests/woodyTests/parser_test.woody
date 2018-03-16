@@ -1,5 +1,0 @@
-# whitespace => whitespace_item+;
-# identifier  => identifier_head identifier_character*;
-# keyword     => declaration_keyword | statement_keyword
-#              | expression_or_type_keyword;
-# punctuation => '( | ') | '{ | '} | '[ | '] | '. | ', | ': | ';;
