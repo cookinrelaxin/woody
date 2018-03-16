@@ -127,14 +127,15 @@ identifierCharacter -> U+0300–U+036F | U+1DC0–U+1DFF | U+20D0–U+20FF
 
 #### Rules
 
-regularDescription  -> rule+
+regularDescription  -> rule possible_rules
 rule                -> identifier definitionMarker regex ruleTerminator
+possible_rules      -> rule*
 regex               -> groupedRegex | ungroupedRegex
 groupedRegex        -> groupLeftDelimiter regex groupRightDelimiter
 ungroupedRegex      -> union | simpleRegex
-union               -> regex unionOperator simpleRegex
+union               -> simpleRegex unionOperator regex
 simpleRegex         -> concatenation | basicRegex
-concatenation       -> simpleRegex basicRegex
+concatenation       -> basicRegex simpleRegex
 basicRegex          -> elementaryRegex repetitionOperator?
 elementaryRegex     -> positionOperator | string | identifier | set
 
@@ -167,13 +168,15 @@ string => stringDelimiter stringCharacter+ stringDelimiter
 
 #### Sets
 
-set          -> simpleSet (setMinus simpleSet)?
-simpleSet    -> standardSet | literalSet
-standardSet  -> Unicode
-literalSet   -> basicSet | bracketedSet
-basicSet     -> character | range
-bracketedSet -> bracketedSetLeftDelimiter basicSetList bracketedSetRightDelimiter
-basicSetList -> basicSet | basicSet basicSetSeparator basicSetList
+set            -> simpleSet setSubtraction?
+setSubtraction -> setMinus simpleSet
+simpleSet      -> standardSet | literalSet
+standardSet    -> Unicode
+literalSet     -> basicSet | bracketedSet
+basicSet       -> character | range
+bracketedSet   -> bracketedSetLeftDelimiter basicSetList bracketedSetRightDelimiter
+basicSetList   -> basicSet | basicSets
+basicSets      -> basicSet setSeparator basicSetList
 
 #### Set symbols
 

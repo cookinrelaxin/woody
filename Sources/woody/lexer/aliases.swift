@@ -1,3 +1,3 @@
-typealias Scalar = Unicode.Scalar
-typealias Index  = String.UnicodeScalarView.Index
+typealias Scalar = Swift.Unicode.Scalar
+typealias Index  = Swift.String.UnicodeScalarView.Index
 typealias Dot    = Index

@@ -2,7 +2,7 @@ import Foundation
 
 final class Lexer
 {
-    fileprivate let data: String.UnicodeScalarView
+    fileprivate let data: Swift.String.UnicodeScalarView
     fileprivate var dot: Dot
 
     var previousDot: Dot { return data.index(before: dot) }
@@ -35,10 +35,7 @@ final class Lexer
         self.data = data
         dot = data.startIndex
     }
-}
 
-fileprivate extension Lexer
-{
     func nextToken() throws -> Token
     {
         try skipInsignificant()
@@ -62,45 +59,48 @@ fileprivate extension Lexer
 
         case "-" where data[nextDot] == ">":
             moveDot()
-            token = .helperDefinitionMarker(info(startDot))
+            token = HelperDefinitionMarker(info(startDot))
 
         case "=" where data[nextDot] == ">":
             moveDot()
-            token = .tokenDefinitionMarker(info(startDot))
+            token = TokenDefinitionMarker(info(startDot))
 
-        case ruleTerminator      : token = .ruleTerminator(info(startDot))
-        case groupLeftDelimiter  : token = .groupLeftDelimiter(info(startDot))
-        case groupRightDelimiter : token = .groupRightDelimiter(info(startDot))
-        case unionOperator       : token = .unionOperator(info(startDot))
-        case zeroOrMoreOperator  : token = .zeroOrMoreOperator(info(startDot))
-        case oneOrMoreOperator   : token = .oneOrMoreOperator(info(startDot))
-        case zeroOrOneOperator   : token = .zeroOrOneOperator(info(startDot))
-        case lineHeadOperator    : token = .lineHeadOperator(info(startDot))
-        case lineTailOperator    : token = .lineTailOperator(info(startDot))
+        case ruleTerminator      : token = RuleTerminator(info(startDot))
+        case groupLeftDelimiter  : token = GroupLeftDelimiter(info(startDot))
+        case groupRightDelimiter : token = GroupRightDelimiter(info(startDot))
+        case unionOperator       : token = UnionOperator(info(startDot))
+        case zeroOrMoreOperator  : token = ZeroOrMoreOperator(info(startDot))
+        case oneOrMoreOperator   : token = OneOrMoreOperator(info(startDot))
+        case zeroOrOneOperator   : token = ZeroOrOneOperator(info(startDot))
+        case lineHeadOperator    : token = LineHeadOperator(info(startDot))
+        case lineTailOperator    : token = LineTailOperator(info(startDot))
         case stringDelimiter     : token = try recognizeString(startDot)
-        case setMinus            : token = .setMinus(info(startDot))
-        case setSeparator        : token = .setSeparator(info(startDot))
-        case rangeSeparator      : token = .rangeSeparator(info(startDot))
+        case setMinus            : token = SetMinus(info(startDot))
+        case setSeparator        : token = SetSeparator(info(startDot))
+        case rangeSeparator      : token = RangeSeparator(info(startDot))
 
         case bracketedSetLeftDelimiter:
-            token = .bracketedSetLeftDelimiter(info(startDot))
+            token = BracketedSetLeftDelimiter(info(startDot))
         case bracketedSetRightDelimiter:
-            token = .bracketedSetRightDelimiter(info(startDot))
+            token = BracketedSetRightDelimiter(info(startDot))
 
         case characterLiteralMarker:
             moveDot()
-            token = .character(info(startDot))
+            token = Character(info(startDot))
 
-        default: token = .erroneous(info(startDot))
+        default: token = Erroneous(info(startDot))
         }
 
         moveDot()
 
         return token
     }
+}
 
-    func info(_ startDot: Dot) -> TokenInfo
-    { return TokenInfo(String(data[startDot...dot])) }
+fileprivate extension Lexer
+{
+    func info(_ startDot: Dot) -> Swift.String
+    { return Swift.String(data[startDot...dot]) }
 
     func skipWhitespace() throws
     {
@@ -129,16 +129,16 @@ fileprivate extension Lexer
         }
     }
 
-    func recognizeIdentifier(_ startDot: Dot) throws -> Token
+    func recognizeIdentifier(_ startDot: Dot) throws -> Identifier
     {
         while isIdentifierCharacter(try inputScalar()) { moveDot() }
 
         retractDot()
 
-        return .identifier(info(startDot))
+        return Identifier(info(startDot))
     }
 
-    func recognizeCodepoint(_ startDot: Dot) throws -> Token
+    func recognizeCodepoint(_ startDot: Dot) throws -> Character
     {
         moveDot()
 
@@ -153,20 +153,20 @@ fileprivate extension Lexer
             moveDot()
         }
 
-        return .character(info(startDot))
+        return Character(info(startDot))
     }
 
-    func recognizeString(_ startDot: Dot) throws -> Token
+    func recognizeString(_ startDot: Dot) throws -> String
     {
         moveDot()
 
         while !isStringTerminator(try inputScalar()) { moveDot() }
 
-        return .string(info(startDot))
+        return String(info(startDot))
     }
 
-    func recognizeStandardSet(_ startDot: Dot) throws -> Token
+    func recognizeStandardSet(_ startDot: Dot) throws -> Unicode
     {
-        return .unicode(info(startDot))
+        return Unicode(info(startDot))
     }
 }

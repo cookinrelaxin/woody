@@ -2,14 +2,14 @@ import Foundation
 
 final class Reader
 {
-    static let encoding: String.Encoding = .utf8
+    static let encoding: Swift.String.Encoding = .utf8
 
     let source: URL
     let fileHandle: FileHandle
-    lazy var data: String.UnicodeScalarView? =
+    lazy var data: Swift.String.UnicodeScalarView? =
     {
         let data = fileHandle.readDataToEndOfFile()
-        let string = String(data: data, encoding: Reader.encoding)
+        let string = Swift.String(data: data, encoding: Reader.encoding)
         let scalars = string?.unicodeScalars
 
         return scalars
