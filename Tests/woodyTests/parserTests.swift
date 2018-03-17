@@ -1,11 +1,14 @@
 import XCTest
+import Foundation
 @testable import woody
 
 class ParserTests: XCTestCase
 {
+    @available(macOS 10.11, *)
     func testParseRule() throws
     {
-        let url = URL(fileURLWithPath: "./Tests/woodyTests/testParseRule.woody")
+        let url = URL(fileURLWithPath: "testParseRule.woody",
+                      relativeTo: fixtureURL)
         let coordinator = PipelineCoordinator(url: url)
 
         let actualParseTree = try! coordinator.parser.parseTree()
@@ -32,10 +35,11 @@ class ParserTests: XCTestCase
             expectedParseTree.asEquatable)
     }
 
+    @available(macOS 10.11, *)
     func testParseMultipleRules() throws
     {
-        let url = URL(fileURLWithPath:
-            "./Tests/woodyTests/testParseMultipleRules.woody")
+        let url = URL(fileURLWithPath: "testParseMultipleRules.woody",
+                      relativeTo: fixtureURL)
         let coordinator = PipelineCoordinator(url: url)
 
         let actualParseTree = try! coordinator.parser.parseTree()
@@ -97,9 +101,11 @@ RegularDescription.cat(
             expectedParseTree.asEquatable)
     }
 
+    @available(macOS 10.11, *)
     func testParseGroup() throws
     {
-        let url = URL(fileURLWithPath: "./Tests/woodyTests/testParseGroup.woody")
+        let url = URL(fileURLWithPath: "testParseGroup.woody",
+                      relativeTo: fixtureURL)
         let coordinator = PipelineCoordinator(url: url)
 
         let actualParseTree = try! coordinator.parser.parseTree()
@@ -161,9 +167,11 @@ RegularDescription.cat(
             expectedParseTree.asEquatable)
     }
 
+    @available(macOS 10.11, *)
     func testParseSet() throws
     {
-        let url = URL(fileURLWithPath: "./Tests/woodyTests/testParseSet.woody")
+        let url = URL(fileURLWithPath: "testParseSet.woody",
+                      relativeTo: fixtureURL)
         let coordinator = PipelineCoordinator(url: url)
 
         let actualParseTree = try! coordinator.parser.parseTree()

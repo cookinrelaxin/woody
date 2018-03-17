@@ -2,14 +2,27 @@ import Foundation
 
 final class PipelineCoordinator
 {
-    let reader: Reader
-    let lexer: Lexer
-    let parser: Parser
+    let source: URL
 
-    init(url: URL)
+    lazy var reader: Reader =
     {
-        reader = try! Reader(source: url)
-        lexer = Lexer(reader: reader)!
-        parser = Parser(lexer: lexer)
-    }
+        return try! Reader(source: source)
+    }()
+
+    lazy var lexer: Lexer =
+    {
+        return Lexer(reader: reader)!
+    }()
+
+    lazy var parser         : Parser =
+    {
+        return Parser(lexer: lexer)
+    }()
+
+    lazy var lexerGenerator : LexerGenerator =
+    {
+        return LexerGenerator(regularDescription: try! parser.parseTree())
+    }()
+
+    init(url: URL) { source = url }
 }

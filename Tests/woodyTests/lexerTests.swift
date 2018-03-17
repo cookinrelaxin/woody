@@ -1,11 +1,14 @@
 import XCTest
+import Foundation
 @testable import woody
 
 class LexerTests: XCTestCase
 {
+    @available(macOS 10.11, *)
     func testSwift()
     {
-        let url = URL(fileURLWithPath: "./Tests/woodyTests/swift.woody")
+        let url = URL(fileURLWithPath: "swift.woody",
+                      relativeTo: fixtureURL)
         let coordinator = PipelineCoordinator(url: url)
 
         let actualTokens = coordinator.lexer.tokens
@@ -634,26 +637,5 @@ class LexerTests: XCTestCase
                            expectedTokens[i].asEquatable)
         }
     }
-
-/*
- *    func testEdgeCases()
- *    {
- *        let url = URL(fileURLWithPath: "./Tests/woodyTests/edge_cases.woody")
- *        let coordinator = PipelineCoordinator(url: url)
- *
- *        let actualTokens = coordinator.lexer.tokens
- *
- *        let expectedTokens: [Token] =
- *        [
- *        ]
- *
- *        XCTAssertEqual(actualTokens.count, expectedTokens.count)
- *
- *        for i in 0..<actualTokens.count
- *        {
- *            XCTAssertEqual(actualTokens[i], expectedTokens[i])
- *        }
- *    }
- */
 }
 

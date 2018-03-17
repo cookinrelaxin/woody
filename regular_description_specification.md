@@ -213,8 +213,7 @@ hexDigit -> [0-9a-fA-F]
 
 ## TODOs
 
-TODO: Clarify the string grammar, specifically regarding escape characters.
-TODO: Rename tokens and other symbols to be character independent. e.g. rename
-'semicolon' to 'ruleTerminator'.
+TODO: Namespace internal and classes to avoid conflicts with the Swift Standard
+Library
 
 ## Misc. notes
