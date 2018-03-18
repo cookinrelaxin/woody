@@ -1,43 +1,7 @@
 import Foundation
 
-let standardIndentation = " "
-
-protocol Nonterminal
+extension Parser.RegularDescription: SEXPPrintable
 {
-    func isEqualTo(_ other: Nonterminal) -> Bool
-    var asEquatable: AnyNonterminal { get }
-}
-
-extension Nonterminal where Self: Equatable
-{
-    func isEqualTo(_ other: Nonterminal) -> Bool
-    {
-        guard let other = other as? Self else { return false }
-        return self == other
-    }
-
-    var asEquatable: AnyNonterminal { return AnyNonterminal(self) }
-}
-
-struct AnyNonterminal
-{
-    init(_ nonterminal: Nonterminal) { self.nonterminal = nonterminal }
-
-    fileprivate let nonterminal: Nonterminal
-}
-
-extension AnyNonterminal: Equatable
-{
-    static func ==(lhs: AnyNonterminal, rhs: AnyNonterminal) -> Bool
-    {
-        return lhs.nonterminal.isEqualTo(rhs.nonterminal)
-    }
-}
-
-indirect enum RegularDescription: Nonterminal, Equatable
-{
-    case cat(Rule, PossibleRules)
-
     func print(_ indentation: Swift.String) -> Swift.String
     {
         switch self
@@ -50,17 +14,12 @@ indirect enum RegularDescription: Nonterminal, Equatable
             """
         }
     }
-}
 
-extension RegularDescription: CustomDebugStringConvertible
-{
     var debugDescription: Swift.String { return print("") }
 }
 
-indirect enum Rule: Nonterminal, Equatable
+extension Parser.Rule: SEXPPrintable
 {
-    case cat(Identifier, DefinitionMarker, Regex, RuleTerminator)
-
     func print(_ indentation: Swift.String) -> Swift.String
     {
         switch self
@@ -75,16 +34,12 @@ indirect enum Rule: Nonterminal, Equatable
             """
         }
     }
-}
 
-extension Rule: CustomDebugStringConvertible
-{
     var debugDescription: Swift.String { return print("") }
 }
 
-indirect enum PossibleRules: Nonterminal, Equatable
+extension Parser.PossibleRules: SEXPPrintable
 {
-    case cat([Rule])
     func print(_ indentation: Swift.String) -> Swift.String
     {
         switch self
@@ -102,17 +57,12 @@ indirect enum PossibleRules: Nonterminal, Equatable
             """
         }
     }
-}
 
-extension PossibleRules: CustomDebugStringConvertible
-{
     var debugDescription: Swift.String { return print("") }
 }
 
-indirect enum Regex: Nonterminal, Equatable
+extension Parser.Regex: SEXPPrintable
 {
-    case groupedRegex(GroupedRegex)
-    case ungroupedRegex(UngroupedRegex)
     func print(_ indentation: Swift.String) -> Swift.String
     {
         switch self
@@ -129,16 +79,12 @@ indirect enum Regex: Nonterminal, Equatable
             """
         }
     }
-}
 
-extension Regex: CustomDebugStringConvertible
-{
     var debugDescription: Swift.String { return print("") }
 }
 
-indirect enum GroupedRegex: Nonterminal, Equatable
+extension Parser.GroupedRegex: SEXPPrintable
 {
-    case cat(GroupLeftDelimiter, Regex, GroupRightDelimiter, RepetitionOperator?)
     func print(_ indentation: Swift.String) -> Swift.String
     {
         switch self
@@ -164,17 +110,12 @@ indirect enum GroupedRegex: Nonterminal, Equatable
             """
         }
     }
-}
 
-extension GroupedRegex: CustomDebugStringConvertible
-{
     var debugDescription: Swift.String { return print("") }
 }
 
-indirect enum UngroupedRegex: Nonterminal, Equatable
+extension Parser.UngroupedRegex: SEXPPrintable
 {
-    case union(Union)
-    case simpleRegex(SimpleRegex)
     func print(_ indentation: Swift.String) -> Swift.String
     {
         switch self
@@ -191,16 +132,12 @@ indirect enum UngroupedRegex: Nonterminal, Equatable
             """
         }
     }
-}
 
-extension UngroupedRegex: CustomDebugStringConvertible
-{
     var debugDescription: Swift.String { return print("") }
 }
 
-indirect enum Union: Nonterminal, Equatable
+extension Parser.Union: SEXPPrintable
 {
-    case cat(SimpleRegex, UnionOperator, Regex)
     func print(_ indentation: Swift.String) -> Swift.String
     {
         switch self
@@ -214,17 +151,12 @@ indirect enum Union: Nonterminal, Equatable
             """
         }
     }
-}
 
-extension Union: CustomDebugStringConvertible
-{
     var debugDescription: Swift.String { return print("") }
 }
 
-indirect enum SimpleRegex: Nonterminal, Equatable
+extension Parser.SimpleRegex: SEXPPrintable
 {
-    case concatenation(Concatenation)
-    case basicRegex(BasicRegex)
     func print(_ indentation: Swift.String) -> Swift.String
     {
         switch self
@@ -242,16 +174,12 @@ indirect enum SimpleRegex: Nonterminal, Equatable
             """
         }
     }
-}
 
-extension SimpleRegex: CustomDebugStringConvertible
-{
     var debugDescription: Swift.String { return print("") }
 }
 
-indirect enum Concatenation: Nonterminal, Equatable
+extension Parser.Concatenation: SEXPPrintable
 {
-    case cat(BasicRegex, SimpleRegex)
     func print(_ indentation: Swift.String) -> Swift.String
     {
         switch self
@@ -264,16 +192,12 @@ indirect enum Concatenation: Nonterminal, Equatable
             """
         }
     }
-}
 
-extension Concatenation: CustomDebugStringConvertible
-{
     var debugDescription: Swift.String { return print("") }
 }
 
-indirect enum BasicRegex: Nonterminal, Equatable
+extension Parser.BasicRegex: SEXPPrintable
 {
-    case cat(ElementaryRegex, RepetitionOperator?)
     func print(_ indentation: Swift.String) -> Swift.String
     {
         switch self
@@ -293,19 +217,12 @@ indirect enum BasicRegex: Nonterminal, Equatable
             """
         }
     }
-}
 
-extension BasicRegex: CustomDebugStringConvertible
-{
     var debugDescription: Swift.String { return print("") }
 }
 
-indirect enum ElementaryRegex: Nonterminal, Equatable
+extension Parser.ElementaryRegex: SEXPPrintable
 {
-    case positionOperator(PositionOperator)
-    case string(String)
-    case identifier(Identifier)
-    case set(Set)
     func print(_ indentation: Swift.String) -> Swift.String
     {
         switch self
@@ -335,17 +252,12 @@ indirect enum ElementaryRegex: Nonterminal, Equatable
             """
         }
     }
-}
 
-extension ElementaryRegex: CustomDebugStringConvertible
-{
     var debugDescription: Swift.String { return print("") }
 }
 
-indirect enum DefinitionMarker: Nonterminal, Equatable
+extension Parser.DefinitionMarker: SEXPPrintable
 {
-    case helperDefinitionMarker(HelperDefinitionMarker)
-    case tokenDefinitionMarker(TokenDefinitionMarker)
     func print(_ indentation: Swift.String) -> Swift.String
     {
         switch self
@@ -363,18 +275,12 @@ indirect enum DefinitionMarker: Nonterminal, Equatable
             """
         }
     }
-}
 
-extension DefinitionMarker: CustomDebugStringConvertible
-{
     var debugDescription: Swift.String { return print("") }
 }
 
-indirect enum RepetitionOperator: Nonterminal, Equatable
+extension Parser.RepetitionOperator: SEXPPrintable
 {
-    case zeroOrMoreOperator(ZeroOrMoreOperator)
-    case oneOrMoreOperator(OneOrMoreOperator)
-    case zeroOrOneOperator(ZeroOrOneOperator)
     func print(_ indentation: Swift.String) -> Swift.String
     {
         switch self
@@ -398,17 +304,12 @@ indirect enum RepetitionOperator: Nonterminal, Equatable
             """
         }
     }
-}
 
-extension RepetitionOperator: CustomDebugStringConvertible
-{
     var debugDescription: Swift.String { return print("") }
 }
 
-indirect enum PositionOperator: Nonterminal, Equatable
+extension Parser.PositionOperator: SEXPPrintable
 {
-    case lineHeadOperator(LineHeadOperator)
-    case lineTailOperator(LineTailOperator)
     func print(_ indentation: Swift.String) -> Swift.String
     {
         switch self
@@ -426,16 +327,12 @@ indirect enum PositionOperator: Nonterminal, Equatable
             """
         }
     }
-}
 
-extension PositionOperator: CustomDebugStringConvertible
-{
     var debugDescription: Swift.String { return print("") }
 }
 
-indirect enum Set: Nonterminal, Equatable
+extension Parser.Set: SEXPPrintable
 {
-    case cat(SimpleSet, SetSubtraction?)
     func print(_ indentation: Swift.String) -> Swift.String
     {
         switch self
@@ -455,15 +352,12 @@ indirect enum Set: Nonterminal, Equatable
                 """
         }
     }
-}
 
-extension Set: CustomDebugStringConvertible {
     var debugDescription: Swift.String { return print("") }
 }
 
-indirect enum SetSubtraction: Nonterminal, Equatable
+extension Parser.SetSubtraction: SEXPPrintable
 {
-    case cat(SetMinus, SimpleSet)
     func print(_ indentation: Swift.String) -> Swift.String
     {
         switch self
@@ -476,17 +370,12 @@ indirect enum SetSubtraction: Nonterminal, Equatable
             """
         }
     }
-}
 
-extension SetSubtraction: CustomDebugStringConvertible
-{
     var debugDescription: Swift.String { return print("") }
 }
 
-indirect enum SimpleSet: Nonterminal, Equatable
+extension Parser.SimpleSet: SEXPPrintable
 {
-    case standardSet(StandardSet)
-    case literalSet(LiteralSet)
     func print(_ indentation: Swift.String) -> Swift.String
     {
         switch self
@@ -503,16 +392,12 @@ indirect enum SimpleSet: Nonterminal, Equatable
             """
         }
     }
-}
 
-extension SimpleSet: CustomDebugStringConvertible
-{
     var debugDescription: Swift.String { return print("") }
 }
 
-indirect enum StandardSet: Nonterminal, Equatable
+extension Parser.StandardSet: SEXPPrintable
 {
-    case cat(Unicode)
     func print(_ indentation: Swift.String) -> Swift.String
     {
         switch self
@@ -524,17 +409,12 @@ indirect enum StandardSet: Nonterminal, Equatable
             """
         }
     }
-}
 
-extension StandardSet: CustomDebugStringConvertible
-{
     var debugDescription: Swift.String { return print("") }
 }
 
-indirect enum LiteralSet: Nonterminal, Equatable
+extension Parser.LiteralSet: SEXPPrintable
 {
-    case basicSet(BasicSet)
-    case bracketedSet(BracketedSet)
     func print(_ indentation: Swift.String) -> Swift.String
     {
         switch self
@@ -551,18 +431,12 @@ indirect enum LiteralSet: Nonterminal, Equatable
             """
         }
     }
-}
 
-extension LiteralSet: CustomDebugStringConvertible
-{
     var debugDescription: Swift.String { return print("") }
 }
 
-indirect enum BasicSet: Nonterminal, Equatable
+extension Parser.BasicSet: SEXPPrintable
 {
-    case range(Range)
-    case character(Character)
-
     func print(_ indentation: Swift.String) -> Swift.String
     {
         switch self
@@ -580,17 +454,12 @@ indirect enum BasicSet: Nonterminal, Equatable
             """
         }
     }
-}
 
-extension BasicSet: CustomDebugStringConvertible
-{
     var debugDescription: Swift.String { return print("") }
 }
 
-indirect enum BracketedSet: Nonterminal, Equatable
+extension Parser.BracketedSet: SEXPPrintable
 {
-    case cat(BracketedSetLeftDelimiter, BasicSetList,
-        BracketedSetRightDelimiter)
     func print(_ indentation: Swift.String) -> Swift.String
     {
         switch self
@@ -605,17 +474,12 @@ indirect enum BracketedSet: Nonterminal, Equatable
             """
         }
     }
-}
 
-extension BracketedSet: CustomDebugStringConvertible
-{
     var debugDescription: Swift.String { return print("") }
 }
 
-indirect enum BasicSetList: Nonterminal, Equatable
+extension Parser.BasicSetList: SEXPPrintable
 {
-    case basicSets(BasicSets)
-    case basicSet(BasicSet)
     func print(_ indentation: Swift.String) -> Swift.String
     {
         switch self
@@ -633,16 +497,12 @@ indirect enum BasicSetList: Nonterminal, Equatable
             """
         }
     }
-}
 
-extension BasicSetList: CustomDebugStringConvertible
-{
     var debugDescription: Swift.String { return print("") }
 }
 
-indirect enum BasicSets: Nonterminal, Equatable
+extension Parser.BasicSets: SEXPPrintable
 {
-    case cat(BasicSet, SetSeparator, BasicSetList)
     func print(_ indentation: Swift.String) -> Swift.String
     {
         switch self
@@ -656,16 +516,12 @@ indirect enum BasicSets: Nonterminal, Equatable
             """
         }
     }
-}
 
-extension BasicSets: CustomDebugStringConvertible
-{
     var debugDescription: Swift.String { return print("") }
 }
 
-indirect enum Range: Nonterminal, Equatable
+extension Parser.Range: SEXPPrintable
 {
-    case cat(Character, RangeSeparator, Character)
     func print(_ indentation: Swift.String) -> Swift.String
     {
         switch self
@@ -679,9 +535,6 @@ indirect enum Range: Nonterminal, Equatable
             """
         }
     }
-}
 
-extension Range: CustomDebugStringConvertible
-{
     var debugDescription: Swift.String { return print("") }
 }

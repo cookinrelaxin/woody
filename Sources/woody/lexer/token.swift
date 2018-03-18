@@ -34,380 +34,215 @@ extension AnyToken: Equatable
     }
 }
 
-struct Identifier: Token, Equatable
+extension Lexer
 {
-    let representation: Swift.String
-
-    init(_ representation: Swift.String)
-    { self.representation = representation }
-
-    func print(_ indentation: Swift.String) -> Swift.String { return indentation+debugDescription }
-}
-
-extension Identifier: CustomDebugStringConvertible
-{
-    var debugDescription: Swift.String
+    struct Identifier: Token, Equatable
     {
-        return "(identifier \(representation))"
+        let representation: Swift.String
+
+        init(_ representation: Swift.String)
+        { self.representation = representation }
+
     }
-}
 
-struct HelperDefinitionMarker: Token, Equatable
-{
-    let representation: Swift.String
 
-    init(_ representation: Swift.String)
-    { self.representation = representation }
-
-    func print(_ indentation: Swift.String) -> Swift.String { return indentation+debugDescription }
-}
-
-extension HelperDefinitionMarker: CustomDebugStringConvertible
-{
-    var debugDescription: Swift.String
+    struct HelperDefinitionMarker: Token, Equatable
     {
-        return "(helperDefinitionMarker \(representation))"
+        let representation: Swift.String
+
+        init(_ representation: Swift.String)
+        { self.representation = representation }
+
     }
-}
 
-struct TokenDefinitionMarker: Token, Equatable
-{
-    let representation: Swift.String
 
-    init(_ representation: Swift.String)
-    { self.representation = representation }
-
-    func print(_ indentation: Swift.String) -> Swift.String { return indentation+debugDescription }
-}
-
-extension TokenDefinitionMarker: CustomDebugStringConvertible
-{
-    var debugDescription: Swift.String
+    struct TokenDefinitionMarker: Token, Equatable
     {
-        return "(tokenDefinitionMarker \(representation))"
+        let representation: Swift.String
+
+        init(_ representation: Swift.String)
+        { self.representation = representation }
+
     }
-}
 
-struct RuleTerminator: Token, Equatable
-{
-    let representation: Swift.String
 
-    init(_ representation: Swift.String)
-    { self.representation = representation }
-
-    func print(_ indentation: Swift.String) -> Swift.String { return indentation+debugDescription }
-}
-
-extension RuleTerminator: CustomDebugStringConvertible
-{
-    var debugDescription: Swift.String
+    struct RuleTerminator: Token, Equatable
     {
-        return "(ruleTerminator \(representation))"
+        let representation: Swift.String
+
+        init(_ representation: Swift.String)
+        { self.representation = representation }
+
     }
-}
 
-struct GroupLeftDelimiter: Token, Equatable
-{
-    let representation: Swift.String
 
-    init(_ representation: Swift.String)
-    { self.representation = representation }
-
-    func print(_ indentation: Swift.String) -> Swift.String { return indentation+debugDescription }
-}
-
-extension GroupLeftDelimiter: CustomDebugStringConvertible
-{
-    var debugDescription: Swift.String
+    struct GroupLeftDelimiter: Token, Equatable
     {
-        return "(groupLeftDelimiter \(representation))"
+        let representation: Swift.String
+
+        init(_ representation: Swift.String)
+        { self.representation = representation }
+
     }
-}
 
-struct GroupRightDelimiter: Token, Equatable
-{
-    let representation: Swift.String
 
-    init(_ representation: Swift.String)
-    { self.representation = representation }
-
-    func print(_ indentation: Swift.String) -> Swift.String { return indentation+debugDescription }
-}
-
-extension GroupRightDelimiter: CustomDebugStringConvertible
-{
-    var debugDescription: Swift.String
+    struct GroupRightDelimiter: Token, Equatable
     {
-        return "(groupRightDelimiter \(representation))"
+        let representation: Swift.String
+
+        init(_ representation: Swift.String)
+        { self.representation = representation }
+
     }
-}
 
-struct UnionOperator: Token, Equatable
-{
-    let representation: Swift.String
 
-    init(_ representation: Swift.String)
-    { self.representation = representation }
-
-    func print(_ indentation: Swift.String) -> Swift.String { return indentation+debugDescription }
-}
-
-extension UnionOperator: CustomDebugStringConvertible
-{
-    var debugDescription: Swift.String
+    struct UnionOperator: Token, Equatable
     {
-        return "(unionOperator \(representation))"
+        let representation: Swift.String
+
+        init(_ representation: Swift.String)
+        { self.representation = representation }
+
     }
-}
 
-struct ZeroOrMoreOperator: Token, Equatable
-{
-    let representation: Swift.String
 
-    init(_ representation: Swift.String)
-    { self.representation = representation }
-
-    func print(_ indentation: Swift.String) -> Swift.String { return indentation+debugDescription }
-}
-
-extension ZeroOrMoreOperator: CustomDebugStringConvertible
-{
-    var debugDescription: Swift.String
+    struct ZeroOrMoreOperator: Token, Equatable
     {
-        return "(zeroOrMoreOperator \(representation))"
+        let representation: Swift.String
+
+        init(_ representation: Swift.String)
+        { self.representation = representation }
+
     }
-}
 
-struct OneOrMoreOperator: Token, Equatable
-{
-    let representation: Swift.String
 
-    init(_ representation: Swift.String)
-    { self.representation = representation }
-
-    func print(_ indentation: Swift.String) -> Swift.String { return indentation+debugDescription }
-}
-
-extension OneOrMoreOperator: CustomDebugStringConvertible
-{
-    var debugDescription: Swift.String
+    struct OneOrMoreOperator: Token, Equatable
     {
-        return "(oneOrMoreOperator \(representation))"
+        let representation: Swift.String
+
+        init(_ representation: Swift.String)
+        { self.representation = representation }
+
     }
-}
 
-struct ZeroOrOneOperator: Token, Equatable
-{
-    let representation: Swift.String
 
-    init(_ representation: Swift.String)
-    { self.representation = representation }
-
-    func print(_ indentation: Swift.String) -> Swift.String { return indentation+debugDescription }
-}
-
-extension ZeroOrOneOperator: CustomDebugStringConvertible
-{
-    var debugDescription: Swift.String
+    struct ZeroOrOneOperator: Token, Equatable
     {
-        return "(zeroOrOneOperator \(representation))"
+        let representation: Swift.String
+
+        init(_ representation: Swift.String)
+        { self.representation = representation }
+
     }
-}
 
-struct LineHeadOperator: Token, Equatable
-{
-    let representation: Swift.String
 
-    init(_ representation: Swift.String)
-    { self.representation = representation }
-
-    func print(_ indentation: Swift.String) -> Swift.String { return indentation+debugDescription }
-}
-
-extension LineHeadOperator: CustomDebugStringConvertible
-{
-    var debugDescription: Swift.String
+    struct LineHeadOperator: Token, Equatable
     {
-        return "(lineHeadOperator \(representation))"
+        let representation: Swift.String
+
+        init(_ representation: Swift.String)
+        { self.representation = representation }
+
     }
-}
 
-struct LineTailOperator: Token, Equatable
-{
-    let representation: Swift.String
 
-    init(_ representation: Swift.String)
-    { self.representation = representation }
-
-    func print(_ indentation: Swift.String) -> Swift.String { return indentation+debugDescription }
-}
-
-extension LineTailOperator: CustomDebugStringConvertible
-{
-    var debugDescription: Swift.String
+    struct LineTailOperator: Token, Equatable
     {
-        return "(lineTailOperator \(representation))"
+        let representation: Swift.String
+
+        init(_ representation: Swift.String)
+        { self.representation = representation }
+
     }
-}
 
-struct String: Token, Equatable
-{
-    let representation: Swift.String
 
-    init(_ representation: Swift.String)
-    { self.representation = representation }
-
-    func print(_ indentation: Swift.String) -> Swift.String { return indentation+debugDescription }
-}
-
-extension String: CustomDebugStringConvertible
-{
-    var debugDescription: Swift.String
+    struct String: Token, Equatable
     {
-        return "(string \(representation))"
+        let representation: Swift.String
+
+        init(_ representation: Swift.String)
+        { self.representation = representation }
+
     }
-}
 
-struct SetMinus: Token, Equatable
-{
-    let representation: Swift.String
 
-    init(_ representation: Swift.String)
-    { self.representation = representation }
-
-    func print(_ indentation: Swift.String) -> Swift.String { return indentation+debugDescription }
-}
-
-extension SetMinus: CustomDebugStringConvertible
-{
-    var debugDescription: Swift.String
+    struct SetMinus: Token, Equatable
     {
-        return "(setMinus \(representation))"
+        let representation: Swift.String
+
+        init(_ representation: Swift.String)
+        { self.representation = representation }
+
     }
-}
 
-struct Unicode: Token, Equatable
-{
-    let representation: Swift.String
 
-    init(_ representation: Swift.String)
-    { self.representation = representation }
-
-    func print(_ indentation: Swift.String) -> Swift.String { return indentation+debugDescription }
-}
-
-extension Unicode: CustomDebugStringConvertible
-{
-    var debugDescription: Swift.String
+    struct Unicode: Token, Equatable
     {
-        return "(unicode \(representation))"
+        let representation: Swift.String
+
+        init(_ representation: Swift.String)
+        { self.representation = representation }
+
     }
-}
 
-struct Character: Token, Equatable
-{
-    let representation: Swift.String
 
-    init(_ representation: Swift.String)
-    { self.representation = representation }
-
-    func print(_ indentation: Swift.String) -> Swift.String { return indentation+debugDescription }
-}
-
-extension Character: CustomDebugStringConvertible
-{
-    var debugDescription: Swift.String
+    struct Character: Token, Equatable
     {
-        return "(character \(representation))"
+        let representation: Swift.String
+
+        init(_ representation: Swift.String)
+        { self.representation = representation }
+
     }
-}
 
-struct RangeSeparator: Token, Equatable
-{
-    let representation: Swift.String
 
-    init(_ representation: Swift.String)
-    { self.representation = representation }
-
-    func print(_ indentation: Swift.String) -> Swift.String { return indentation+debugDescription }
-}
-
-extension RangeSeparator: CustomDebugStringConvertible
-{
-    var debugDescription: Swift.String
+    struct RangeSeparator: Token, Equatable
     {
-        return "(rangeSeparator \(representation))"
+        let representation: Swift.String
+
+        init(_ representation: Swift.String)
+        { self.representation = representation }
+
     }
-}
 
-struct BracketedSetLeftDelimiter: Token, Equatable
-{
-    let representation: Swift.String
 
-    init(_ representation: Swift.String)
-    { self.representation = representation }
-
-    func print(_ indentation: Swift.String) -> Swift.String { return indentation+debugDescription }
-}
-
-extension BracketedSetLeftDelimiter: CustomDebugStringConvertible
-{
-    var debugDescription: Swift.String
+    struct BracketedSetLeftDelimiter: Token, Equatable
     {
-        return "(bracketedSetLeftDelimiter \(representation))"
+        let representation: Swift.String
+
+        init(_ representation: Swift.String)
+        { self.representation = representation }
+
     }
-}
 
-struct BracketedSetRightDelimiter: Token, Equatable
-{
-    let representation: Swift.String
 
-    init(_ representation: Swift.String)
-    { self.representation = representation }
-
-    func print(_ indentation: Swift.String) -> Swift.String { return indentation+debugDescription }
-}
-
-extension BracketedSetRightDelimiter: CustomDebugStringConvertible
-{
-    var debugDescription: Swift.String
+    struct BracketedSetRightDelimiter: Token, Equatable
     {
-        return "(bracketedSetRightDelimiter \(representation))"
+        let representation: Swift.String
+
+        init(_ representation: Swift.String)
+        { self.representation = representation }
+
     }
-}
 
-struct SetSeparator: Token, Equatable
-{
-    let representation: Swift.String
 
-    init(_ representation: Swift.String)
-    { self.representation = representation }
-
-    func print(_ indentation: Swift.String) -> Swift.String { return indentation+debugDescription }
-}
-
-extension SetSeparator: CustomDebugStringConvertible
-{
-    var debugDescription: Swift.String
+    struct SetSeparator: Token, Equatable
     {
-        return "(setSeparator \(representation))"
+        let representation: Swift.String
+
+        init(_ representation: Swift.String)
+        { self.representation = representation }
+
     }
-}
 
-struct Erroneous: Token, Equatable
-{
-    let representation: Swift.String
 
-    init(_ representation: Swift.String)
-    { self.representation = representation }
-
-    func print(_ indentation: Swift.String) -> Swift.String { return indentation+debugDescription }
-}
-
-extension Erroneous: CustomDebugStringConvertible
-{
-    var debugDescription: Swift.String
+    struct Erroneous: Token, Equatable
     {
-        return "(erroneous \(representation))"
+        let representation: Swift.String
+
+        init(_ representation: Swift.String)
+        { self.representation = representation }
+
     }
+
 }

@@ -213,7 +213,8 @@ hexDigit -> [0-9a-fA-F]
 
 ## TODOs
 
-TODO: Namespace internal and classes to avoid conflicts with the Swift Standard
-Library
+TODO: Read MCD Chapters 4 and 5 on context handling.
+TODO: Revise this specification.
+TODO: Define the scope of the context handler.
 
 ## Misc. notes

@@ -2,6 +2,33 @@ import XCTest
 import Foundation
 @testable import woody
 
+typealias ParseTree = Parser.ParseTree
+
+typealias RegularDescription = Parser.RegularDescription
+typealias Rule               = Parser.Rule
+typealias PossibleRules      = Parser.PossibleRules
+typealias Regex              = Parser.Regex
+typealias GroupedRegex       = Parser.GroupedRegex
+typealias UngroupedRegex     = Parser.UngroupedRegex
+typealias Union              = Parser.Union
+typealias SimpleRegex        = Parser.SimpleRegex
+typealias Concatenation      = Parser.Concatenation
+typealias BasicRegex         = Parser.BasicRegex
+typealias ElementaryRegex    = Parser.ElementaryRegex
+typealias DefinitionMarker   = Parser.DefinitionMarker
+typealias RepetitionOperator = Parser.RepetitionOperator
+typealias PositionOperator   = Parser.PositionOperator
+typealias Set                = Parser.Set
+typealias SetSubtraction     = Parser.SetSubtraction
+typealias SimpleSet          = Parser.SimpleSet
+typealias StandardSet        = Parser.StandardSet
+typealias LiteralSet         = Parser.LiteralSet
+typealias BasicSet           = Parser.BasicSet
+typealias BracketedSet       = Parser.BracketedSet
+typealias BasicSetList       = Parser.BasicSetList
+typealias BasicSets          = Parser.BasicSets
+typealias Range              = Parser.Range
+
 class ParserTests: XCTestCase
 {
     @available(macOS 10.11, *)
@@ -13,26 +40,25 @@ class ParserTests: XCTestCase
 
         let actualParseTree = try! coordinator.parser.parseTree()
 
-        let expectedParseTree: RegularDescription =
-        RegularDescription.cat(
-            Rule.cat(
-                Identifier("whitespace"),
-                .tokenDefinitionMarker(
-                    TokenDefinitionMarker("=>")),
-                Regex.ungroupedRegex(
-                        UngroupedRegex.simpleRegex(
-                            SimpleRegex.basicRegex(
-                                BasicRegex.cat(
-                                    ElementaryRegex.identifier(
-                                        Identifier("whitespace_item")),
-                                    RepetitionOperator.oneOrMoreOperator(
-                                        OneOrMoreOperator("+")))))),
-                RuleTerminator(";")),
-            PossibleRules.cat(
-                []))
+        let expectedParseTree = ParseTree(
+            RegularDescription.cat(
+                Rule.cat(
+                    Identifier("whitespace"),
+                    .tokenDefinitionMarker(
+                        TokenDefinitionMarker("=>")),
+                    Regex.ungroupedRegex(
+                            UngroupedRegex.simpleRegex(
+                                SimpleRegex.basicRegex(
+                                    BasicRegex.cat(
+                                        ElementaryRegex.identifier(
+                                            Identifier("whitespace_item")),
+                                        RepetitionOperator.oneOrMoreOperator(
+                                            OneOrMoreOperator("+")))))),
+                    RuleTerminator(";")),
+                PossibleRules.cat(
+                    [])))
 
-        XCTAssertEqual(actualParseTree.asEquatable,
-            expectedParseTree.asEquatable)
+        XCTAssertEqual(actualParseTree, expectedParseTree)
     }
 
     @available(macOS 10.11, *)
@@ -44,7 +70,7 @@ class ParserTests: XCTestCase
 
         let actualParseTree = try! coordinator.parser.parseTree()
 
-let expectedParseTree: RegularDescription =
+let expectedParseTree = ParseTree(
 RegularDescription.cat(
     Rule.cat(
         Identifier("identifier"),
@@ -95,10 +121,9 @@ RegularDescription.cat(
                                                 ElementaryRegex.identifier(
                                                     Identifier("expression_or_type_keyword")),
                                                 nil)))))))))),
-        RuleTerminator(";"))]))
+        RuleTerminator(";"))])))
 
-        XCTAssertEqual(actualParseTree.asEquatable,
-            expectedParseTree.asEquatable)
+        XCTAssertEqual(actualParseTree, expectedParseTree)
     }
 
     @available(macOS 10.11, *)
@@ -137,7 +162,7 @@ RegularDescription.cat(
                 OneOrMoreOperator("+")))
 
 
-let expectedParseTree: RegularDescription =
+let expectedParseTree = ParseTree(
 RegularDescription.cat(
     Rule.cat(
         Identifier("nt1"),
@@ -161,10 +186,9 @@ RegularDescription.cat(
                 nil)),
         RuleTerminator(";")),
     PossibleRules.cat(
-        []))
+        [])))
 
-        XCTAssertEqual(actualParseTree.asEquatable,
-            expectedParseTree.asEquatable)
+        XCTAssertEqual(actualParseTree, expectedParseTree)
     }
 
     @available(macOS 10.11, *)
@@ -211,7 +235,7 @@ RegularDescription.cat(
                                                         Character("u0039")))))))),
                             BracketedSetRightDelimiter("}"))))))
 
-        let expectedParseTree: RegularDescription =
+        let expectedParseTree = ParseTree(
         RegularDescription.cat(
             Rule.cat(
                 Identifier("id1"),
@@ -232,9 +256,8 @@ RegularDescription.cat(
                             OneOrMoreOperator("+")))),
                 RuleTerminator(";")),
             PossibleRules.cat(
-                []))
+                [])))
 
-        XCTAssertEqual(actualParseTree.asEquatable,
-            expectedParseTree.asEquatable)
+        XCTAssertEqual(actualParseTree, expectedParseTree)
     }
 }

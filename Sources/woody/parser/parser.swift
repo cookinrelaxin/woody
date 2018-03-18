@@ -23,11 +23,12 @@ final class Parser
         dot += 1
     }
 
-    func parseTree() throws -> RegularDescription
+    func parseTree() throws -> ParseTree
     {
         do
         {
-            return try regularDescription()
+            let _regularDescription = try regularDescription()
+            return ParseTree(_regularDescription)
         }
         catch LexerError.endOfInput
         {

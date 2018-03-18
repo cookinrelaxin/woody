@@ -1,10 +1,10 @@
 extension Parser
 {
-    func identifier() throws -> Identifier
+    func identifier() throws -> Lexer.Identifier
     {
         let token = try nextToken()
 
-        guard let identifier = token as? Identifier
+        guard let identifier = token as? Lexer.Identifier
         else { throw ParserError.unexpectedToken(token) }
 
         advanceDot()
@@ -12,11 +12,11 @@ extension Parser
         return identifier
     }
 
-    func helperDefinitionMarker() throws -> HelperDefinitionMarker
+    func helperDefinitionMarker() throws -> Lexer.HelperDefinitionMarker
     {
         let token = try nextToken()
 
-        guard let helperDefinitionMarker = token as? HelperDefinitionMarker
+        guard let helperDefinitionMarker = token as? Lexer.HelperDefinitionMarker
         else { throw ParserError.unexpectedToken(token) }
 
         advanceDot()
@@ -24,11 +24,11 @@ extension Parser
         return helperDefinitionMarker
     }
 
-    func tokenDefinitionMarker() throws -> TokenDefinitionMarker
+    func tokenDefinitionMarker() throws -> Lexer.TokenDefinitionMarker
     {
         let token = try nextToken()
 
-        guard let tokenDefinitionMarker = token as? TokenDefinitionMarker
+        guard let tokenDefinitionMarker = token as? Lexer.TokenDefinitionMarker
         else { throw ParserError.unexpectedToken(token) }
 
         advanceDot()
@@ -36,11 +36,11 @@ extension Parser
         return tokenDefinitionMarker
     }
 
-    func ruleTerminator() throws -> RuleTerminator
+    func ruleTerminator() throws -> Lexer.RuleTerminator
     {
         let token = try nextToken()
 
-        guard let ruleTerminator = token as? RuleTerminator
+        guard let ruleTerminator = token as? Lexer.RuleTerminator
         else { throw ParserError.unexpectedToken(token) }
 
         advanceDot()
@@ -48,11 +48,11 @@ extension Parser
         return ruleTerminator
     }
 
-    func groupLeftDelimiter() throws -> GroupLeftDelimiter
+    func groupLeftDelimiter() throws -> Lexer.GroupLeftDelimiter
     {
         let token = try nextToken()
 
-        guard let groupLeftDelimiter = token as? GroupLeftDelimiter
+        guard let groupLeftDelimiter = token as? Lexer.GroupLeftDelimiter
         else { throw ParserError.unexpectedToken(token) }
 
         advanceDot()
@@ -60,11 +60,11 @@ extension Parser
         return groupLeftDelimiter
     }
 
-    func groupRightDelimiter() throws -> GroupRightDelimiter
+    func groupRightDelimiter() throws -> Lexer.GroupRightDelimiter
     {
         let token = try nextToken()
 
-        guard let groupRightDelimiter = token as? GroupRightDelimiter
+        guard let groupRightDelimiter = token as? Lexer.GroupRightDelimiter
         else { throw ParserError.unexpectedToken(token) }
 
         advanceDot()
@@ -72,11 +72,11 @@ extension Parser
         return groupRightDelimiter
     }
 
-    func unionOperator() throws -> UnionOperator
+    func unionOperator() throws -> Lexer.UnionOperator
     {
         let token = try nextToken()
 
-        guard let unionOperator = token as? UnionOperator
+        guard let unionOperator = token as? Lexer.UnionOperator
         else { throw ParserError.unexpectedToken(token) }
 
         advanceDot()
@@ -84,11 +84,11 @@ extension Parser
         return unionOperator
     }
 
-    func zeroOrMoreOperator() throws -> ZeroOrMoreOperator
+    func zeroOrMoreOperator() throws -> Lexer.ZeroOrMoreOperator
     {
         let token = try nextToken()
 
-        guard let zeroOrMoreOperator = token as? ZeroOrMoreOperator
+        guard let zeroOrMoreOperator = token as? Lexer.ZeroOrMoreOperator
         else { throw ParserError.unexpectedToken(token) }
 
         advanceDot()
@@ -96,11 +96,11 @@ extension Parser
         return zeroOrMoreOperator
     }
 
-    func oneOrMoreOperator() throws -> OneOrMoreOperator
+    func oneOrMoreOperator() throws -> Lexer.OneOrMoreOperator
     {
         let token = try nextToken()
 
-        guard let oneOrMoreOperator = token as? OneOrMoreOperator
+        guard let oneOrMoreOperator = token as? Lexer.OneOrMoreOperator
         else { throw ParserError.unexpectedToken(token) }
 
         advanceDot()
@@ -108,11 +108,11 @@ extension Parser
         return oneOrMoreOperator
     }
 
-    func zeroOrOneOperator() throws -> ZeroOrOneOperator
+    func zeroOrOneOperator() throws -> Lexer.ZeroOrOneOperator
     {
         let token = try nextToken()
 
-        guard let zeroOrOneOperator = token as? ZeroOrOneOperator
+        guard let zeroOrOneOperator = token as? Lexer.ZeroOrOneOperator
         else { throw ParserError.unexpectedToken(token) }
 
         advanceDot()
@@ -120,11 +120,11 @@ extension Parser
         return zeroOrOneOperator
     }
 
-    func lineHeadOperator() throws -> LineHeadOperator
+    func lineHeadOperator() throws -> Lexer.LineHeadOperator
     {
         let token = try nextToken()
 
-        guard let lineHeadOperator = token as? LineHeadOperator
+        guard let lineHeadOperator = token as? Lexer.LineHeadOperator
         else { throw ParserError.unexpectedToken(token) }
 
         advanceDot()
@@ -132,11 +132,11 @@ extension Parser
         return lineHeadOperator
     }
 
-    func lineTailOperator() throws -> LineTailOperator
+    func lineTailOperator() throws -> Lexer.LineTailOperator
     {
         let token = try nextToken()
 
-        guard let lineTailOperator = token as? LineTailOperator
+        guard let lineTailOperator = token as? Lexer.LineTailOperator
         else { throw ParserError.unexpectedToken(token) }
 
         advanceDot()
@@ -144,11 +144,11 @@ extension Parser
         return lineTailOperator
     }
 
-    func string() throws -> String
+    func string() throws -> Lexer.String
     {
         let token = try nextToken()
 
-        guard let string = token as? String
+        guard let string = token as? Lexer.String
         else { throw ParserError.unexpectedToken(token) }
 
         advanceDot()
@@ -156,11 +156,11 @@ extension Parser
         return string
     }
 
-    func setMinus() throws -> SetMinus
+    func setMinus() throws -> Lexer.SetMinus
     {
         let token = try nextToken()
 
-        guard let setMinus = token as? SetMinus
+        guard let setMinus = token as? Lexer.SetMinus
         else { throw ParserError.unexpectedToken(token) }
 
         advanceDot()
@@ -168,11 +168,11 @@ extension Parser
         return setMinus
     }
 
-    func unicode() throws -> Unicode
+    func unicode() throws -> Lexer.Unicode
     {
         let token = try nextToken()
 
-        guard let unicode = token as? Unicode
+        guard let unicode = token as? Lexer.Unicode
         else { throw ParserError.unexpectedToken(token) }
 
         advanceDot()
@@ -180,11 +180,11 @@ extension Parser
         return unicode
     }
 
-    func character() throws -> Character
+    func character() throws -> Lexer.Character
     {
         let token = try nextToken()
 
-        guard let character = token as? Character
+        guard let character = token as? Lexer.Character
         else { throw ParserError.unexpectedToken(token) }
 
         advanceDot()
@@ -192,11 +192,11 @@ extension Parser
         return character
     }
 
-    func rangeSeparator() throws -> RangeSeparator
+    func rangeSeparator() throws -> Lexer.RangeSeparator
     {
         let token = try nextToken()
 
-        guard let rangeSeparator = token as? RangeSeparator
+        guard let rangeSeparator = token as? Lexer.RangeSeparator
         else { throw ParserError.unexpectedToken(token) }
 
         advanceDot()
@@ -204,11 +204,11 @@ extension Parser
         return rangeSeparator
     }
 
-    func bracketedSetLeftDelimiter() throws -> BracketedSetLeftDelimiter
+    func bracketedSetLeftDelimiter() throws -> Lexer.BracketedSetLeftDelimiter
     {
         let token = try nextToken()
 
-        guard let bracketedSetLeftDelimiter = token as? BracketedSetLeftDelimiter
+        guard let bracketedSetLeftDelimiter = token as? Lexer.BracketedSetLeftDelimiter
         else { throw ParserError.unexpectedToken(token) }
 
         advanceDot()
@@ -216,11 +216,11 @@ extension Parser
         return bracketedSetLeftDelimiter
     }
 
-    func bracketedSetRightDelimiter() throws -> BracketedSetRightDelimiter
+    func bracketedSetRightDelimiter() throws -> Lexer.BracketedSetRightDelimiter
     {
         let token = try nextToken()
 
-        guard let bracketedSetRightDelimiter = token as? BracketedSetRightDelimiter
+        guard let bracketedSetRightDelimiter = token as? Lexer.BracketedSetRightDelimiter
         else { throw ParserError.unexpectedToken(token) }
 
         advanceDot()
@@ -228,11 +228,11 @@ extension Parser
         return bracketedSetRightDelimiter
     }
 
-    func setSeparator() throws -> SetSeparator
+    func setSeparator() throws -> Lexer.SetSeparator
     {
         let token = try nextToken()
 
-        guard let setSeparator = token as? SetSeparator
+        guard let setSeparator = token as? Lexer.SetSeparator
         else { throw ParserError.unexpectedToken(token) }
 
         advanceDot()

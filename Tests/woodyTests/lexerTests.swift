@@ -2,6 +2,28 @@ import XCTest
 import Foundation
 @testable import woody
 
+typealias Identifier                 = Lexer.Identifier
+typealias HelperDefinitionMarker     = Lexer.HelperDefinitionMarker
+typealias TokenDefinitionMarker      = Lexer.TokenDefinitionMarker
+typealias RuleTerminator             = Lexer.RuleTerminator
+typealias GroupLeftDelimiter         = Lexer.GroupLeftDelimiter
+typealias GroupRightDelimiter        = Lexer.GroupRightDelimiter
+typealias UnionOperator              = Lexer.UnionOperator
+typealias ZeroOrMoreOperator         = Lexer.ZeroOrMoreOperator
+typealias OneOrMoreOperator          = Lexer.OneOrMoreOperator
+typealias ZeroOrOneOperator          = Lexer.ZeroOrOneOperator
+typealias LineHeadOperator           = Lexer.LineHeadOperator
+typealias LineTailOperator           = Lexer.LineTailOperator
+typealias String                     = Lexer.String
+typealias SetMinus                   = Lexer.SetMinus
+typealias Unicode                    = Lexer.Unicode
+typealias Character                  = Lexer.Character
+typealias RangeSeparator             = Lexer.RangeSeparator
+typealias BracketedSetLeftDelimiter  = Lexer.BracketedSetLeftDelimiter
+typealias BracketedSetRightDelimiter = Lexer.BracketedSetRightDelimiter
+typealias SetSeparator               = Lexer.SetSeparator
+typealias Erroneous                  = Lexer.Erroneous
+
 class LexerTests: XCTestCase
 {
     @available(macOS 10.11, *)
