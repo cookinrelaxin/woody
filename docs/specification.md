@@ -1,9 +1,29 @@
-# Regular Description specification
+# Woody specification
 
-This document comprises the specification of WoodyRDL, including its complete
-grammar. Non-terminals are denoted in camel-case.
+## About this document
 
-## Tokens
+This document comprises the specification of Woody, including its complete
+grammar.
+
+## Conventions
+
+Non-terminals are denoted in camel-case.
+
+## Abstract
+
+...
+
+## Lexical Structure
+
+...
+
+## Syntactic Structure
+
+A Woody program is a list of production rules for named nonterminals. ...
+
+### Grammar
+
+#### Tokens
 The rules below whose arrows are of the form '=>' indicate token class definitions.
 For reference, we compile every token class below, in lexing order:
 
@@ -31,7 +51,7 @@ setSeparator                => ','
 We also have the token class `erroneous`, which comprises any single character
 which is not in another token class.
 
-## Whitespace and comments
+### Whitespace and comments
 
 Whitespace and comments are insignificant.
 
@@ -46,7 +66,7 @@ comment       -> commentMarker­commentText­lineBreak
 commentMarker -> '#'
 commentText   -> [^U+000A U+000D]*
 
-## Identifiers
+### Identifiers
 
 Woody uses identifiers to represent non-terminals. The identifier grammar is
 based on that of Swift, but it deviates in places. For example, the soft hyphen
@@ -121,7 +141,7 @@ identifierCharacter -> [0-9]
 identifierCharacter -> U+0300–U+036F | U+1DC0–U+1DFF | U+20D0–U+20FF
                       | U+FE20–U+FE2F
 
-## Regular Descriptions
+### Regular Descriptions
 
 ### Regular Description Grammar
 
@@ -132,7 +152,7 @@ rule                -> identifier definitionMarker regex ruleTerminator
 possible_rules      -> rule*
 regex               -> groupedRegex | ungroupedRegex
 groupedRegex        -> groupLeftDelimiter
-                        regex
+                       regex
                        groupRightDelimiter repetitionOperator?
 ungroupedRegex      -> union | simpleRegex
 union               -> simpleRegex unionOperator regex

@@ -6,7 +6,8 @@ final class ASTFactory
 
     func abstractSyntaxTree() throws -> AbstractSyntaxTree
     {
-        return AbstractSyntaxTree(for: parseTree)
+        fatalError()
+        /*return AbstractSyntaxTree(for: parseTree)*/
     }
 
     init(parseTree: Parser.ParseTree)

@@ -36,7 +36,7 @@ extension AnyToken: Equatable
 
 extension Lexer
 {
-    struct Identifier: Token, Equatable
+    struct Identifier: Token, Equatable, Hashable
     {
         let representation: Swift.String
 
@@ -46,7 +46,7 @@ extension Lexer
     }
 
 
-    struct HelperDefinitionMarker: Token, Equatable
+    struct HelperDefinitionMarker: Token, Equatable, Hashable
     {
         let representation: Swift.String
 
@@ -56,7 +56,7 @@ extension Lexer
     }
 
 
-    struct TokenDefinitionMarker: Token, Equatable
+    struct TokenDefinitionMarker: Token, Equatable, Hashable
     {
         let representation: Swift.String
 
@@ -66,7 +66,7 @@ extension Lexer
     }
 
 
-    struct RuleTerminator: Token, Equatable
+    struct RuleTerminator: Token, Equatable, Hashable
     {
         let representation: Swift.String
 
@@ -76,7 +76,7 @@ extension Lexer
     }
 
 
-    struct GroupLeftDelimiter: Token, Equatable
+    struct GroupLeftDelimiter: Token, Equatable, Hashable
     {
         let representation: Swift.String
 
@@ -86,7 +86,7 @@ extension Lexer
     }
 
 
-    struct GroupRightDelimiter: Token, Equatable
+    struct GroupRightDelimiter: Token, Equatable, Hashable
     {
         let representation: Swift.String
 
@@ -96,7 +96,7 @@ extension Lexer
     }
 
 
-    struct UnionOperator: Token, Equatable
+    struct UnionOperator: Token, Equatable, Hashable
     {
         let representation: Swift.String
 
@@ -106,7 +106,7 @@ extension Lexer
     }
 
 
-    struct ZeroOrMoreOperator: Token, Equatable
+    struct ZeroOrMoreOperator: Token, Equatable, Hashable
     {
         let representation: Swift.String
 
@@ -116,7 +116,7 @@ extension Lexer
     }
 
 
-    struct OneOrMoreOperator: Token, Equatable
+    struct OneOrMoreOperator: Token, Equatable, Hashable
     {
         let representation: Swift.String
 
@@ -126,7 +126,7 @@ extension Lexer
     }
 
 
-    struct ZeroOrOneOperator: Token, Equatable
+    struct ZeroOrOneOperator: Token, Equatable, Hashable
     {
         let representation: Swift.String
 
@@ -136,7 +136,7 @@ extension Lexer
     }
 
 
-    struct LineHeadOperator: Token, Equatable
+    struct LineHeadOperator: Token, Equatable, Hashable
     {
         let representation: Swift.String
 
@@ -146,7 +146,7 @@ extension Lexer
     }
 
 
-    struct LineTailOperator: Token, Equatable
+    struct LineTailOperator: Token, Equatable, Hashable
     {
         let representation: Swift.String
 
@@ -156,7 +156,7 @@ extension Lexer
     }
 
 
-    struct String: Token, Equatable
+    struct String: Token, Equatable, Hashable
     {
         let representation: Swift.String
 
@@ -166,7 +166,7 @@ extension Lexer
     }
 
 
-    struct SetMinus: Token, Equatable
+    struct SetMinus: Token, Equatable, Hashable
     {
         let representation: Swift.String
 
@@ -176,7 +176,7 @@ extension Lexer
     }
 
 
-    struct Unicode: Token, Equatable
+    struct Unicode: Token, Equatable, Hashable
     {
         let representation: Swift.String
 
@@ -186,7 +186,7 @@ extension Lexer
     }
 
 
-    struct Character: Token, Equatable
+    struct Character: Token, Equatable, Hashable
     {
         let representation: Swift.String
 
@@ -196,7 +196,7 @@ extension Lexer
     }
 
 
-    struct RangeSeparator: Token, Equatable
+    struct RangeSeparator: Token, Equatable, Hashable
     {
         let representation: Swift.String
 
@@ -206,7 +206,7 @@ extension Lexer
     }
 
 
-    struct BracketedSetLeftDelimiter: Token, Equatable
+    struct BracketedSetLeftDelimiter: Token, Equatable, Hashable
     {
         let representation: Swift.String
 
@@ -216,7 +216,7 @@ extension Lexer
     }
 
 
-    struct BracketedSetRightDelimiter: Token, Equatable
+    struct BracketedSetRightDelimiter: Token, Equatable, Hashable
     {
         let representation: Swift.String
 
@@ -226,7 +226,7 @@ extension Lexer
     }
 
 
-    struct SetSeparator: Token, Equatable
+    struct SetSeparator: Token, Equatable, Hashable
     {
         let representation: Swift.String
 
@@ -236,7 +236,7 @@ extension Lexer
     }
 
 
-    struct Erroneous: Token, Equatable
+    struct Erroneous: Token, Equatable, Hashable
     {
         let representation: Swift.String
 

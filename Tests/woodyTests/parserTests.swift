@@ -2,32 +2,32 @@ import XCTest
 import Foundation
 @testable import woody
 
-typealias ParseTree = Parser.ParseTree
+fileprivate typealias ParseTree = Parser.ParseTree
 
-typealias RegularDescription = Parser.RegularDescription
-typealias Rule               = Parser.Rule
-typealias PossibleRules      = Parser.PossibleRules
-typealias Regex              = Parser.Regex
-typealias GroupedRegex       = Parser.GroupedRegex
-typealias UngroupedRegex     = Parser.UngroupedRegex
-typealias Union              = Parser.Union
-typealias SimpleRegex        = Parser.SimpleRegex
-typealias Concatenation      = Parser.Concatenation
-typealias BasicRegex         = Parser.BasicRegex
-typealias ElementaryRegex    = Parser.ElementaryRegex
-typealias DefinitionMarker   = Parser.DefinitionMarker
-typealias RepetitionOperator = Parser.RepetitionOperator
-typealias PositionOperator   = Parser.PositionOperator
-typealias Set                = Parser.Set
-typealias SetSubtraction     = Parser.SetSubtraction
-typealias SimpleSet          = Parser.SimpleSet
-typealias StandardSet        = Parser.StandardSet
-typealias LiteralSet         = Parser.LiteralSet
-typealias BasicSet           = Parser.BasicSet
-typealias BracketedSet       = Parser.BracketedSet
-typealias BasicSetList       = Parser.BasicSetList
-typealias BasicSets          = Parser.BasicSets
-typealias Range              = Parser.Range
+fileprivate typealias RegularDescription = Parser.RegularDescription
+fileprivate typealias Rule               = Parser.Rule
+fileprivate typealias PossibleRules      = Parser.PossibleRules
+fileprivate typealias Regex              = Parser.Regex
+fileprivate typealias GroupedRegex       = Parser.GroupedRegex
+fileprivate typealias UngroupedRegex     = Parser.UngroupedRegex
+fileprivate typealias Union              = Parser.Union
+fileprivate typealias SimpleRegex        = Parser.SimpleRegex
+fileprivate typealias Concatenation      = Parser.Concatenation
+fileprivate typealias BasicRegex         = Parser.BasicRegex
+fileprivate typealias ElementaryRegex    = Parser.ElementaryRegex
+fileprivate typealias DefinitionMarker   = Parser.DefinitionMarker
+fileprivate typealias RepetitionOperator = Parser.RepetitionOperator
+fileprivate typealias PositionOperator   = Parser.PositionOperator
+fileprivate typealias Set                = Parser.Set
+fileprivate typealias SetSubtraction     = Parser.SetSubtraction
+fileprivate typealias SimpleSet          = Parser.SimpleSet
+fileprivate typealias StandardSet        = Parser.StandardSet
+fileprivate typealias LiteralSet         = Parser.LiteralSet
+fileprivate typealias BasicSet           = Parser.BasicSet
+fileprivate typealias BracketedSet       = Parser.BracketedSet
+fileprivate typealias BasicSetList       = Parser.BasicSetList
+fileprivate typealias BasicSets          = Parser.BasicSets
+fileprivate typealias Range              = Parser.Range
 
 class ParserTests: XCTestCase
 {

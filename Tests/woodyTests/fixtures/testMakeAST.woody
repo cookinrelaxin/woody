@@ -1,28 +1,26 @@
-# Adopted from https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/LexicalStructure.html#//apple_ref/doc/uid/TP40014097-CH30-ID410
-
-# Note that although the above reference notes only token classes of identifier,
-# keyword, punctuation, literal, and operator, it states that whitespace is also
-# consumed by the parser, so we include it as a token class.
-
-# We declare all the token classes up front, for convenience.  A rule may be
-# declared more than once as long as each declaration is identical. Tokens
-# classes are indicated by the "=>" arrow. Rules using the "-> arrow are for
-# convenience.
-
-whitespace => whitespace_item+;
-identifier  => identifier_head identifier_character*;
-keyword     => declaration_keyword | statement_keyword
-             | expression_or_type_keyword;
-punctuation => '( | ') | '{ | '} | '[ | '] | '. | ', | ': | ';;
-
-### Whitespace
-
-whitespace => whitespace_item+;
-
-## We may, in Backus-Naur style, declare the different cases of a rule using the
-## arrow syntax on different lines.
+# Should be unreferenced to
+# whitespace => ( u000A | u000D | u000D u000A )
+#             | ("//" (U \ { u000A, u000D }) (u000A | u000D | u000D u000A))
+#             | ("/*" U "*/")
+#             | { u0000, u0009, u000B, u000C, u0020 };
 #
-## Note that identifiers may not contain '-'. Use '_' instead.
+# keyword => ("associatedtype" | "class" | "deinit" | "enum"
+#                      | "extension" | "fileprivate" | "func" | "import"
+#                      | "init" | "inout" | "internal" | "let" | "open"
+#                      | "operator" | "private" | "protocol" | "public"
+#                      | "static" | "struct" | "subscript" | "typealias"
+#                      | "var")
+#
+#           | ("break" | "case" | "continue" | "default" | "defer"
+#                  | "do" | "else" | "fallthrough" | "for" | "guard"
+#                  | "if" | "in" | "repeat" | "return" | "switch"
+#                  | "where" | "while");
+#
+whitespace => whitespace_item+;
+keyword => declaration_keyword | statement_keyword | expression_or_type_keyword
+         | pattern_keyword | hash_keyword | contextual_keyword;
+
+whitespace => whitespace_item+;
 
 whitespace_item -> line_break;
 whitespace_item -> comment;
@@ -33,74 +31,11 @@ line_break -> u000A;
 line_break -> u000D;
 line_break -> u000D u000A;
 
-# Note that "//" is equivalent to "/" "/".
-
 comment           -> "//" commentText lineBreak;
-multiline_comment -> "/*" commentText "*/";
+multiline_comment -> "/*" U "*/";
 commentText       -> commentTextItem+;
 
-## Here we specify the set of all characters which are not u000A or u000D.
 commentTextItem -> U \ { u000A, u000D };
-
-## Note that the reference specifies the following line,
-##   multiline-commentTextItem -> Any Unicode scalar value except /*  or */;
-## but enforcing balanced comment delimiters is strictly the responsibility of
-## the parser, so we do not include it here.
-#
-### Identifiers
-
-identifier => identifier_head identifier_character*;
-identifier -> '` identifier_head identifier_character* '`;
-identifier -> implicit_parameter_name;
-
-## We can specify a range of characters with '-'.
-identifier_head -> 'a-'z | 'A-'Z;
-identifier_head -> '_;
-
-## Note that technically, a character specified like 'u00A8' or ''a'', actually
-## specifies the set containing that character. Hence 'u00B2-u00B5' specifies the
-## set containing all characters c such that u00B2 <= c <= u00B5. And the { ... }
-## construct forms the union of its contents.
-
-identifier_head -> { u00A8, u00AA, u00AF, u00B2-u00B5, u00B7-u00BA,
-                     u00BC-u00BE, u00C0-u00D6, u00D8-u00F6, u00F8-u00FF,
-                     u0100-u02FF, u0370-u167F, u1681-u180D, u180F-u1DBF,
-                     u1E00-u1FFF,
-                     u200B-u200D, u202A-u202E, u203F-u2040, u2054, u2060-u206F,
-                     u2070-u20CF, u2100-u218F, u2460-u24FF, u2776-u2793,
-                     u2C00-u2DFF u2E80-u2FFF,
-                     u3004-u3007, u3021-u302F, u3031-u303F, u3040-uD7FF,
-                     uF900-uFD3D, uFD40-uFDCF, uFDF0-uFE1F, uFE30-uFE44,
-                     uFE47-uFFFD,
-                     u10000-u1FFFD, u20000-u2FFFD, u30000-u3FFFD, u40000-u4FFFD,
-                     u50000-u5FFFD, u60000-u6FFFD, u70000-u7FFFD, u80000-u8FFFD,
-                     u90000-u9FFFD, uA0000-uAFFFD, uB0000-uBFFFD, uC0000-uCFFFD,
-                     uD0000-uDFFFD, uE0000-uEFFFD
-                   };
-
-## So the identifier_head rule above is identical to
-# identifier_head -> u00A8 | u00AA | u00AD | u00AF | u00B2-u00B5 | u00B7-u00BA
-#                  | u00BC-u00BE | u00C0-u00D6 | u00D8-u00F6 | u00F8-u00FF
-#                  | u0100-u02FF | u0370-u167F | u1681-u180D | u180F-u1DBF
-#                  | u1E00-u1FFF
-#                  | u200B-u200D | u202A-u202E | u203F-u2040 | u2054 | u2060-u206F
-#                  | u2070-u20CF | u2100-u218F | u2460-u24FF | u2776-u2793
-#                  | u2C00-u2DFF u2E80-u2FFF
-#                  | u3004-u3007 | u3021-u302F | u3031-u303F | u3040-uD7FF
-#                  | uF900-uFD3D | uFD40-uFDCF | uFDF0-uFE1F | uFE30-uFE44
-#                  | uFE47-uFFFD
-#                  | u10000-u1FFFD | u20000-u2FFFD | u30000-u3FFFD | u40000-u4FFFD
-#                  | u50000-u5FFFD | u60000-u6FFFD | u70000-u7FFFD | u80000-u8FFFD
-#                  | u90000-u9FFFD | uA0000-uAFFFD | uB0000-uBFFFD | uC0000-uCFFFD
-#                  | uD0000-uDFFFD uE0000-uEFFFD
-
-identifier_character    -> decimal_digit;
-identifier_character    -> u0300-u036F | u1DC0-u1DFF | u20D0-u20FF
-                         | uFE20-uFE2F;
-identifier_character    -> identifier_head;
-implicit_parameter_name -> '$ decimal_digit+;
-
-### Keywords
 
 keyword => declaration_keyword | statement_keyword | expression_or_type_keyword
          | pattern_keyword | hash_keyword | contextual_keyword;
@@ -124,23 +59,9 @@ expression_or_type_keyword -> "as" | "Any" | "catch" | "false" | "is"
 
 pattern_keyword -> '_;
 
-hash_keyword -> "#available" | "#colorLiteral" | "#column" | "#else"
-              | "#elseif" | "#endif" | "#file" | "#fileLiteral"
-              | "#function" | "#if" | "#imageLiteral" | "#line"
-              | "#selector" | "#sourceLocation";
-
 contextual_keyword -> "associativity" | "convenience" | "dynamic"
                     | "didSet" | "final" | "get" | "infix" | "indirect"
                     | "lazy" | "left" | "mutating" | "none" | "nonmutating"
                     | "optional" | "override" | "postfix" | "precedence"
                     | "prefix" | "Protocol" | "required" | "right" | "set"
                     | "Type" | "unowned" | "weak" | "willSet";
-
-### Punctuation
-#
-#punctuation => "(" | ")" | "{" | "}" | "[" | "]" | "." | "," | ":" | ";"
-#             | "=" | "@" | "#" | "&" | "->" | "`" | "?" | "!"
-#
-#
-### Literals
-## ...
