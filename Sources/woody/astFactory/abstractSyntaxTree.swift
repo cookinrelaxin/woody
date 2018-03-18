@@ -194,7 +194,7 @@ extension AST
     }
 
     /*
-     *Transform `rules` into a semantically identical list of token definitions.
+     *Transform `literalDict` into a semantically identical list of token definitions.
      */
     static func abstract(_ literalDict: [Identifier : Set<Parser.Regex>]) throws
     -> [TokenDefinition]
