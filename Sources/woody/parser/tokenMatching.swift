@@ -120,30 +120,6 @@ extension Parser
         return zeroOrOneOperator
     }
 
-    func lineHeadOperator() throws -> Lexer.LineHeadOperator
-    {
-        let token = try nextToken()
-
-        guard let lineHeadOperator = token as? Lexer.LineHeadOperator
-        else { throw ParserError.unexpectedToken(token) }
-
-        advanceDot()
-
-        return lineHeadOperator
-    }
-
-    func lineTailOperator() throws -> Lexer.LineTailOperator
-    {
-        let token = try nextToken()
-
-        guard let lineTailOperator = token as? Lexer.LineTailOperator
-        else { throw ParserError.unexpectedToken(token) }
-
-        advanceDot()
-
-        return lineTailOperator
-    }
-
     func string() throws -> Lexer.String
     {
         let token = try nextToken()

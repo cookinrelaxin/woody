@@ -9,7 +9,7 @@
 # classes are indicated by the "=>" arrow. Rules using the "-> arrow are for
 # convenience.
 
-whitespace => whitespace_item+;
+whitespace  => whitespace_item+;
 identifier  => identifier_head identifier_character*;
 keyword     => declaration_keyword | statement_keyword
              | expression_or_type_keyword;

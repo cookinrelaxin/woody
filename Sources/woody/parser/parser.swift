@@ -144,10 +144,6 @@ extension Parser
 
         let _dot = dot
 
-        if let n = try? positionOperator() { return .positionOperator(n) }
-
-        dot = _dot
-
         if let n = try? string() { return .string(n) }
 
         dot = _dot
@@ -184,17 +180,6 @@ extension Parser
         dot = _dot
 
         return .zeroOrOneOperator(try zeroOrOneOperator())
-    }
-
-    func positionOperator() throws -> PositionOperator
-    {
-        let _dot = dot
-
-        if let n = try? lineHeadOperator() { return .lineHeadOperator(n) }
-
-        dot = _dot
-
-        return .lineTailOperator(try lineTailOperator())
     }
 
     func set() throws -> Set

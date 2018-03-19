@@ -17,7 +17,6 @@ fileprivate typealias BasicRegex         = Parser.BasicRegex
 fileprivate typealias ElementaryRegex    = Parser.ElementaryRegex
 fileprivate typealias DefinitionMarker   = Parser.DefinitionMarker
 fileprivate typealias RepetitionOperator = Parser.RepetitionOperator
-fileprivate typealias PositionOperator   = Parser.PositionOperator
 fileprivate typealias Set                = Parser.Set
 fileprivate typealias SetSubtraction     = Parser.SetSubtraction
 fileprivate typealias SimpleSet          = Parser.SimpleSet
@@ -122,6 +121,8 @@ RegularDescription.cat(
                                                     Identifier("expression_or_type_keyword")),
                                                 nil)))))))))),
         RuleTerminator(";"))])))
+
+        print(actualParseTree)
 
         XCTAssertEqual(actualParseTree, expectedParseTree)
     }

@@ -25,259 +25,205 @@ extension AST
         return rules
     }
 
-    static func removeDuplicates(_ rules: [Parser.Rule]) -> [Parser.Rule]
+    static func abstract(_ identifierDict: [Identifier : Set<Parser.Regex>])
+    throws -> [TokenDefinition]
     {
-        var _rules = [Parser.Rule]()
+        var definitions = [Identifier : Regex]()
+        var unhandledIdentifiers = identifierDict.keys
 
-        for rule in rules { if !_rules.contains(rule) { _rules.append(rule) } }
-
-        return _rules
-    }
-
-    /*
-     Transform `rules` into a semantically identical list of rules such that
-     each identifier reference in an `ElementaryRegex` is replaced with its
-     referent `Parser.Regex`. Note that it is possible that we may encounter a
-     reference cycle. But this is an exception, since recursive token
-     definitions are forbidden by the specification.
-     */
-    static func replaceIdentifierReferences(in rules: [Parser.Rule]) throws
-    -> [Parser.Rule]
-    {
-        var identifierDefinitions = [String : TokenDefinition]()
-
-        func handleRegex(_ regex: Parser.Regex) throws
+        func handleRegex(_ regex: Parser.Regex) -> Regex
         {
+            let basicRegex: BasicRegex
+            let repetitionOperator: RepetitionOperator?
+
             switch regex
             {
             case let .groupedRegex(groupedRegex):
-                try handleGroupedRegex(groupedRegex)
+                switch groupedRegex
+                {
+                case let .cat(_, _regex, _, _repetitionOperator):
+                    basicRegex = handleUngroupedRegex(_regex)
+                    repetitionOperator = _repetitionOperator
+                }
             case let .ungroupedRegex(ungroupedRegex):
-                try handleUngroupedRegex(ungroupedRegex)
+                basicRegex = handleUngroupedRegex(ungroupedRegex)
+                repetitionOperator = nil
             }
-        }
 
-        func handleGroupedRegex(_ groupedRegex: Parser.GroupedRegex) throws
-        {
+            return Regex(basicRegex: basicRegex,
+                         repetitionOperator: repetitionOperator)
         }
 
         func handleUngroupedRegex(_ ungroupedRegex: Parser.UngroupedRegex)
-        throws
+        -> BasicRegex
         {
+            switch ungroupedRegex
+            {
+            case let .union(u):       return handleUnion(u)
+            case let .simpleRegex(s): return handleSimpleRegex(s)
+            }
         }
 
-        func handleUnion(_ union: Parser.Union) throws
+        func handleUnion(_ union: Parser.Union) -> BasicRegex
         {
+            switch union
+            {
+            case let .cat(simpleRegex, _, regex):
+                return BasicRegex.union(handleSimpleRegex(simpleRegex),
+                                        handleRegex(regex))
+            }
         }
 
-        func handleSimpleRegex(_ simpleRegex: Parser.SimpleRegex) throws
+        func handleSimpleRegex(_ simpleRegex: Parser.SimpleRegex) -> BasicRegex
         {
+            switch simpleRegex
+            {
+            case let .concatenation(c) : return handleConcatenation(c)
+            case let .basicRegex(b)    : return handleBasicRegex(b)
+            }
         }
 
-        func handleConcatenation(_ concatenation: Parser.Concatenation) throws
+        func handleConcatenation(_ concatenation: Parser.Concatenation)
+        -> BasicRegex
         {
+            switch concatenation
+            {
+            case let .cat(b, s):
+                return BasicRegex.concatenation(handleBasicRegex(b),
+                                                handleSimpleRegex(s))
+            }
         }
 
-        func handleBasicRegex(_ basicRegex: Parser.BasicRegex)
-        throws
+        func handleBasicRegex(_ basicRegex: Parser.BasicRegex) -> BasicRegex
         {
+            switch basicRegex
+            {
+            case let .cat(elementaryRegex, repetitionOperator):
+                switch elementaryRegex
+                {
+                case let string(s):
+                    let b = handleString(s)
+                case let identifier(i):
+                case let set(s):
+                }
+            }
         }
 
-        func handleElementaryRegex(_ elementaryRegex: Parser.ElementaryRegex)
-        throws
+        func handleElementaryRegex(_ elementaryRegex: Parser.ElementaryRegex) ->
+        Regex
         {
         }
 
         func handleDefinitionMarker(_ definitionMarker: Parser.DefinitionMarker)
-        throws
+        -> Regex
         {
         }
 
         func handleRepetitionOperator(_ repetitionOperator:
-            Parser.RepetitionOperator) throws
+            Parser.RepetitionOperator) -> Regex
         {
         }
 
-        func handlePositionOperator(_ positionOperator: Parser.PositionOperator)
-        throws
+        func handleSet(_ set: Parser.Set) -> Regex
         {
         }
 
-        func handleSet(_ set: Parser.Set) throws
+        func handleSetSubtraction(_ setSubtraction: Parser.SetSubtraction) ->
+        Regex
         {
         }
 
-        func handleSetSubtraction(_ setSubtraction: Parser.SetSubtraction) throws
+        func handleSimpleSet(_ simpleSet: Parser.SimpleSet) -> Regex
         {
         }
 
-        func handleSimpleSet(_ simpleSet: Parser.SimpleSet) throws
+        func handleStandardSet(_ standardSet: Parser.StandardSet) -> Regex
         {
         }
 
-        func handleStandardSet(_ standardSet: Parser.StandardSet)
-        throws
+        func handleLiteralSet(_ literalSet: Parser.LiteralSet) -> Regex
         {
         }
 
-        func handleLiteralSet(_ literalSet: Parser.LiteralSet)
-        throws
+        func handleBasicSet(_ basicSet: Parser.BasicSet) -> Regex
         {
         }
 
-        func handleBasicSet(_ basicSet: Parser.BasicSet) throws
+        func handleBracketedSet(_ bracketedSet: Parser.BracketedSet) -> Regex
         {
         }
 
-        func handleBracketedSet(_ bracketedSet: Parser.BracketedSet)
-        throws
+        func handleBasicSetList(_ basicSetList: Parser.BasicSetList) -> Regex
         {
         }
 
-        func handleBasicSetList(_ basicSetList: Parser.BasicSetList)
-        throws
+        func handleBasicSets(_ basicSets: Parser.BasicSets) -> Regex
         {
         }
 
-        func handleBasicSets(_ basicSets: Parser.BasicSets) throws
+        func handleRange(_ range: Parser.Range) -> Regex
         {
         }
 
-        func handleRange(_ range: Parser.Range) throws
+        func handleIdentifier(_ id: Identifier)
         {
-        }
+            let id            = rule.0
 
-        for rule in rules
-        {
-            switch rule
+            for parserRegex in identifierDict[id]
             {
-            case let .cat(id, _, regex, _):
-                identifierDefinitions[id.representation] = regex
+                if let index = definitions.index(ofKey: id)
+                {
+                    definitions[index] = Regex.union(definitions[index],
+                                                     handleRegex(parserRegex))
+                }
+                else
+                {
+                    definitions[id] = handleRegex(parserRegex)
+                }
             }
         }
 
-        for regex in identifierDefinitions.values
+        for id in identifierDict.keys
         {
-            try handleRegex(regex)
-        }
-
-        fatalError()
-    }
-
-    static func union(rule1: Parser.Rule, rule2: Parser.Rule) -> Parser.Rule
-    {
-        fatalError()
-
-        // let rule             : Parser.Rule
-        // let id               : Lexer.Identifier
-        // let definitionMarker : Lexer.DefinitionMarker
-        // let ruleTerminator   : Lexer.RuleTerminator
-
-        // switch (rule1, rule2)
-        // {
-        // case let (.cat(id1, m1, _, t1), .cat(id2, m2, _, t2)):
-        //     precondition(id1 == id2 && m1 == m2 && t1 == t2)
-        //     id = id1; definitionMarker = m1; ruleTerminator = t1;
-        // }
-
-        // return rule
-    }
-
-    /*
-     *Turn multiple definitions of the same nonterminal into a single definition
-     *of union form. So `rules` becomes a semantically identical list of rules
-     *where each nonterminal is defined exactly once.
-     */
-    static func unionize(_ rules: [Parser.Rule]) -> [Parser.Rule]
-    {
-        fatalError()
-    }
-
-    /*
-     *Transform `literalDict` into a semantically identical list of token definitions.
-     */
-    static func abstract(_ literalDict: [Identifier : Set<Parser.Regex>]) throws
-    -> [TokenDefinition]
-    {
-        var tokenDict = [Identifier : Regex]()
-        var unhandledLiteralPairs = literalPairs
-
-        for (id, literalRegex) in unhandledLiteralPairs
-        {
-            if let index = tokenDict.index(forKey: id)
-            {
-                let existingRegex = tokenDict[index]
-                let newRegex = handleRegex(literalRegex)
-
-                tokenDict[index] = formUnion(existingRegex, newRegex)
-            }
-            else
-            {
-                tokenDict[id] = handleRegex(literalRegex)
-            }
+            handleIdentifier(id)
         }
     }
 }
 
 struct AbstractSyntaxTree
 {
-    let tokenDefinitions: [TokenDefinition]
+    let rules: [Rule]
 
-    struct TokenDefinition
+    struct Rule
     {
         let identifier : String
         let regex      : Regex
     }
 
-    indirect enum Regex
+    struct Regex
     {
-        case union            (Regex, Regex)
-        case concatenation    (Regex, Regex)
-        case positionOperator (PositionOperator, RepetitionOperator?)
-        case characterSet     (CharacterSet, RepetitionOperator?)
+        let basicRegex         : BasicRegex
+        let repetitionOperator : RepetitionOperator?
     }
 
-    indirect enum RepetitionOperator: Nonterminal, Equatable
+    indirect enum BasicRegex
+    {
+        case regex         (Regex)
+        case epsilon
+        case union         (Regex, Regex)
+        case concatenation (Regex, Regex)
+        case characterSet  (CharacterSet)
+    }
+
+    enum RepetitionOperator: Nonterminal, Equatable
     {
         case zeroOrMore
         case oneOrMore
         case zeroOrOne
     }
 
-    indirect enum PositionOperator: Nonterminal, Equatable
-    {
-        case lineHead
-        case lineTail
-    }
-
     struct CharacterSet
     {
-        // private let ranges: Set<Range<Character>>
-
-        // init(set: Set)
-        // {
-        //     fatalError()
-        // }
-
-        // init(set: Set<Range<Character>>)
-        // {
-        //     fatalError()
-        // }
+        private let _ranges = Set<Range<Scalar>>
     }
 }
-
-/*
- *extension AbstractSyntaxTree: Equatable {}
- *
- *extension AST.Regex: Equatable
- *{
- *    [>lhs = rhs iff lhs ⊆ rhs ∧ rhs ⊆ lhs.<]
- *    static func ==(lhs: Regex, rhs: Regex)
- *    {
- *        switch lhs
- *        {
- *        case let .union(lhs_arg1, lhs_arg2):
- *        }
- *    }
- *}
- */

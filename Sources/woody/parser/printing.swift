@@ -227,12 +227,6 @@ extension Parser.ElementaryRegex: SEXPPrintable
     {
         switch self
         {
-        case let .positionOperator(positionOperator):
-            return indentation+"""
-            (elementaryRegex
-                \(positionOperator.print(indentation+standardIndentation)))
-            """
-
         case let .string(string):
             return indentation+"""
             (elementaryRegex
@@ -301,29 +295,6 @@ extension Parser.RepetitionOperator: SEXPPrintable
             return indentation+"""
             (repetitionOperator
                 \(zeroOrOneOperator.print(indentation+standardIndentation)))
-            """
-        }
-    }
-
-    var debugDescription: Swift.String { return print("") }
-}
-
-extension Parser.PositionOperator: SEXPPrintable
-{
-    func print(_ indentation: Swift.String) -> Swift.String
-    {
-        switch self
-        {
-        case let .lineHeadOperator(lineHeadOperator):
-            return indentation+"""
-            (positionOperator
-                \(lineHeadOperator.print(indentation+standardIndentation)))
-            """
-
-        case let .lineTailOperator(lineTailOperator):
-            return indentation+"""
-            (positionOperator
-                \(lineTailOperator.print(indentation+standardIndentation)))
             """
         }
     }

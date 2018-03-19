@@ -72,8 +72,6 @@ final class Lexer
         case zeroOrMoreOperator  : token = ZeroOrMoreOperator(info(startDot))
         case oneOrMoreOperator   : token = OneOrMoreOperator(info(startDot))
         case zeroOrOneOperator   : token = ZeroOrOneOperator(info(startDot))
-        case lineHeadOperator    : token = LineHeadOperator(info(startDot))
-        case lineTailOperator    : token = LineTailOperator(info(startDot))
         case stringDelimiter     : token = try recognizeString(startDot)
         case setMinus            : token = SetMinus(info(startDot))
         case setSeparator        : token = SetSeparator(info(startDot))

@@ -135,27 +135,6 @@ extension Lexer
 
     }
 
-
-    struct LineHeadOperator: Token, Equatable, Hashable
-    {
-        let representation: Swift.String
-
-        init(_ representation: Swift.String)
-        { self.representation = representation }
-
-    }
-
-
-    struct LineTailOperator: Token, Equatable, Hashable
-    {
-        let representation: Swift.String
-
-        init(_ representation: Swift.String)
-        { self.representation = representation }
-
-    }
-
-
     struct String: Token, Equatable, Hashable
     {
         let representation: Swift.String

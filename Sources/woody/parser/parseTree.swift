@@ -68,7 +68,6 @@ extension Parser
 
     indirect enum ElementaryRegex: Nonterminal, Equatable
     {
-        case positionOperator(PositionOperator)
         case string(Lexer.String)
         case identifier(Lexer.Identifier)
         case set(Set)
@@ -85,12 +84,6 @@ extension Parser
         case zeroOrMoreOperator(Lexer.ZeroOrMoreOperator)
         case oneOrMoreOperator(Lexer.OneOrMoreOperator)
         case zeroOrOneOperator(Lexer.ZeroOrOneOperator)
-    }
-
-    indirect enum PositionOperator: Nonterminal, Equatable
-    {
-        case lineHeadOperator(Lexer.LineHeadOperator)
-        case lineTailOperator(Lexer.LineTailOperator)
     }
 
     indirect enum Set: Nonterminal, Equatable

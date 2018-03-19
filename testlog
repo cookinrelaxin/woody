@@ -1,0 +1,73 @@
+
+Compile Swift Module 'woodyTests' (6 sources)
+Linking ./.build/x86_64-apple-macosx10.10/debug/woodyPackageTests.xctest/Contents/MacOS/woodyPackageTests
+Test Suite 'All tests' started at 2018-03-18 20:35:36.064
+Test Suite 'woodyPackageTests.xctest' started at 2018-03-18 20:35:36.064
+Test Suite 'LexerTests' started at 2018-03-18 20:35:36.064
+Test Case '-[woodyTests.LexerTests testSwift]' started.
+Test Case '-[woodyTests.LexerTests testSwift]' passed (0.107 seconds).
+Test Suite 'LexerTests' passed at 2018-03-18 20:35:36.171.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.107 (0.107) seconds
+Test Suite 'ParserTests' started at 2018-03-18 20:35:36.171
+Test Case '-[woodyTests.ParserTests testParseGroup]' started.
+Test Case '-[woodyTests.ParserTests testParseGroup]' passed (0.001 seconds).
+Test Case '-[woodyTests.ParserTests testParseMultipleRules]' started.
+Test Case '-[woodyTests.ParserTests testParseMultipleRules]' passed (0.001 seconds).
+Test Case '-[woodyTests.ParserTests testParseRule]' started.
+Test Case '-[woodyTests.ParserTests testParseRule]' passed (0.001 seconds).
+Test Case '-[woodyTests.ParserTests testParseSet]' started.
+Test Case '-[woodyTests.ParserTests testParseSet]' passed (0.000 seconds).
+Test Suite 'ParserTests' passed at 2018-03-18 20:35:36.175.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.003 (0.003) seconds
+Test Suite 'woodyPackageTests.xctest' passed at 2018-03-18 20:35:36.175.
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.110 (0.111) seconds
+Test Suite 'All tests' passed at 2018-03-18 20:35:36.175.
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.110 (0.111) seconds
+ParseTree(regularDescription: (regularDescription
+    (rule
+     (identifier identifier)
+     (definitionMarker
+      (helperDefinitionMarker ->))
+     (regex
+      (ungroupedRegex
+       (simpleRegex
+        (concatenation
+         (basicRegex
+          (elementaryRegex
+           (identifier identifier_head)))
+         (simpleRegex
+          (basicRegex
+           (elementaryRegex
+            (identifier identifier_character))
+           (repetitionOperator
+            (zeroOrMoreOperator *))))))))
+     (ruleTerminator ;))
+    (possibleRules
+     (rule
+      (identifier keyword)
+      (definitionMarker
+       (tokenDefinitionMarker =>))
+      (regex
+       (ungroupedRegex
+        (union
+         (simpleRegex
+          (basicRegex
+           (elementaryRegex
+            (identifier declaration_keyword))))
+         (unionOperator |)
+         (regex
+          (ungroupedRegex
+           (union
+            (simpleRegex
+             (basicRegex
+              (elementaryRegex
+               (identifier statement_keyword))))
+            (unionOperator |)
+            (regex
+             (ungroupedRegex
+              (simpleRegex
+               (basicRegex
+                (elementaryRegex
+                 (identifier expression_or_type_keyword))))))))))))
+      (ruleTerminator ;))
+)))
