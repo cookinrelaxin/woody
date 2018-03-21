@@ -649,7 +649,6 @@ class LexerTests: XCTestCase
         ]
 
         let actualTokens = lexer.tokens
-        let source = coordinator.reader.data
 
         for i in 0..<actualTokens.count
         {

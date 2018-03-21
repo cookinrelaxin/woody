@@ -35,7 +35,7 @@ fileprivate func toScalar(_ lCharacter: Lexer.Character) -> Scalar
         return Scalar(UInt32(s.dropFirst(), radix: 16)!)!
 
     case "'":
-        return s.unicodeScalars.first!
+        return s.dropFirst().unicodeScalars.first!
 
     default: fatalError()
     }
@@ -43,9 +43,9 @@ fileprivate func toScalar(_ lCharacter: Lexer.Character) -> Scalar
 
 extension ParseTree
 {
-    var flattened: [ParseTree.Rule]
+    var flattened: [Rule]
     {
-        var rules = [ParseTree.Rule]()
+        var rules = [Rule]()
 
         switch regularDescription
         {
@@ -60,6 +60,33 @@ extension ParseTree
         }
 
         return rules
+    }
+
+    static func unique(in rules: [Rule]) -> [Rule]
+    {
+        return rules.reduce([Rule]())
+        { _rules, rule in
+            var a = _rules
+
+            switch rule
+            { case let .cat(id1, d, _, _):
+                switch d
+                { case .helperDefinitionMarker(_): break
+                  case .tokenDefinitionMarker(_):
+                      if !_rules.contains
+                      { r in
+                          switch r
+                          {
+                          case let .cat(id2,_,_,_):
+                              return id1.representation == id2.representation
+                          }
+                      }
+                      { a.append(rule) }
+                }
+            }
+
+            return a
+        }
     }
 }
 
@@ -93,7 +120,8 @@ struct AbstractSyntaxTree: Equatable, Hashable
 
         do
         {
-            rules = try pRules.map { try Rule(pRule: $0, context) }
+            rules = try ParseTree.unique(in: pRules)
+                             .map { try Rule(pRule: $0, context) }
         }
         catch let ContextHandlingError.undefinedIdentifier(id)
         {
@@ -147,18 +175,17 @@ struct AbstractSyntaxTree: Equatable, Hashable
 
         init(pRegexes: Set<ParseTree.Regex>, _ context: Context) throws
         {
-            guard let pRegex = pRegexes.first
-            else
+            switch pRegexes.count
             {
-                basicRegex = .epsilon
-                repetitionOperator = nil
-
-                return
+            case 0: basicRegex = .epsilon
+            case 1: basicRegex = try .regex(Regex(pRegex: pRegexes.first!, context))
+            default:
+                basicRegex = try
+                .union(Regex(pRegex: pRegexes.first!, context),
+                       Regex(pRegexes: Set(pRegexes.dropFirst()),
+                             context))
             }
 
-            basicRegex = .union(try Regex(pRegex: pRegex, context),
-                                try Regex(pRegexes: Set(pRegexes.dropFirst()),
-                                      context))
             repetitionOperator = nil
         }
 
@@ -254,30 +281,27 @@ struct AbstractSyntaxTree: Equatable, Hashable
 
         init(lString: Lexer.String, _ context: Context) throws
         {
-            let unquoted = String(lString.representation)
+            let unquoted = String(lString.representation.dropFirst().dropLast())
 
             try self.init(string: unquoted, context)
         }
 
         init(string: String, _ context: Context) throws
         {
-            if string.isEmpty
-            {
-                basicRegex         = .epsilon
-                repetitionOperator = nil
-            }
+            if string.isEmpty { basicRegex = .epsilon }
             else
             {
                 let first   : Scalar  = string.unicodeScalars.first!
                 let charset : BasicRegex = .characterSet(CharacterSet(first))
                 let rest    : String     = String(string.dropFirst())
+                let r1 = Regex(basicRegex: charset, repetitionOperator: nil)
+                let r2 = try Regex(string: String(rest), context)
 
-                basicRegex = .concatenation(
-                    Regex(basicRegex: charset, repetitionOperator: nil),
-                    try Regex(string: String(rest), context))
-
-                repetitionOperator = nil
+                if string.count == 1 { basicRegex = .regex(r1) }
+                else                 { basicRegex = .concatenation(r1, r2) }
             }
+
+            repetitionOperator = nil
         }
 
         init(lIdentifier: Lexer.Identifier, _ context: Context) throws
@@ -310,8 +334,10 @@ struct AbstractSyntaxTree: Equatable, Hashable
             switch pUnion
             {
             case let .cat(pSimpleRegex, _, pRegex):
-                self = try .union(Regex(pSimpleRegex: pSimpleRegex, context),
-                              Regex(pRegex: pRegex, context))
+                let r1 = try Regex(pSimpleRegex: pSimpleRegex, context)
+                let r2 = try Regex(pRegex: pRegex, context)
+
+                self = .union(r1, r2)
             }
         }
 
@@ -320,8 +346,11 @@ struct AbstractSyntaxTree: Equatable, Hashable
             switch pConcatenation
             {
             case let .cat(pBasicRegex, pSimpleRegex):
-                self = try .concatenation(Regex(pBasicRegex: pBasicRegex, context),
-                                      Regex(pSimpleRegex: pSimpleRegex, context))
+                let r1 = try Regex(pBasicRegex: pBasicRegex, context)
+                let r2 = try Regex(pSimpleRegex: pSimpleRegex, context)
+
+                if r2.basicRegex == .epsilon { self = .regex(r1) }
+                else                         { self = .concatenation(r1, r2) }
             }
         }
 
@@ -385,9 +414,11 @@ struct AbstractSyntaxTree: Equatable, Hashable
         private static func _set(for pStandardSet: ParseTree.StandardSet, _
             context: Context) -> Set<ScalarRange>
         {
+            let range = Scalar(UInt32(0))! ... Scalar(UInt32(0x100000))!
+
             switch pStandardSet
             {
-                case .cat(_): return Set([ScalarRange(Scalar(UInt32(0x100000))!)])
+                case .cat(_): return Set([ScalarRange(range)])
             }
         }
 

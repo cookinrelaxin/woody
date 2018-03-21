@@ -15,7 +15,7 @@ class ContextHandlerTests: XCTestCase
 
         let ast = coordinator.astFactory.abstractSyntaxTree
 
-        XCTAssertEqual(ast.rules.count, 34)
+        XCTAssertEqual(ast.rules.count, 4)
 
         print(ast)
     }
