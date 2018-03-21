@@ -11,24 +11,24 @@ final class PipelineCoordinator
 
     lazy var lexer: Lexer =
     {
-        return Lexer(reader: reader)!
+        return Lexer(reader: reader)
     }()
 
-    lazy var parser         : Parser =
+    lazy var parser: Parser =
     {
         return Parser(lexer: lexer)
     }()
 
-    /*
-     *lazy var astFactory : ASTFactory =
-     *{
-     *    return ASTFactory(regularDescription: try! parser.parseTree())
-     *}()
-     */
+    lazy var astFactory: ASTFactory =
+    {
+        return ASTFactory(parseTree: try! parser.parseTree()!,
+                          sourceLines: reader.data)
+    }()
 
-    // lazy var lexerGenerator : LexerGenerator =
-    // {
-    // }()
+    lazy var lexerGenerator: LexerGenerator =
+    {
+        return LexerGenerator(ast: astFactory.abstractSyntaxTree())
+    }()
 
     init(url: URL) { source = url }
 }

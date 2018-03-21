@@ -35,15 +35,15 @@ line_break -> u000D u000A;
 
 # Note that "//" is equivalent to "/" "/".
 
-comment           -> "//" commentText lineBreak;
-multiline_comment -> "/*" commentText "*/";
-commentText       -> commentTextItem+;
+comment           -> "//" comment_text line_break;
+multiline_comment -> "/*" comment_text "*/";
+comment_text       -> comment_text_item+;
 
 ## Here we specify the set of all characters which are not u000A or u000D.
-commentTextItem -> U \ { u000A, u000D };
+comment_text_item -> U \ { u000A, u000D };
 
 ## Note that the reference specifies the following line,
-##   multiline-commentTextItem -> Any Unicode scalar value except /*  or */;
+##   multiline-comment_text_item -> Any Unicode scalar value except /*  or */;
 ## but enforcing balanced comment delimiters is strictly the responsibility of
 ## the parser, so we do not include it here.
 #

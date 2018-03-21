@@ -2,17 +2,23 @@ import Foundation
 
 final class Lexer
 {
-    fileprivate let data: Swift.String.UnicodeScalarView
-    fileprivate var dot: Dot
+    typealias Dot = SourceLines.Index
 
-    var previousDot: Dot { return data.index(before: dot) }
-    var nextDot: Dot     { return data.index(after: dot) }
-    var nextNextDot: Dot { return data.index(after: nextDot) }
+    let data     : SourceLines
+    var startDot : Dot
+    var dot      : Dot
+
+    var previousDot : Dot { return data.index(before: dot) }
+    var nextDot     : Dot { return data.index(after: dot) }
+    var nextNextDot : Dot { return data.index(after: nextDot) }
 
     func retractDot() { dot = previousDot }
     func moveDot()    { dot = nextDot }
 
-    fileprivate func inputScalar() throws -> Scalar
+    var info: TokenInfo
+    { return TokenInfo(startIndex: startDot, endIndex: dot, sourceURL: data.url) }
+
+    func inputScalar() throws -> Scalar
     {
         guard dot < data.endIndex else { throw LexerError.endOfInput }
 
@@ -28,65 +34,63 @@ final class Lexer
         return tokens
     }()
 
-    init?(reader: Reader)
+    init(reader: Reader)
     {
-        guard let data = reader.data else { return nil }
-
-        self.data = data
-        dot = data.startIndex
+        data     = reader.data
+        startDot = data.startIndex
+        dot      = data.startIndex
     }
 
     func nextToken() throws -> Token
     {
         try skipInsignificant()
 
-        /*noteTokenPosition()*/
+        startDot = dot
 
-        let startDot    : Index  = dot
         let inputScalar : Scalar = data[dot]
         let token       : Token
 
         switch inputScalar
         {
         case hexPrefix where isHexDigit(data[nextDot]):
-            token = try recognizeCodepoint(startDot)
+            token = try recognizeCodepoint()
 
         case let s where isIdentifierHead(s):
-            token = try recognizeIdentifier(startDot)
+            token = try recognizeIdentifier()
 
         case let s where isStandardSetHead(s):
-            token = try recognizeStandardSet(startDot)
+            token = try recognizeStandardSet()
 
         case "-" where data[nextDot] == ">":
             moveDot()
-            token = HelperDefinitionMarker(info(startDot))
+            token = HelperDefinitionMarker(info)
 
         case "=" where data[nextDot] == ">":
             moveDot()
-            token = TokenDefinitionMarker(info(startDot))
+            token = TokenDefinitionMarker(info)
 
-        case ruleTerminator      : token = RuleTerminator(info(startDot))
-        case groupLeftDelimiter  : token = GroupLeftDelimiter(info(startDot))
-        case groupRightDelimiter : token = GroupRightDelimiter(info(startDot))
-        case unionOperator       : token = UnionOperator(info(startDot))
-        case zeroOrMoreOperator  : token = ZeroOrMoreOperator(info(startDot))
-        case oneOrMoreOperator   : token = OneOrMoreOperator(info(startDot))
-        case zeroOrOneOperator   : token = ZeroOrOneOperator(info(startDot))
-        case stringDelimiter     : token = try recognizeString(startDot)
-        case setMinus            : token = SetMinus(info(startDot))
-        case setSeparator        : token = SetSeparator(info(startDot))
-        case rangeSeparator      : token = RangeSeparator(info(startDot))
+        case ruleTerminator      : token = RuleTerminator(info)
+        case groupLeftDelimiter  : token = GroupLeftDelimiter(info)
+        case groupRightDelimiter : token = GroupRightDelimiter(info)
+        case unionOperator       : token = UnionOperator(info)
+        case zeroOrMoreOperator  : token = ZeroOrMoreOperator(info)
+        case oneOrMoreOperator   : token = OneOrMoreOperator(info)
+        case zeroOrOneOperator   : token = ZeroOrOneOperator(info)
+        case stringDelimiter     : token = try recognizeString()
+        case setMinus            : token = SetMinus(info)
+        case setSeparator        : token = SetSeparator(info)
+        case rangeSeparator      : token = RangeSeparator(info)
 
         case bracketedSetLeftDelimiter:
-            token = BracketedSetLeftDelimiter(info(startDot))
+            token = BracketedSetLeftDelimiter(info)
         case bracketedSetRightDelimiter:
-            token = BracketedSetRightDelimiter(info(startDot))
+            token = BracketedSetRightDelimiter(info)
 
         case characterLiteralMarker:
             moveDot()
-            token = Character(info(startDot))
+            token = Character(info)
 
-        default: token = Erroneous(info(startDot))
+        default: token = Erroneous(info)
         }
 
         moveDot()
@@ -97,9 +101,6 @@ final class Lexer
 
 fileprivate extension Lexer
 {
-    func info(_ startDot: Dot) -> Swift.String
-    { return Swift.String(data[startDot...dot]) }
-
     func skipWhitespace() throws
     {
         while isWhitespace(try inputScalar())
@@ -127,16 +128,16 @@ fileprivate extension Lexer
         }
     }
 
-    func recognizeIdentifier(_ startDot: Dot) throws -> Identifier
+    func recognizeIdentifier() throws -> Identifier
     {
         while isIdentifierCharacter(try inputScalar()) { moveDot() }
 
         retractDot()
 
-        return Identifier(info(startDot))
+        return Identifier(info)
     }
 
-    func recognizeCodepoint(_ startDot: Dot) throws -> Character
+    func recognizeCodepoint() throws -> Character
     {
         moveDot()
 
@@ -151,20 +152,20 @@ fileprivate extension Lexer
             moveDot()
         }
 
-        return Character(info(startDot))
+        return Character(info)
     }
 
-    func recognizeString(_ startDot: Dot) throws -> String
+    func recognizeString() throws -> String
     {
         moveDot()
 
         while !isStringTerminator(try inputScalar()) { moveDot() }
 
-        return String(info(startDot))
+        return String(info)
     }
 
-    func recognizeStandardSet(_ startDot: Dot) throws -> Unicode
+    func recognizeStandardSet() throws -> Unicode
     {
-        return Unicode(info(startDot))
+        return Unicode(info)
     }
 }

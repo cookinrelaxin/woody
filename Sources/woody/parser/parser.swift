@@ -1,14 +1,33 @@
 import Foundation
 
-enum ParserError: Error
-{
-    case unexpectedToken(Token)
-    case unexpectedEndOfInput
-}
+fileprivate typealias RegularDescription = ParseTree.RegularDescription
+fileprivate typealias Rule               = ParseTree.Rule
+fileprivate typealias PossibleRules      = ParseTree.PossibleRules
+fileprivate typealias Regex              = ParseTree.Regex
+fileprivate typealias GroupedRegex       = ParseTree.GroupedRegex
+fileprivate typealias UngroupedRegex     = ParseTree.UngroupedRegex
+fileprivate typealias Union              = ParseTree.Union
+fileprivate typealias SimpleRegex        = ParseTree.SimpleRegex
+fileprivate typealias Concatenation      = ParseTree.Concatenation
+fileprivate typealias BasicRegex         = ParseTree.BasicRegex
+fileprivate typealias ElementaryRegex    = ParseTree.ElementaryRegex
+fileprivate typealias DefinitionMarker   = ParseTree.DefinitionMarker
+fileprivate typealias RepetitionOperator = ParseTree.RepetitionOperator
+fileprivate typealias Set                = ParseTree.Set
+fileprivate typealias SetSubtraction     = ParseTree.SetSubtraction
+fileprivate typealias SimpleSet          = ParseTree.SimpleSet
+fileprivate typealias StandardSet        = ParseTree.StandardSet
+fileprivate typealias LiteralSet         = ParseTree.LiteralSet
+fileprivate typealias BasicSet           = ParseTree.BasicSet
+fileprivate typealias BracketedSet       = ParseTree.BracketedSet
+fileprivate typealias BasicSetList       = ParseTree.BasicSetList
+fileprivate typealias BasicSets          = ParseTree.BasicSets
+fileprivate typealias Range              = ParseTree.Range
 
 final class Parser
 {
     private var tokens: [Token]
+    private var source: SourceLines
     fileprivate var dot = 0
 
     func nextToken() throws -> Token
@@ -23,26 +42,113 @@ final class Parser
         dot += 1
     }
 
-    func parseTree() throws -> ParseTree
+    func parseTree() throws -> ParseTree?
     {
         do
         {
             let _regularDescription = try regularDescription()
             return ParseTree(_regularDescription)
         }
-        catch LexerError.endOfInput
+        catch let ParserError.expectedIdentifier(token)
         {
-            throw ParserError.unexpectedEndOfInput
+            ParserError.printExpectationErrorMessage("Identifier", token, source)
         }
+        catch let ParserError.expectedHelperDefinitionMarker(token)
+        {
+            ParserError.printExpectationErrorMessage("HelperDefinitionMarker",
+                token, source)
+        }
+        catch let ParserError.expectedTokenDefinitionMarker(token)
+        {
+            ParserError.printExpectationErrorMessage("TokenDefinitionMarker",
+                token, source)
+        }
+        catch let ParserError.expectedRuleTerminator(token)
+        {
+            ParserError.printExpectationErrorMessage("RuleTerminator", token,
+                source)
+        }
+        catch let ParserError.expectedGroupLeftDelimiter(token)
+        {
+            ParserError.printExpectationErrorMessage("GroupLeftDelimiter",
+                token, source)
+        }
+        catch let ParserError.expectedGroupRightDelimiter(token)
+        {
+            ParserError.printExpectationErrorMessage("GroupRightDelimiter",
+                token, source)
+        }
+        catch let ParserError.expectedUnionOperator(token)
+        {
+            ParserError.printExpectationErrorMessage("UnionOperator", token,
+                source)
+        }
+        catch let ParserError.expectedZeroOrMoreOperator(token)
+        {
+            ParserError.printExpectationErrorMessage("ZeroOrMoreOperator",
+                token, source)
+        }
+        catch let ParserError.expectedOneOrMoreOperator(token)
+        {
+            ParserError.printExpectationErrorMessage("OneOrMoreOperator", token,
+   source)
+        }
+        catch let ParserError.expectedZeroOrOneOperator(token)
+        {
+            ParserError.printExpectationErrorMessage("ZeroOrOneOperator", token,
+   source)
+        }
+        catch let ParserError.expectedString(token)
+        {
+            ParserError.printExpectationErrorMessage("String", token, source)
+        }
+        catch let ParserError.expectedSetMinus(token)
+        {
+            ParserError.printExpectationErrorMessage("SetMinus", token, source)
+        }
+        catch let ParserError.expectedUnicode(token)
+        {
+            ParserError.printExpectationErrorMessage("Unicode", token, source)
+        }
+        catch let ParserError.expectedCharacter(token)
+        {
+            ParserError.printExpectationErrorMessage("Character", token, source)
+        }
+        catch let ParserError.expectedRangeSeparator(token)
+        {
+            ParserError.printExpectationErrorMessage("RangeSeparator", token,
+                source)
+        }
+        catch let ParserError.expectedBracketedSetLeftDelimiter(token)
+        {
+            ParserError.printExpectationErrorMessage("BracketedSetLeftDelimiter",
+                token, source)
+        }
+        catch let ParserError.expectedBracketedSetRightDelimiter(token)
+        {
+            ParserError.printExpectationErrorMessage("BracketedSetRightDelimiter",
+                token, source)
+        }
+        catch let ParserError.expectedSetSeparator(token)
+        {
+            ParserError.printExpectationErrorMessage("SetSeparator", token,
+                source)
+        }
+        // catch ParserError.unexpectedEndOfInput
+        // {
+        // }
+
+        return nil
     }
 
     init(lexer: Lexer)
     {
         tokens = lexer.tokens
+        source = lexer.data
     }
 }
 
-extension Parser
+fileprivate extension Parser
 {
     func regularDescription() throws -> RegularDescription
     {
@@ -65,7 +171,8 @@ extension Parser
     func possibleRules() throws -> PossibleRules
     {
         var rules = [Rule]()
-        while let r = try? rule() { rules.append(r) }
+        while dot < tokens.endIndex { rules.append(try rule()) }
+        /*while let r = try? rule() { rules.append(r) }*/
 
         return .cat(rules)
     }

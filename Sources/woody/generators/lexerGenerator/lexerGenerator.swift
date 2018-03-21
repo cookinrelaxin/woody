@@ -1,30 +1,30 @@
 import Foundation
 
-// typealias Code = Swift.String
-//
-// final class LexerGenerator
-// {
-//     let regularDescription: RegularDescription
-//
-//     lazy var tokenClassDefinitions: Code =
-//     {
-//         let rules = _orderedRules(for: regularDescription)
-//         let tokenClasses = _orderedTokenClasses(for: rules)
-//         let formattedClassNames = _formattedClassNames(for: tokenClasses)
-//
-//         return _tokenClassDefinitions(for: formattedClassNames)
-//     }()
-//
-//     init(regularDescription: RegularDescription)
-//     { self.regularDescription = regularDescription }
-//
-//     func generateLexer() -> Code
-//     {
-//         fatalError()
-//     }
-// }
-//
-//
+typealias Code = String
+
+final class LexerGenerator
+{
+    let ast: AbstractSyntaxTree
+
+    // lazy var tokenClassDefinitions: Code =
+    // {
+    //     let rules = _orderedRules(for: regularDescription)
+    //     let tokenClasses = _orderedTokenClasses(for: rules)
+    //     let formattedClassNames = _formattedClassNames(for: tokenClasses)
+
+    //     return _tokenClassDefinitions(for: formattedClassNames)
+    // }()
+
+    init(ast: AbstractSyntaxTree)
+    { self.ast = ast }
+
+    // func generateLexer() -> Code
+    // {
+    //     fatalError()
+    // }
+}
+
+
 // func _stateDefinitions() -> Code
 // {
 //     fatalError()

@@ -1,6 +1,6 @@
 import Foundation
 
-extension Parser.RegularDescription: SEXPPrintable
+extension ParseTree.RegularDescription: SEXPPrintable
 {
     func print(_ indentation: Swift.String) -> Swift.String
     {
@@ -18,7 +18,7 @@ extension Parser.RegularDescription: SEXPPrintable
     var debugDescription: Swift.String { return print("") }
 }
 
-extension Parser.Rule: SEXPPrintable
+extension ParseTree.Rule: SEXPPrintable
 {
     func print(_ indentation: Swift.String) -> Swift.String
     {
@@ -38,7 +38,7 @@ extension Parser.Rule: SEXPPrintable
     var debugDescription: Swift.String { return print("") }
 }
 
-extension Parser.PossibleRules: SEXPPrintable
+extension ParseTree.PossibleRules: SEXPPrintable
 {
     func print(_ indentation: Swift.String) -> Swift.String
     {
@@ -61,7 +61,7 @@ extension Parser.PossibleRules: SEXPPrintable
     var debugDescription: Swift.String { return print("") }
 }
 
-extension Parser.Regex: SEXPPrintable
+extension ParseTree.Regex: SEXPPrintable
 {
     func print(_ indentation: Swift.String) -> Swift.String
     {
@@ -83,7 +83,7 @@ extension Parser.Regex: SEXPPrintable
     var debugDescription: Swift.String { return print("") }
 }
 
-extension Parser.GroupedRegex: SEXPPrintable
+extension ParseTree.GroupedRegex: SEXPPrintable
 {
     func print(_ indentation: Swift.String) -> Swift.String
     {
@@ -114,7 +114,7 @@ extension Parser.GroupedRegex: SEXPPrintable
     var debugDescription: Swift.String { return print("") }
 }
 
-extension Parser.UngroupedRegex: SEXPPrintable
+extension ParseTree.UngroupedRegex: SEXPPrintable
 {
     func print(_ indentation: Swift.String) -> Swift.String
     {
@@ -136,7 +136,7 @@ extension Parser.UngroupedRegex: SEXPPrintable
     var debugDescription: Swift.String { return print("") }
 }
 
-extension Parser.Union: SEXPPrintable
+extension ParseTree.Union: SEXPPrintable
 {
     func print(_ indentation: Swift.String) -> Swift.String
     {
@@ -155,7 +155,7 @@ extension Parser.Union: SEXPPrintable
     var debugDescription: Swift.String { return print("") }
 }
 
-extension Parser.SimpleRegex: SEXPPrintable
+extension ParseTree.SimpleRegex: SEXPPrintable
 {
     func print(_ indentation: Swift.String) -> Swift.String
     {
@@ -178,7 +178,7 @@ extension Parser.SimpleRegex: SEXPPrintable
     var debugDescription: Swift.String { return print("") }
 }
 
-extension Parser.Concatenation: SEXPPrintable
+extension ParseTree.Concatenation: SEXPPrintable
 {
     func print(_ indentation: Swift.String) -> Swift.String
     {
@@ -196,7 +196,7 @@ extension Parser.Concatenation: SEXPPrintable
     var debugDescription: Swift.String { return print("") }
 }
 
-extension Parser.BasicRegex: SEXPPrintable
+extension ParseTree.BasicRegex: SEXPPrintable
 {
     func print(_ indentation: Swift.String) -> Swift.String
     {
@@ -221,7 +221,7 @@ extension Parser.BasicRegex: SEXPPrintable
     var debugDescription: Swift.String { return print("") }
 }
 
-extension Parser.ElementaryRegex: SEXPPrintable
+extension ParseTree.ElementaryRegex: SEXPPrintable
 {
     func print(_ indentation: Swift.String) -> Swift.String
     {
@@ -250,7 +250,7 @@ extension Parser.ElementaryRegex: SEXPPrintable
     var debugDescription: Swift.String { return print("") }
 }
 
-extension Parser.DefinitionMarker: SEXPPrintable
+extension ParseTree.DefinitionMarker: SEXPPrintable
 {
     func print(_ indentation: Swift.String) -> Swift.String
     {
@@ -273,7 +273,7 @@ extension Parser.DefinitionMarker: SEXPPrintable
     var debugDescription: Swift.String { return print("") }
 }
 
-extension Parser.RepetitionOperator: SEXPPrintable
+extension ParseTree.RepetitionOperator: SEXPPrintable
 {
     func print(_ indentation: Swift.String) -> Swift.String
     {
@@ -302,7 +302,7 @@ extension Parser.RepetitionOperator: SEXPPrintable
     var debugDescription: Swift.String { return print("") }
 }
 
-extension Parser.Set: SEXPPrintable
+extension ParseTree.Set: SEXPPrintable
 {
     func print(_ indentation: Swift.String) -> Swift.String
     {
@@ -327,7 +327,7 @@ extension Parser.Set: SEXPPrintable
     var debugDescription: Swift.String { return print("") }
 }
 
-extension Parser.SetSubtraction: SEXPPrintable
+extension ParseTree.SetSubtraction: SEXPPrintable
 {
     func print(_ indentation: Swift.String) -> Swift.String
     {
@@ -345,7 +345,7 @@ extension Parser.SetSubtraction: SEXPPrintable
     var debugDescription: Swift.String { return print("") }
 }
 
-extension Parser.SimpleSet: SEXPPrintable
+extension ParseTree.SimpleSet: SEXPPrintable
 {
     func print(_ indentation: Swift.String) -> Swift.String
     {
@@ -367,7 +367,7 @@ extension Parser.SimpleSet: SEXPPrintable
     var debugDescription: Swift.String { return print("") }
 }
 
-extension Parser.StandardSet: SEXPPrintable
+extension ParseTree.StandardSet: SEXPPrintable
 {
     func print(_ indentation: Swift.String) -> Swift.String
     {
@@ -384,7 +384,7 @@ extension Parser.StandardSet: SEXPPrintable
     var debugDescription: Swift.String { return print("") }
 }
 
-extension Parser.LiteralSet: SEXPPrintable
+extension ParseTree.LiteralSet: SEXPPrintable
 {
     func print(_ indentation: Swift.String) -> Swift.String
     {
@@ -406,7 +406,7 @@ extension Parser.LiteralSet: SEXPPrintable
     var debugDescription: Swift.String { return print("") }
 }
 
-extension Parser.BasicSet: SEXPPrintable
+extension ParseTree.BasicSet: SEXPPrintable
 {
     func print(_ indentation: Swift.String) -> Swift.String
     {
@@ -429,7 +429,7 @@ extension Parser.BasicSet: SEXPPrintable
     var debugDescription: Swift.String { return print("") }
 }
 
-extension Parser.BracketedSet: SEXPPrintable
+extension ParseTree.BracketedSet: SEXPPrintable
 {
     func print(_ indentation: Swift.String) -> Swift.String
     {
@@ -449,7 +449,7 @@ extension Parser.BracketedSet: SEXPPrintable
     var debugDescription: Swift.String { return print("") }
 }
 
-extension Parser.BasicSetList: SEXPPrintable
+extension ParseTree.BasicSetList: SEXPPrintable
 {
     func print(_ indentation: Swift.String) -> Swift.String
     {
@@ -472,7 +472,7 @@ extension Parser.BasicSetList: SEXPPrintable
     var debugDescription: Swift.String { return print("") }
 }
 
-extension Parser.BasicSets: SEXPPrintable
+extension ParseTree.BasicSets: SEXPPrintable
 {
     func print(_ indentation: Swift.String) -> Swift.String
     {
@@ -491,7 +491,7 @@ extension Parser.BasicSets: SEXPPrintable
     var debugDescription: Swift.String { return print("") }
 }
 
-extension Parser.Range: SEXPPrintable
+extension ParseTree.Range: SEXPPrintable
 {
     func print(_ indentation: Swift.String) -> Swift.String
     {

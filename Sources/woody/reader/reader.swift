@@ -6,13 +6,24 @@ final class Reader
 
     let source: URL
     let fileHandle: FileHandle
-    lazy var data: Swift.String.UnicodeScalarView? =
+    lazy var data: SourceLines =
     {
         let data = fileHandle.readDataToEndOfFile()
         let string = Swift.String(data: data, encoding: Reader.encoding)
-        let scalars = string?.unicodeScalars
 
-        return scalars
+        var lines = [[Scalar]]()
+        var line = [Scalar]()
+        for s in string!.unicodeScalars
+        {
+            line.append(s)
+            if isLinebreak(s)
+            {
+                lines.append(line)
+                line = [Scalar]()
+            }
+        }
+
+        return SourceLines(lines: lines, url: source)
     }()
 
     init(source: URL) throws

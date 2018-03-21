@@ -4,9 +4,8 @@ func isLinebreak(_ scalar: Scalar) -> Bool
 {
     switch scalar.value
     {
-        case 0x000A              : return true
-        case 0x000D              : return true
-        default                  : return false
+        case 0x000A, 0x000D : return true
+        default             : return false
     }
 }
 
@@ -111,7 +110,6 @@ func isHexDigit(_ scalar: Scalar) -> Bool
     }
 
 }
-
 
 func isStringTerminator(_ scalar: Scalar) -> Bool
 {
