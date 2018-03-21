@@ -10,14 +10,14 @@ protocol Token
 
 extension Token
 {
-    func representation(in sourceLines: SourceLines) -> String
+    var representation: String
     {
-        return sourceLines.string(in: info.startIndex ... info.endIndex)
+        return info.source.string(in: info.startIndex ... info.endIndex)
     }
 
-    func line(in sourceLines: SourceLines) -> String
+    var line: String
     {
-        return sourceLines.line(for: info.startIndex)
+        return info.source.line(for: info.startIndex)
     }
 
     var tokenClass: TokenClass
@@ -77,27 +77,27 @@ struct TokenInfo: Equatable, Hashable, CustomDebugStringConvertible
 {
     let startIndex     : SourceLines.Index
     let endIndex       : SourceLines.Index
-    let sourceURL      : URL
+    let source         : SourceLines
 
     init(startIndex: SourceLines.Index,
          endIndex: SourceLines.Index,
-         sourceURL: URL)
+         source: SourceLines)
     {
         self.startIndex = startIndex
         self.endIndex = endIndex
-        self.sourceURL = sourceURL
+        self.source = source
     }
 
     init(_ startIndex: (Int, Int),
          _ endIndex: (Int, Int),
-         _ sourceURL: URL)
+         _ source: SourceLines)
     {
         self.startIndex = SourceLines.Index(startIndex)
         self.endIndex = SourceLines.Index(endIndex)
-        self.sourceURL = sourceURL
+        self.source = source
     }
 
-    init(_ i: (Int, Int), _ s: URL) { self.init(i, i, s) }
+    init(_ i: (Int, Int), _ s: SourceLines) { self.init(i, i, s) }
 
     var debugDescription: Swift.String
     { return "(\(startIndex), \(endIndex))" }

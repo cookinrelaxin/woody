@@ -16,7 +16,7 @@ final class Lexer
     func moveDot()    { dot = nextDot }
 
     var info: TokenInfo
-    { return TokenInfo(startIndex: startDot, endIndex: dot, sourceURL: data.url) }
+    { return TokenInfo(startIndex: startDot, endIndex: dot, source: data) }
 
     func inputScalar() throws -> Scalar
     {

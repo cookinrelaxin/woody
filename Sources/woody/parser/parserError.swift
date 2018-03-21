@@ -45,26 +45,24 @@ enum ParserError: Error
                                              _ sourceLines: SourceLines)
     {
         let lineNo = actual.info.startIndex.line+1
-        let line = actual.line(in: sourceLines)
-        let sourceURL = actual.info.sourceURL.lastPathComponent
+        let sourceURL = actual.info.source.url.lastPathComponent
 
         let comment = """
         I unexpectedly found \(actual.tokenClass.english)\
-         `\(actual.representation(in: sourceLines))` here.
+         `\(actual.representation)` here.
         """
 
         let header = "-- Parsing Error in \(sourceURL) ".padding(toLength: 80,
                                                                 withPad: "-",
                                                                 startingAt: 0)
 
-        let lineNoPrefix = "\(lineNo)| "
+        let lineNoPrefix = "\(lineNo)|"
         let ctxt = """
-        \(lineNoPrefix)\(line)
+        \(lineNoPrefix)\(actual.line)
         """
 
-        let _underline = underline(for: actual,
-                                   in: sourceLines,
-                                   offset: lineNoPrefix.count)
+        let underline = actual.underline(in: sourceLines,
+                                         offset: lineNoPrefix.count)
 
         let suggestion = """
         But there should be \(expected.enumeration).
@@ -75,7 +73,7 @@ enum ParserError: Error
 
         \(comment)
 
-        \(ctxt)\(_underline)
+        \(ctxt)\(underline)
         \(suggestion)
 
         """
@@ -86,25 +84,27 @@ enum ParserError: Error
     case unexpectedEndOfInput
 }
 
-private func underline(for token: Token,
-                       in sourceLines: SourceLines,
-                       offset: Int) -> String
+extension Token
 {
-    let start = token.info.startIndex
-    let end = token.info.endIndex
-    let scalars = sourceLines[start.line]
-
-    var underline = [Scalar]()
-
-    for i in 0..<scalars.count
+    func underline(in sourceLines: SourceLines,
+                   offset: Int) -> String
     {
-        if start.char <= i && i <= end.char
-        { underline.append("^") }
-        else
-        { underline.append(" ") }
+        let start = info.startIndex
+        let end = info.endIndex
+        let scalars = sourceLines[start.line]
+
+        var underline = [Scalar]()
+
+        for i in 0..<scalars.count
+        {
+            if start.char <= i && i <= end.char
+            { underline.append("^") }
+            else
+            { underline.append(" ") }
+        }
+
+        underline = [Scalar](repeating: " ", count: offset) + underline
+
+        return String(String.UnicodeScalarView(underline))
     }
-
-    underline = [Scalar](repeating: " ", count: offset) + underline
-
-    return String(String.UnicodeScalarView(underline))
 }

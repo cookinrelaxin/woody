@@ -654,9 +654,7 @@ class LexerTests: XCTestCase
         for i in 0..<actualTokens.count
         {
             XCTAssertEqual(expectedTokens[i].0, "\(type(of: actualTokens[i]))")
-
-            XCTAssertEqual(actualTokens[i].representation(in: source),
-                           expectedTokens[i].1)
+            XCTAssertEqual(expectedTokens[i].1, actualTokens[i].representation)
         }
     }
 }

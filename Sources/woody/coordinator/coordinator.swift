@@ -27,7 +27,7 @@ final class PipelineCoordinator
 
     lazy var lexerGenerator: LexerGenerator =
     {
-        return LexerGenerator(ast: astFactory.abstractSyntaxTree())
+        return LexerGenerator(ast: astFactory.abstractSyntaxTree)
     }()
 
     init(url: URL) { source = url }

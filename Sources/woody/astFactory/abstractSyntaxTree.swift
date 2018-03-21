@@ -26,15 +26,9 @@ struct ScalarRange: Equatable, Hashable
     }
 }
 
-enum ContextHandlingError: Error
+fileprivate func toScalar(_ lCharacter: Lexer.Character) -> Scalar
 {
-    case unboundIdentifier(Lexer.Identifier)
-}
-
-fileprivate func toScalar(_ lCharacter: Lexer.Character,
-                          in sourceLines: SourceLines) -> Scalar
-{
-    let s = lCharacter.representation(in: sourceLines)
+    let s = lCharacter.representation
     switch (s.first!)
     {
     case "u":
@@ -75,7 +69,7 @@ struct AbstractSyntaxTree: Equatable, Hashable
 
     var hashValue: Int { return rules.count }
 
-    init(parseTree: ParseTree, sourceLines: SourceLines) throws
+    init(parseTree: ParseTree, sourceLines: SourceLines)
     {
         let pRules: [ParseTree.Rule] = parseTree.flattened
 
@@ -86,7 +80,8 @@ struct AbstractSyntaxTree: Equatable, Hashable
             switch pRule
             {
             case let .cat(id, _, pRegex, _):
-                _dict[id, default: Set<ParseTree.Regex>()].insert(pRegex)
+                _dict[id.representation,
+                      default: Set<ParseTree.Regex>()].insert(pRegex)
             }
 
             return _dict
@@ -100,20 +95,16 @@ struct AbstractSyntaxTree: Equatable, Hashable
         {
             rules = try pRules.map { try Rule(pRule: $0, context) }
         }
-        catch let ContextHandlingError.unboundIdentifier(id)
+        catch let ContextHandlingError.undefinedIdentifier(id)
         {
-            print("unbound identifier \(id)")
+            ContextHandlingError.print(.undefinedIdentifier(id), context)
+        }
+        catch let e
+        {
+            fatalError("\(e)")
         }
 
         self.rules = rules
-    }
-
-    struct Context
-    {
-        typealias IDLookup = [Lexer.Identifier : Set<ParseTree.Regex>]
-
-        let idLookup: IDLookup
-        let sourceLines: SourceLines
     }
 
     struct Rule: Equatable, Hashable
@@ -126,9 +117,7 @@ struct AbstractSyntaxTree: Equatable, Hashable
             switch pRule
             {
             case let .cat(id, _, pRegex, _):
-                self.identifier
-                = String(id.representation(in: context.sourceLines)
-                           .dropFirst().dropLast())
+                self.identifier = String(id.representation)
                 try self.regex = Regex(pRegex: pRegex, context)
             }
         }
@@ -265,10 +254,9 @@ struct AbstractSyntaxTree: Equatable, Hashable
 
         init(lString: Lexer.String, _ context: Context) throws
         {
-            let unquoted = lString.representation(in: context.sourceLines)
-                                  .dropFirst().dropLast()
+            let unquoted = String(lString.representation)
 
-            try self.init(string: String(unquoted), context)
+            try self.init(string: unquoted, context)
         }
 
         init(string: String, _ context: Context) throws
@@ -294,10 +282,10 @@ struct AbstractSyntaxTree: Equatable, Hashable
 
         init(lIdentifier: Lexer.Identifier, _ context: Context) throws
         {
-            guard let pRegexes = context.idLookup[lIdentifier]
+            guard let pRegexes = context.idLookup[lIdentifier.representation]
             else
             {
-                throw ContextHandlingError.unboundIdentifier(lIdentifier)
+                throw ContextHandlingError.undefinedIdentifier(lIdentifier)
             }
 
             try self.init(pRegexes: pRegexes, context)
@@ -465,13 +453,14 @@ struct AbstractSyntaxTree: Equatable, Hashable
             }
         }
 
-        private static func _set(for pRange: ParseTree.Range, _ context: Context) -> Set<ScalarRange>
+        private static func _set(for pRange: ParseTree.Range,
+                                 _ context: Context) -> Set<ScalarRange>
         {
             switch pRange
             {
                 case let .cat(c1, _, c2):
-                    let s1 = toScalar(c1, in: context.sourceLines)
-                    let s2 = toScalar(c2, in: context.sourceLines)
+                    let s1 = toScalar(c1)
+                    let s2 = toScalar(c2)
 
                     return Set([ScalarRange(s1...s2)])
             }
@@ -480,7 +469,7 @@ struct AbstractSyntaxTree: Equatable, Hashable
         private static func _set(for lCharacter: Lexer.Character, _ context:
             Context) -> Set<ScalarRange>
         {
-            return Set([ScalarRange(toScalar(lCharacter, in: context.sourceLines))])
+            return Set([ScalarRange(toScalar(lCharacter))])
         }
 
         private static func _set(for pSetSubtraction: ParseTree.SetSubtraction?,

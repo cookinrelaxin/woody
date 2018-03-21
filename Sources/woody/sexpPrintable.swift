@@ -1,13 +1,13 @@
 import Foundation
 
-let standardIndentation = " "
+let standardIndentation = "  "
 
 protocol SEXPPrintable: CustomDebugStringConvertible
 {
-    func print(_ indentation: Swift.String) -> Swift.String
+    func sexp(_ indentation: Swift.String) -> Swift.String
 }
 
 extension SEXPPrintable
 {
-    var debugDescription: Swift.String { return print("") }
+    var debugDescription: Swift.String { return sexp("") }
 }

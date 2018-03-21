@@ -1,6 +1,6 @@
 import Foundation
 
-struct SourceLines
+struct SourceLines: Equatable, Hashable
 {
     struct Index: Equatable, Hashable, Comparable, CustomDebugStringConvertible
     {
@@ -108,4 +108,9 @@ struct SourceLines
 
         return Index(line: newLine, char: newChar)
     }
+
+    static func ==(l: SourceLines, r: SourceLines) -> Bool
+    { return l.url == r.url }
+
+    var hashValue: Int { return url.hashValue }
 }

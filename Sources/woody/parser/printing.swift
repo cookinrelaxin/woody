@@ -2,45 +2,45 @@ import Foundation
 
 extension ParseTree.RegularDescription: SEXPPrintable
 {
-    func print(_ indentation: Swift.String) -> Swift.String
+    func sexp(_ indentation: Swift.String) -> Swift.String
     {
         switch self
         {
         case let .cat(rule, possibleRules):
             return indentation+"""
             (regularDescription
-                \(rule.print(indentation))
-                \(possibleRules.print(indentation)))
+                \(rule.sexp(indentation))
+                \(possibleRules.sexp(indentation)))
             """
         }
     }
 
-    var debugDescription: Swift.String { return print("") }
+    var debugDescription: Swift.String { return sexp("") }
 }
 
 extension ParseTree.Rule: SEXPPrintable
 {
-    func print(_ indentation: Swift.String) -> Swift.String
+    func sexp(_ indentation: Swift.String) -> Swift.String
     {
         switch self
         {
         case let .cat(identifier, definitionMarker, regex, ruleTerminator):
             return indentation+"""
             (rule
-                \(identifier.print(indentation+standardIndentation))
-                \(definitionMarker.print(indentation+standardIndentation))
-                \(regex.print(indentation+standardIndentation))
-                \(ruleTerminator.print(indentation+standardIndentation)))
+                \(identifier.sexp(indentation+standardIndentation))
+                \(definitionMarker.sexp(indentation+standardIndentation))
+                \(regex.sexp(indentation+standardIndentation))
+                \(ruleTerminator.sexp(indentation+standardIndentation)))
             """
         }
     }
 
-    var debugDescription: Swift.String { return print("") }
+    var debugDescription: Swift.String { return sexp("") }
 }
 
 extension ParseTree.PossibleRules: SEXPPrintable
 {
-    func print(_ indentation: Swift.String) -> Swift.String
+    func sexp(_ indentation: Swift.String) -> Swift.String
     {
         switch self
         {
@@ -49,7 +49,7 @@ extension ParseTree.PossibleRules: SEXPPrintable
             var arrayString = ""
             for rule in ruleArray
             {
-                arrayString += "\(rule.print(indentation+standardIndentation))\n"
+                arrayString += "\(rule.sexp(indentation+standardIndentation))\n"
             }
             return indentation+"""
             (possibleRules
@@ -58,34 +58,34 @@ extension ParseTree.PossibleRules: SEXPPrintable
         }
     }
 
-    var debugDescription: Swift.String { return print("") }
+    var debugDescription: Swift.String { return sexp("") }
 }
 
 extension ParseTree.Regex: SEXPPrintable
 {
-    func print(_ indentation: Swift.String) -> Swift.String
+    func sexp(_ indentation: Swift.String) -> Swift.String
     {
         switch self
         {
         case let .groupedRegex(groupedRegex):
             return indentation+"""
             (regex
-                \(groupedRegex.print(indentation+standardIndentation)))
+                \(groupedRegex.sexp(indentation+standardIndentation)))
             """
         case let .ungroupedRegex(ungroupedRegex):
             return indentation+"""
             (regex
-                \(ungroupedRegex.print(indentation+standardIndentation)))
+                \(ungroupedRegex.sexp(indentation+standardIndentation)))
             """
         }
     }
 
-    var debugDescription: Swift.String { return print("") }
+    var debugDescription: Swift.String { return sexp("") }
 }
 
 extension ParseTree.GroupedRegex: SEXPPrintable
 {
-    func print(_ indentation: Swift.String) -> Swift.String
+    func sexp(_ indentation: Swift.String) -> Swift.String
     {
         switch self
         {
@@ -95,110 +95,110 @@ extension ParseTree.GroupedRegex: SEXPPrintable
             {
                 return indentation+"""
                 (groupedRegex
-                    \(groupLeftDelimiter.print(indentation+standardIndentation))
-                    \(regex.print(indentation+standardIndentation))
-                    \(groupRightDelimiter.print(indentation+standardIndentation)))
+                    \(groupLeftDelimiter.sexp(indentation+standardIndentation))
+                    \(regex.sexp(indentation+standardIndentation))
+                    \(groupRightDelimiter.sexp(indentation+standardIndentation)))
                 """
             }
 
             return indentation+"""
             (groupedRegex
-                \(groupLeftDelimiter.print(indentation+standardIndentation))
-                \(regex.print(indentation+standardIndentation))
-                \(groupRightDelimiter.print(indentation+standardIndentation))
-                \(repetitionOperator!.print(indentation+standardIndentation)))
+                \(groupLeftDelimiter.sexp(indentation+standardIndentation))
+                \(regex.sexp(indentation+standardIndentation))
+                \(groupRightDelimiter.sexp(indentation+standardIndentation))
+                \(repetitionOperator!.sexp(indentation+standardIndentation)))
             """
         }
     }
 
-    var debugDescription: Swift.String { return print("") }
+    var debugDescription: Swift.String { return sexp("") }
 }
 
 extension ParseTree.UngroupedRegex: SEXPPrintable
 {
-    func print(_ indentation: Swift.String) -> Swift.String
+    func sexp(_ indentation: Swift.String) -> Swift.String
     {
         switch self
         {
         case let .union(union):
             return indentation+"""
             (ungroupedRegex
-                \(union.print(indentation+standardIndentation)))
+                \(union.sexp(indentation+standardIndentation)))
             """
         case let .simpleRegex(simpleRegex):
             return indentation+"""
             (ungroupedRegex
-                \(simpleRegex.print(indentation+standardIndentation)))
+                \(simpleRegex.sexp(indentation+standardIndentation)))
             """
         }
     }
 
-    var debugDescription: Swift.String { return print("") }
+    var debugDescription: Swift.String { return sexp("") }
 }
 
 extension ParseTree.Union: SEXPPrintable
 {
-    func print(_ indentation: Swift.String) -> Swift.String
+    func sexp(_ indentation: Swift.String) -> Swift.String
     {
         switch self
         {
         case let .cat(simpleRegex, unionOperator, regex):
             return indentation+"""
             (union
-                \(simpleRegex.print(indentation+standardIndentation))
-                \(unionOperator.print(indentation+standardIndentation))
-                \(regex.print(indentation+standardIndentation)))
+                \(simpleRegex.sexp(indentation+standardIndentation))
+                \(unionOperator.sexp(indentation+standardIndentation))
+                \(regex.sexp(indentation+standardIndentation)))
             """
         }
     }
 
-    var debugDescription: Swift.String { return print("") }
+    var debugDescription: Swift.String { return sexp("") }
 }
 
 extension ParseTree.SimpleRegex: SEXPPrintable
 {
-    func print(_ indentation: Swift.String) -> Swift.String
+    func sexp(_ indentation: Swift.String) -> Swift.String
     {
         switch self
         {
         case let .concatenation(concatenation):
             return indentation+"""
             (simpleRegex
-                \(concatenation.print(indentation+standardIndentation)))
+                \(concatenation.sexp(indentation+standardIndentation)))
             """
 
         case let .basicRegex(basicRegex):
             return indentation+"""
             (simpleRegex
-                \(basicRegex.print(indentation+standardIndentation)))
+                \(basicRegex.sexp(indentation+standardIndentation)))
             """
         }
     }
 
-    var debugDescription: Swift.String { return print("") }
+    var debugDescription: Swift.String { return sexp("") }
 }
 
 extension ParseTree.Concatenation: SEXPPrintable
 {
-    func print(_ indentation: Swift.String) -> Swift.String
+    func sexp(_ indentation: Swift.String) -> Swift.String
     {
         switch self
         {
         case let .cat(basicRegex, simpleRegex):
             return indentation+"""
             (concatenation
-                \(basicRegex.print(indentation+standardIndentation))
-                \(simpleRegex.print(indentation+standardIndentation)))
+                \(basicRegex.sexp(indentation+standardIndentation))
+                \(simpleRegex.sexp(indentation+standardIndentation)))
             """
         }
     }
 
-    var debugDescription: Swift.String { return print("") }
+    var debugDescription: Swift.String { return sexp("") }
 }
 
 extension ParseTree.BasicRegex: SEXPPrintable
 {
-    func print(_ indentation: Swift.String) -> Swift.String
+    func sexp(_ indentation: Swift.String) -> Swift.String
     {
         switch self
         {
@@ -207,104 +207,104 @@ extension ParseTree.BasicRegex: SEXPPrintable
             {
                 return indentation+"""
                 (basicRegex
-                    \(elementaryRegex.print(indentation+standardIndentation)))
+                    \(elementaryRegex.sexp(indentation+standardIndentation)))
                 """
             }
             return indentation+"""
             (basicRegex
-                \(elementaryRegex.print(indentation+standardIndentation))
-                \(repetitionOperator!.print(indentation+standardIndentation)))
+                \(elementaryRegex.sexp(indentation+standardIndentation))
+                \(repetitionOperator!.sexp(indentation+standardIndentation)))
             """
         }
     }
 
-    var debugDescription: Swift.String { return print("") }
+    var debugDescription: Swift.String { return sexp("") }
 }
 
 extension ParseTree.ElementaryRegex: SEXPPrintable
 {
-    func print(_ indentation: Swift.String) -> Swift.String
+    func sexp(_ indentation: Swift.String) -> Swift.String
     {
         switch self
         {
         case let .string(string):
             return indentation+"""
             (elementaryRegex
-                \(string.print(indentation+standardIndentation)))
+                \(string.sexp(indentation+standardIndentation)))
             """
 
         case let .identifier(identifier):
             return indentation+"""
             (elementaryRegex
-                \(identifier.print(indentation+standardIndentation)))
+                \(identifier.sexp(indentation+standardIndentation)))
             """
 
         case let .set(set):
             return indentation+"""
             (elementaryRegex
-                \(set.print(indentation+standardIndentation)))
+                \(set.sexp(indentation+standardIndentation)))
             """
         }
     }
 
-    var debugDescription: Swift.String { return print("") }
+    var debugDescription: Swift.String { return sexp("") }
 }
 
 extension ParseTree.DefinitionMarker: SEXPPrintable
 {
-    func print(_ indentation: Swift.String) -> Swift.String
+    func sexp(_ indentation: Swift.String) -> Swift.String
     {
         switch self
         {
         case let .helperDefinitionMarker(helperDefinitionMarker):
             return indentation+"""
             (definitionMarker
-                \(helperDefinitionMarker.print(indentation+standardIndentation)))
+                \(helperDefinitionMarker.sexp(indentation+standardIndentation)))
             """
 
         case let .tokenDefinitionMarker(tokenDefinitionMarker):
             return indentation+"""
             (definitionMarker
-                \(tokenDefinitionMarker.print(indentation+standardIndentation)))
+                \(tokenDefinitionMarker.sexp(indentation+standardIndentation)))
             """
         }
     }
 
-    var debugDescription: Swift.String { return print("") }
+    var debugDescription: Swift.String { return sexp("") }
 }
 
 extension ParseTree.RepetitionOperator: SEXPPrintable
 {
-    func print(_ indentation: Swift.String) -> Swift.String
+    func sexp(_ indentation: Swift.String) -> Swift.String
     {
         switch self
         {
         case let .zeroOrMoreOperator(zeroOrMoreOperator):
             return indentation+"""
             (repetitionOperator
-                \(zeroOrMoreOperator.print(indentation+standardIndentation)))
+                \(zeroOrMoreOperator.sexp(indentation+standardIndentation)))
             """
 
         case let .oneOrMoreOperator(oneOrMoreOperator):
             return indentation+"""
             (repetitionOperator
-                \(oneOrMoreOperator.print(indentation+standardIndentation)))
+                \(oneOrMoreOperator.sexp(indentation+standardIndentation)))
             """
 
         case let .zeroOrOneOperator(zeroOrOneOperator):
             return indentation+"""
             (repetitionOperator
-                \(zeroOrOneOperator.print(indentation+standardIndentation)))
+                \(zeroOrOneOperator.sexp(indentation+standardIndentation)))
             """
         }
     }
 
-    var debugDescription: Swift.String { return print("") }
+    var debugDescription: Swift.String { return sexp("") }
 }
 
 extension ParseTree.Set: SEXPPrintable
 {
-    func print(_ indentation: Swift.String) -> Swift.String
+    func sexp(_ indentation: Swift.String) -> Swift.String
     {
         switch self
         {
@@ -313,125 +313,125 @@ extension ParseTree.Set: SEXPPrintable
             {
                 return indentation+"""
                 (set
-                    \(simpleSet.print(indentation+standardIndentation)))
+                    \(simpleSet.sexp(indentation+standardIndentation)))
                 """
             }
                 return indentation+"""
                 (set
-                    \(simpleSet.print(indentation+standardIndentation))
-                    \(setSubtraction!.print(indentation+standardIndentation)))
+                    \(simpleSet.sexp(indentation+standardIndentation))
+                    \(setSubtraction!.sexp(indentation+standardIndentation)))
                 """
         }
     }
 
-    var debugDescription: Swift.String { return print("") }
+    var debugDescription: Swift.String { return sexp("") }
 }
 
 extension ParseTree.SetSubtraction: SEXPPrintable
 {
-    func print(_ indentation: Swift.String) -> Swift.String
+    func sexp(_ indentation: Swift.String) -> Swift.String
     {
         switch self
         {
         case let .cat(setMinus, simpleSet):
             return indentation+"""
             (setSubtraction
-                \(setMinus.print(indentation+standardIndentation))
-                \(simpleSet.print(indentation+standardIndentation)))
+                \(setMinus.sexp(indentation+standardIndentation))
+                \(simpleSet.sexp(indentation+standardIndentation)))
             """
         }
     }
 
-    var debugDescription: Swift.String { return print("") }
+    var debugDescription: Swift.String { return sexp("") }
 }
 
 extension ParseTree.SimpleSet: SEXPPrintable
 {
-    func print(_ indentation: Swift.String) -> Swift.String
+    func sexp(_ indentation: Swift.String) -> Swift.String
     {
         switch self
         {
         case let .standardSet(standardSet):
             return indentation+"""
             (simpleSet
-                \(standardSet.print(indentation+standardIndentation)))
+                \(standardSet.sexp(indentation+standardIndentation)))
             """
         case let .literalSet(literalSet):
             return indentation+"""
             (simpleSet
-                \(literalSet.print(indentation+standardIndentation)))
+                \(literalSet.sexp(indentation+standardIndentation)))
             """
         }
     }
 
-    var debugDescription: Swift.String { return print("") }
+    var debugDescription: Swift.String { return sexp("") }
 }
 
 extension ParseTree.StandardSet: SEXPPrintable
 {
-    func print(_ indentation: Swift.String) -> Swift.String
+    func sexp(_ indentation: Swift.String) -> Swift.String
     {
         switch self
         {
         case let .cat(unicode):
             return indentation+"""
             (standardSet
-                \(unicode.print(indentation+standardIndentation)))
+                \(unicode.sexp(indentation+standardIndentation)))
             """
         }
     }
 
-    var debugDescription: Swift.String { return print("") }
+    var debugDescription: Swift.String { return sexp("") }
 }
 
 extension ParseTree.LiteralSet: SEXPPrintable
 {
-    func print(_ indentation: Swift.String) -> Swift.String
+    func sexp(_ indentation: Swift.String) -> Swift.String
     {
         switch self
         {
         case let .basicSet(basicSet):
             return indentation+"""
             (literalSet
-                \(basicSet.print(indentation+standardIndentation)))
+                \(basicSet.sexp(indentation+standardIndentation)))
             """
         case let .bracketedSet(bracketedSet):
             return indentation+"""
             (literalSet
-                \(bracketedSet.print(indentation+standardIndentation)))
+                \(bracketedSet.sexp(indentation+standardIndentation)))
             """
         }
     }
 
-    var debugDescription: Swift.String { return print("") }
+    var debugDescription: Swift.String { return sexp("") }
 }
 
 extension ParseTree.BasicSet: SEXPPrintable
 {
-    func print(_ indentation: Swift.String) -> Swift.String
+    func sexp(_ indentation: Swift.String) -> Swift.String
     {
         switch self
         {
         case let .range(range):
             return indentation+"""
             (basicSet
-                \(range.print(indentation+standardIndentation)))
+                \(range.sexp(indentation+standardIndentation)))
             """
 
         case let .character(character):
             return indentation+"""
             (basicSet
-                \(character.print(indentation+standardIndentation)))
+                \(character.sexp(indentation+standardIndentation)))
             """
         }
     }
 
-    var debugDescription: Swift.String { return print("") }
+    var debugDescription: Swift.String { return sexp("") }
 }
 
 extension ParseTree.BracketedSet: SEXPPrintable
 {
-    func print(_ indentation: Swift.String) -> Swift.String
+    func sexp(_ indentation: Swift.String) -> Swift.String
     {
         switch self
         {
@@ -439,73 +439,73 @@ extension ParseTree.BracketedSet: SEXPPrintable
         bracketedSetRightDelimiter):
             return indentation+"""
             (bracketedSet
-                \(bracketedSetLeftDelimiter.print(indentation+standardIndentation))
-                \(basicSetList.print(indentation+standardIndentation))
-                \(bracketedSetRightDelimiter.print(indentation+standardIndentation)))
+                \(bracketedSetLeftDelimiter.sexp(indentation+standardIndentation))
+                \(basicSetList.sexp(indentation+standardIndentation))
+                \(bracketedSetRightDelimiter.sexp(indentation+standardIndentation)))
             """
         }
     }
 
-    var debugDescription: Swift.String { return print("") }
+    var debugDescription: Swift.String { return sexp("") }
 }
 
 extension ParseTree.BasicSetList: SEXPPrintable
 {
-    func print(_ indentation: Swift.String) -> Swift.String
+    func sexp(_ indentation: Swift.String) -> Swift.String
     {
         switch self
         {
         case let .basicSets(basicSets):
             return indentation+"""
             (basicSetList
-                \(basicSets.print(indentation+standardIndentation)))
+                \(basicSets.sexp(indentation+standardIndentation)))
             """
 
         case let .basicSet(basicSet):
             return indentation+"""
             (basicSetList
-                \(basicSet.print(indentation+standardIndentation)))
+                \(basicSet.sexp(indentation+standardIndentation)))
             """
         }
     }
 
-    var debugDescription: Swift.String { return print("") }
+    var debugDescription: Swift.String { return sexp("") }
 }
 
 extension ParseTree.BasicSets: SEXPPrintable
 {
-    func print(_ indentation: Swift.String) -> Swift.String
+    func sexp(_ indentation: Swift.String) -> Swift.String
     {
         switch self
         {
         case let .cat(basicSet, setSeparator, basicSetList):
             return indentation+"""
             (basicSets
-                \(basicSet.print(indentation+standardIndentation))
-                \(setSeparator.print(indentation+standardIndentation))
-                \(basicSetList.print(indentation+standardIndentation)))
+                \(basicSet.sexp(indentation+standardIndentation))
+                \(setSeparator.sexp(indentation+standardIndentation))
+                \(basicSetList.sexp(indentation+standardIndentation)))
             """
         }
     }
 
-    var debugDescription: Swift.String { return print("") }
+    var debugDescription: Swift.String { return sexp("") }
 }
 
 extension ParseTree.Range: SEXPPrintable
 {
-    func print(_ indentation: Swift.String) -> Swift.String
+    func sexp(_ indentation: Swift.String) -> Swift.String
     {
         switch self
         {
         case let .cat(character_1, rangeSeparator, character_2):
             return indentation+"""
             (range
-                \(character_1.print(indentation+standardIndentation))
-                \(rangeSeparator.print(indentation+standardIndentation))
-                \(character_2.print(indentation+standardIndentation)))
+                \(character_1.sexp(indentation+standardIndentation))
+                \(rangeSeparator.sexp(indentation+standardIndentation))
+                \(character_2.sexp(indentation+standardIndentation)))
             """
         }
     }
 
-    var debugDescription: Swift.String { return print("") }
+    var debugDescription: Swift.String { return sexp("") }
 }
