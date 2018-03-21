@@ -34,6 +34,9 @@ struct SourceLines
 
     init(lines: [[Scalar]], url: URL) { self.data = lines; self.url = url }
 
+    subscript(_ line: Int) -> [Scalar]
+    { return data[line] }
+
     subscript(_ index: Index) -> Scalar
     { return data[index.line][index.char] }
 

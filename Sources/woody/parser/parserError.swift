@@ -38,20 +38,48 @@ enum ParserError: Error
                                                                 withPad: "-",
                                                                 startingAt: 0)
 
+        let lineNoPrefix = "\(lineNo)| "
         let ctxt = """
-        \(lineNo)| \(line)
+        \(lineNoPrefix)\(line)
         """
+
+        let _underline = underline(for: actualToken,
+                                   in: sourceLines,
+                                   offset: lineNoPrefix.count)
 
         let msg = """
         \(header)
 
         \(comment)
 
-        \(ctxt)
+        \(ctxt)\(_underline)
         """
 
         print(msg)
     }
 
     case unexpectedEndOfInput
+}
+
+private func underline(for token: Token,
+                       in sourceLines: SourceLines,
+                       offset: Int) -> String
+{
+    let start = token.info.startIndex
+    let end = token.info.endIndex
+    let scalars = sourceLines[start.line]
+
+    var underline = [Scalar]()
+
+    for i in 0..<scalars.count
+    {
+        if start.char <= i && i <= end.char
+        { underline.append("^") }
+        else
+        { underline.append(" ") }
+    }
+
+    underline = [Scalar](repeating: " ", count: offset) + underline
+
+    return String(String.UnicodeScalarView(underline))
 }
