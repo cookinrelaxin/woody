@@ -273,7 +273,6 @@ RegularDescription.cat(
 
         guard let parseTree = try! coordinator.parser.parseTree()
         else { XCTFail(); return }
-        print(parseTree)
 
         XCTAssertEqual(parseTree.flattened.count, 33)
     }

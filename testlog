@@ -1,34 +1,36 @@
 
-Compile Swift Module 'woody' (26 sources)
-Linking ./.build/x86_64-apple-macosx10.10/debug/woodyPackageTests.xctest/Contents/MacOS/woodyPackageTests
-Test Suite 'All tests' started at 2018-03-20 22:28:11.287
-Test Suite 'woodyPackageTests.xctest' started at 2018-03-20 22:28:11.287
-Test Suite 'LexerTests' started at 2018-03-20 22:28:11.288
+Test Suite 'Selected tests' started at 2018-03-21 00:34:20.535
+Test Suite 'woodyPackageTests.xctest' started at 2018-03-21 00:34:20.535
+Test Suite 'LexerTests' started at 2018-03-21 00:34:20.535
 Test Case '-[woodyTests.LexerTests testSwift]' started.
-Test Case '-[woodyTests.LexerTests testSwift]' passed (0.121 seconds).
-Test Suite 'LexerTests' passed at 2018-03-20 22:28:11.408.
-	 Executed 1 test, with 0 failures (0 unexpected) in 0.121 (0.121) seconds
-Test Suite 'ParserTests' started at 2018-03-20 22:28:11.408
+Test Case '-[woodyTests.LexerTests testSwift]' passed (0.146 seconds).
+Test Suite 'LexerTests' passed at 2018-03-21 00:34:20.682.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.146 (0.146) seconds
+Test Suite 'woodyPackageTests.xctest' passed at 2018-03-21 00:34:20.682.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.146 (0.146) seconds
+Test Suite 'Selected tests' passed at 2018-03-21 00:34:20.682.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.146 (0.147) seconds
+Test Suite 'All tests' started at 2018-03-21 00:34:26.458
+Test Suite 'woodyPackageTests.xctest' started at 2018-03-21 00:34:26.458
+Test Suite 'LexerTests' started at 2018-03-21 00:34:26.458
+Test Case '-[woodyTests.LexerTests testSwift]' started.
+Test Case '-[woodyTests.LexerTests testSwift]' passed (0.114 seconds).
+Test Suite 'LexerTests' passed at 2018-03-21 00:34:26.572.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.114 (0.114) seconds
+Test Suite 'ParserTests' started at 2018-03-21 00:34:26.573
 Test Case '-[woodyTests.ParserTests testParseGroup]' started.
-Test Case '-[woodyTests.ParserTests testParseGroup]' passed (0.001 seconds).
+Test Case '-[woodyTests.ParserTests testParseGroup]' passed (0.004 seconds).
 Test Case '-[woodyTests.ParserTests testParseMultipleRules]' started.
-Test Case '-[woodyTests.ParserTests testParseMultipleRules]' passed (0.001 seconds).
+Test Case '-[woodyTests.ParserTests testParseMultipleRules]' passed (0.002 seconds).
 Test Case '-[woodyTests.ParserTests testParseRule]' started.
-Test Case '-[woodyTests.ParserTests testParseRule]' passed (0.000 seconds).
+Test Case '-[woodyTests.ParserTests testParseRule]' passed (0.001 seconds).
 Test Case '-[woodyTests.ParserTests testParseSet]' started.
-Test Case '-[woodyTests.ParserTests testParseSet]' passed (0.001 seconds).
+Test Case '-[woodyTests.ParserTests testParseSet]' passed (0.002 seconds).
 Test Case '-[woodyTests.ParserTests testParseSwift]' started.
-/Users/zacharyfeldcamp/Library/Mobile Documents/com~apple~CloudDocs/woody/Tests/woodyTests/parserTests.swift:275: error: -[woodyTests.ParserTests testParseSwift] : failed -
-Test Case '-[woodyTests.ParserTests testParseSwift]' failed (0.011 seconds).
-Test Suite 'ParserTests' failed at 2018-03-20 22:28:11.422.
-	 Executed 5 tests, with 1 failure (0 unexpected) in 0.013 (0.014) seconds
-Test Suite 'woodyPackageTests.xctest' failed at 2018-03-20 22:28:11.422.
-	 Executed 6 tests, with 1 failure (0 unexpected) in 0.134 (0.135) seconds
-Test Suite 'All tests' failed at 2018-03-20 22:28:11.422.
-	 Executed 6 tests, with 1 failure (0 unexpected) in 0.134 (0.135) seconds
--- Parsing Error in swift.woody ------------------------------------------------
-
-I expected to find a BracketedSetRightDelimiter token, but I found "u2E80" instead.
-
-71|                      u2C00-u2DFF u2E80-u2FFF,
-                                     ^^^^^
+Test Case '-[woodyTests.ParserTests testParseSwift]' passed (0.015 seconds).
+Test Suite 'ParserTests' passed at 2018-03-21 00:34:26.597.
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.024 (0.024) seconds
+Test Suite 'woodyPackageTests.xctest' passed at 2018-03-21 00:34:26.597.
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.138 (0.139) seconds
+Test Suite 'All tests' passed at 2018-03-21 00:34:26.597.
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.138 (0.139) seconds

@@ -24,11 +24,14 @@ fileprivate typealias BasicSetList       = ParseTree.BasicSetList
 fileprivate typealias BasicSets          = ParseTree.BasicSets
 fileprivate typealias Range              = ParseTree.Range
 
+
 final class Parser
 {
     private var tokens: [Token]
     private var source: SourceLines
     fileprivate var dot = 0
+
+    private var expectedTokenStack: TokenClassStack
 
     func nextToken() throws -> Token
     {
@@ -49,94 +52,14 @@ final class Parser
             let _regularDescription = try regularDescription()
             return ParseTree(_regularDescription)
         }
-        catch let ParserError.expectedIdentifier(token)
+        catch let ParserError.expected(tokenClass)
         {
-            ParserError.printExpectationErrorMessage("Identifier", token, source)
+            expectedTokenStack.push(tokenClass)
+            ParserError.printExpectationErrorMessage(expectedTokenStack,
+                                                     try! nextToken(),
+                                                     source)
+            expectedTokenStack.clear()
         }
-        catch let ParserError.expectedHelperDefinitionMarker(token)
-        {
-            ParserError.printExpectationErrorMessage("HelperDefinitionMarker",
-                token, source)
-        }
-        catch let ParserError.expectedTokenDefinitionMarker(token)
-        {
-            ParserError.printExpectationErrorMessage("TokenDefinitionMarker",
-                token, source)
-        }
-        catch let ParserError.expectedRuleTerminator(token)
-        {
-            ParserError.printExpectationErrorMessage("RuleTerminator", token,
-                source)
-        }
-        catch let ParserError.expectedGroupLeftDelimiter(token)
-        {
-            ParserError.printExpectationErrorMessage("GroupLeftDelimiter",
-                token, source)
-        }
-        catch let ParserError.expectedGroupRightDelimiter(token)
-        {
-            ParserError.printExpectationErrorMessage("GroupRightDelimiter",
-                token, source)
-        }
-        catch let ParserError.expectedUnionOperator(token)
-        {
-            ParserError.printExpectationErrorMessage("UnionOperator", token,
-                source)
-        }
-        catch let ParserError.expectedZeroOrMoreOperator(token)
-        {
-            ParserError.printExpectationErrorMessage("ZeroOrMoreOperator",
-                token, source)
-        }
-        catch let ParserError.expectedOneOrMoreOperator(token)
-        {
-            ParserError.printExpectationErrorMessage("OneOrMoreOperator", token,
-   source)
-        }
-        catch let ParserError.expectedZeroOrOneOperator(token)
-        {
-            ParserError.printExpectationErrorMessage("ZeroOrOneOperator", token,
-   source)
-        }
-        catch let ParserError.expectedString(token)
-        {
-            ParserError.printExpectationErrorMessage("String", token, source)
-        }
-        catch let ParserError.expectedSetMinus(token)
-        {
-            ParserError.printExpectationErrorMessage("SetMinus", token, source)
-        }
-        catch let ParserError.expectedUnicode(token)
-        {
-            ParserError.printExpectationErrorMessage("Unicode", token, source)
-        }
-        catch let ParserError.expectedCharacter(token)
-        {
-            ParserError.printExpectationErrorMessage("Character", token, source)
-        }
-        catch let ParserError.expectedRangeSeparator(token)
-        {
-            ParserError.printExpectationErrorMessage("RangeSeparator", token,
-                source)
-        }
-        catch let ParserError.expectedBracketedSetLeftDelimiter(token)
-        {
-            ParserError.printExpectationErrorMessage("BracketedSetLeftDelimiter",
-                token, source)
-        }
-        catch let ParserError.expectedBracketedSetRightDelimiter(token)
-        {
-            ParserError.printExpectationErrorMessage("BracketedSetRightDelimiter",
-                token, source)
-        }
-        catch let ParserError.expectedSetSeparator(token)
-        {
-            ParserError.printExpectationErrorMessage("SetSeparator", token,
-                source)
-        }
-        // catch ParserError.unexpectedEndOfInput
-        // {
-        // }
 
         return nil
     }
@@ -145,6 +68,7 @@ final class Parser
     {
         tokens = lexer.tokens
         source = lexer.data
+        expectedTokenStack = TokenClassStack()
     }
 }
 
@@ -172,7 +96,6 @@ fileprivate extension Parser
     {
         var rules = [Rule]()
         while dot < tokens.endIndex { rules.append(try rule()) }
-        /*while let r = try? rule() { rules.append(r) }*/
 
         return .cat(rules)
     }
@@ -181,11 +104,15 @@ fileprivate extension Parser
     {
         let _dot = dot
 
-        if let g = try? groupedRegex() { return .groupedRegex(g) }
+        do { return .groupedRegex(try groupedRegex()) }
+        catch let ParserError.expected(expectedTokenClass)
+        {
+            expectedTokenStack.push(expectedTokenClass)
+            dot = _dot
+        }
 
-        dot = _dot
-
-        return .ungroupedRegex(try ungroupedRegex())
+        let n = Regex.ungroupedRegex(try ungroupedRegex())
+        return n
     }
 
     func groupedRegex() throws -> GroupedRegex
@@ -203,11 +130,15 @@ fileprivate extension Parser
     {
         let _dot = dot
 
-        if let u = try? union() { return .union(u) }
+        do { return .union(try union()) }
+        catch let ParserError.expected(expectedTokenClass)
+        {
+            expectedTokenStack.push(expectedTokenClass)
+            dot = _dot
+        }
 
-        dot = _dot
-
-        return .simpleRegex(try simpleRegex())
+        let n = UngroupedRegex.simpleRegex(try simpleRegex())
+        return n
     }
 
     func union() throws -> Union
@@ -223,11 +154,15 @@ fileprivate extension Parser
     {
         let _dot = dot
 
-        if let c = try? concatenation() { return .concatenation(c) }
+        do { return .concatenation(try concatenation()) }
+        catch let ParserError.expected(expectedTokenClass)
+        {
+            expectedTokenStack.push(expectedTokenClass)
+            dot = _dot
+        }
 
-        dot = _dot
-
-        return .basicRegex(try basicRegex())
+        let n = SimpleRegex.basicRegex(try basicRegex())
+        return n
     }
 
     func concatenation() throws -> Concatenation
@@ -248,45 +183,63 @@ fileprivate extension Parser
 
     func elementaryRegex() throws -> ElementaryRegex
     {
-
         let _dot = dot
 
-        if let n = try? string() { return .string(n) }
+        do { return .string(try string()) }
+        catch let ParserError.expected(expectedTokenClass)
+        {
+            expectedTokenStack.push(expectedTokenClass)
+            dot = _dot
+        }
 
-        dot = _dot
+        do { return .identifier(try identifier()) }
+        catch let ParserError.expected(expectedTokenClass)
+        {
+            expectedTokenStack.push(expectedTokenClass)
+            dot = _dot
+        }
 
-        if let n = try? identifier() { return .identifier(n) }
-
-        dot = _dot
-
-        return .set(try set())
+        let n = ElementaryRegex.set(try set())
+        return n
     }
 
     func definitionMarker() throws -> DefinitionMarker
     {
         let _dot = dot
 
-        if let n = try? helperDefinitionMarker() { return
-            .helperDefinitionMarker(n) }
+        do { return .helperDefinitionMarker(try helperDefinitionMarker()) }
+        catch let ParserError.expected(expectedTokenClass)
+        {
+            expectedTokenStack.push(expectedTokenClass)
+            dot = _dot
+        }
 
-        dot = _dot
-
-        return .tokenDefinitionMarker(try tokenDefinitionMarker())
+        let n = DefinitionMarker.tokenDefinitionMarker(try tokenDefinitionMarker())
+        return n
     }
 
     func repetitionOperator() throws -> RepetitionOperator
     {
         let _dot = dot
 
-        if let n = try? zeroOrMoreOperator() { return .zeroOrMoreOperator(n) }
+        do { return .zeroOrMoreOperator(try zeroOrMoreOperator()) }
+        catch let ParserError.expected(expectedTokenClass)
+        {
+            expectedTokenStack.push(expectedTokenClass)
+            dot = _dot
+        }
+
+        do { return .oneOrMoreOperator(try oneOrMoreOperator()) }
+        catch let ParserError.expected(expectedTokenClass)
+        {
+            expectedTokenStack.push(expectedTokenClass)
+            dot = _dot
+        }
 
         dot = _dot
 
-        if let n = try? oneOrMoreOperator() { return .oneOrMoreOperator(n) }
-
-        dot = _dot
-
-        return .zeroOrOneOperator(try zeroOrOneOperator())
+        let n = RepetitionOperator.zeroOrOneOperator(try zeroOrOneOperator())
+        return n
     }
 
     func set() throws -> Set
@@ -309,11 +262,15 @@ fileprivate extension Parser
     {
         let _dot = dot
 
-        if let n = try? standardSet() { return .standardSet(n) }
+        do { return .standardSet(try standardSet()) }
+        catch let ParserError.expected(expectedTokenClass)
+        {
+            expectedTokenStack.push(expectedTokenClass)
+            dot = _dot
+        }
 
-        dot = _dot
-
-        return .literalSet(try literalSet())
+        let n = SimpleSet.literalSet(try literalSet())
+        return n
     }
 
     func standardSet() throws -> StandardSet
@@ -327,22 +284,30 @@ fileprivate extension Parser
     {
         let _dot = dot
 
-        if let n = try? basicSet() { return .basicSet(n) }
+        do { return .basicSet(try basicSet()) }
+        catch let ParserError.expected(expectedTokenClass)
+        {
+            expectedTokenStack.push(expectedTokenClass)
+            dot = _dot
+        }
 
-        dot = _dot
-
-        return .bracketedSet(try bracketedSet())
+        let n = LiteralSet.bracketedSet(try bracketedSet())
+        return n
     }
 
     func basicSet() throws -> BasicSet
     {
         let _dot = dot
 
-        if let n = try? range() { return .range(n) }
+        do { return .range(try range()) }
+        catch let ParserError.expected(expectedTokenClass)
+        {
+            expectedTokenStack.push(expectedTokenClass)
+            dot = _dot
+        }
 
-        dot = _dot
-
-        return .character(try character())
+        let n = BasicSet.character(try character())
+        return n
     }
 
     func bracketedSet() throws -> BracketedSet
@@ -359,11 +324,18 @@ fileprivate extension Parser
     {
         let _dot = dot
 
-        if let n = try? basicSets() { return .basicSets(n) }
+        do
+        {
+            let n = try basicSets()
+            return .basicSets(n)
+        }
+        catch let ParserError.expected(expectedTokenClass)
+        { expectedTokenStack.push(expectedTokenClass) }
 
         dot = _dot
 
-        return .basicSet(try basicSet())
+        let n = BasicSetList.basicSet(try basicSet())
+        return n
     }
 
     func basicSets() throws -> BasicSets

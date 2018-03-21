@@ -5,7 +5,7 @@ extension Parser
         let token = try nextToken()
 
         guard let identifier = token as? Lexer.Identifier
-        else { throw ParserError.expectedIdentifier(token) }
+        else { throw ParserError.expected(.identifier) }
 
         advanceDot()
 
@@ -17,7 +17,7 @@ extension Parser
         let token = try nextToken()
 
         guard let helperDefinitionMarker = token as? Lexer.HelperDefinitionMarker
-        else { throw ParserError.expectedHelperDefinitionMarker(token) }
+        else { throw ParserError.expected(.helperDefinitionMarker) }
 
         advanceDot()
 
@@ -29,7 +29,7 @@ extension Parser
         let token = try nextToken()
 
         guard let tokenDefinitionMarker = token as? Lexer.TokenDefinitionMarker
-        else { throw ParserError.expectedTokenDefinitionMarker(token) }
+        else { throw ParserError.expected(.tokenDefinitionMarker) }
 
         advanceDot()
 
@@ -41,7 +41,7 @@ extension Parser
         let token = try nextToken()
 
         guard let ruleTerminator = token as? Lexer.RuleTerminator
-        else { throw ParserError.expectedRuleTerminator(token) }
+        else { throw ParserError.expected(.ruleTerminator) }
 
         advanceDot()
 
@@ -53,7 +53,7 @@ extension Parser
         let token = try nextToken()
 
         guard let groupLeftDelimiter = token as? Lexer.GroupLeftDelimiter
-        else { throw ParserError.expectedGroupLeftDelimiter(token) }
+        else { throw ParserError.expected(.groupLeftDelimiter) }
 
         advanceDot()
 
@@ -65,7 +65,7 @@ extension Parser
         let token = try nextToken()
 
         guard let groupRightDelimiter = token as? Lexer.GroupRightDelimiter
-        else { throw ParserError.expectedGroupRightDelimiter(token) }
+        else { throw ParserError.expected(.groupRightDelimiter) }
 
         advanceDot()
 
@@ -77,7 +77,7 @@ extension Parser
         let token = try nextToken()
 
         guard let unionOperator = token as? Lexer.UnionOperator
-        else { throw ParserError.expectedUnionOperator(token) }
+        else { throw ParserError.expected(.unionOperator) }
 
         advanceDot()
 
@@ -89,7 +89,7 @@ extension Parser
         let token = try nextToken()
 
         guard let zeroOrMoreOperator = token as? Lexer.ZeroOrMoreOperator
-        else { throw ParserError.expectedZeroOrMoreOperator(token) }
+        else { throw ParserError.expected(.zeroOrMoreOperator) }
 
         advanceDot()
 
@@ -101,7 +101,7 @@ extension Parser
         let token = try nextToken()
 
         guard let oneOrMoreOperator = token as? Lexer.OneOrMoreOperator
-        else { throw ParserError.expectedOneOrMoreOperator(token) }
+        else { throw ParserError.expected(.oneOrMoreOperator) }
 
         advanceDot()
 
@@ -113,7 +113,7 @@ extension Parser
         let token = try nextToken()
 
         guard let zeroOrOneOperator = token as? Lexer.ZeroOrOneOperator
-        else { throw ParserError.expectedZeroOrOneOperator(token) }
+        else { throw ParserError.expected(.zeroOrOneOperator) }
 
         advanceDot()
 
@@ -125,7 +125,7 @@ extension Parser
         let token = try nextToken()
 
         guard let string = token as? Lexer.String
-        else { throw ParserError.expectedString(token) }
+        else { throw ParserError.expected(.string) }
 
         advanceDot()
 
@@ -137,7 +137,7 @@ extension Parser
         let token = try nextToken()
 
         guard let setMinus = token as? Lexer.SetMinus
-        else { throw ParserError.expectedSetMinus(token) }
+        else { throw ParserError.expected(.setMinus) }
 
         advanceDot()
 
@@ -149,7 +149,7 @@ extension Parser
         let token = try nextToken()
 
         guard let unicode = token as? Lexer.Unicode
-        else { throw ParserError.expectedUnicode(token) }
+        else { throw ParserError.expected(.unicode) }
 
         advanceDot()
 
@@ -161,7 +161,7 @@ extension Parser
         let token = try nextToken()
 
         guard let character = token as? Lexer.Character
-        else { throw ParserError.expectedCharacter(token) }
+        else { throw ParserError.expected(.character) }
 
         advanceDot()
 
@@ -173,7 +173,7 @@ extension Parser
         let token = try nextToken()
 
         guard let rangeSeparator = token as? Lexer.RangeSeparator
-        else { throw ParserError.expectedRangeSeparator(token) }
+        else { throw ParserError.expected(.rangeSeparator) }
 
         advanceDot()
 
@@ -185,7 +185,7 @@ extension Parser
         let token = try nextToken()
 
         guard let bracketedSetLeftDelimiter = token as? Lexer.BracketedSetLeftDelimiter
-        else { throw ParserError.expectedBracketedSetLeftDelimiter(token) }
+        else { throw ParserError.expected(.bracketedSetLeftDelimiter) }
 
         advanceDot()
 
@@ -197,7 +197,7 @@ extension Parser
         let token = try nextToken()
 
         guard let bracketedSetRightDelimiter = token as? Lexer.BracketedSetRightDelimiter
-        else { throw ParserError.expectedBracketedSetRightDelimiter(token) }
+        else { throw ParserError.expected(.bracketedSetRightDelimiter) }
 
         advanceDot()
 
@@ -209,7 +209,7 @@ extension Parser
         let token = try nextToken()
 
         guard let setSeparator = token as? Lexer.SetSeparator
-        else { throw ParserError.expectedSetSeparator(token) }
+        else { throw ParserError.expected(.setSeparator) }
 
         advanceDot()
 

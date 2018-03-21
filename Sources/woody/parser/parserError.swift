@@ -1,37 +1,56 @@
 import Foundation
 
+struct TokenClassStack
+{
+    private var data: [TokenClass]
+
+    init() { data = [] }
+
+    mutating func push(_ tokenClass: TokenClass)
+    {
+        if data.count == 2
+        {
+            data[0] = data[1]
+            data[1] = tokenClass
+        }
+        else
+        {
+            data.append(tokenClass)
+        }
+    }
+
+    mutating func clear()
+    {
+        data = []
+    }
+
+    var enumeration: String
+    {
+        if data.count == 1
+        || (data.count == 2 && data[0] == data[1]) { return "\(data[0])" }
+        else if data.count == 2
+        {
+            return "\(data[0]), or \(data[1])"
+        }
+        preconditionFailure()
+    }
+}
+
 enum ParserError: Error
 {
-    case expectedIdentifier                 (Token)
-    case expectedHelperDefinitionMarker     (Token)
-    case expectedTokenDefinitionMarker      (Token)
-    case expectedRuleTerminator             (Token)
-    case expectedGroupLeftDelimiter         (Token)
-    case expectedGroupRightDelimiter        (Token)
-    case expectedUnionOperator              (Token)
-    case expectedZeroOrMoreOperator         (Token)
-    case expectedOneOrMoreOperator          (Token)
-    case expectedZeroOrOneOperator          (Token)
-    case expectedString                     (Token)
-    case expectedSetMinus                   (Token)
-    case expectedUnicode                    (Token)
-    case expectedCharacter                  (Token)
-    case expectedRangeSeparator             (Token)
-    case expectedBracketedSetLeftDelimiter  (Token)
-    case expectedBracketedSetRightDelimiter (Token)
-    case expectedSetSeparator               (Token)
+    case expected(TokenClass)
 
-    static func printExpectationErrorMessage(_ expectedTokenClass: String,
-                                             _ actualToken: Token,
+    static func printExpectationErrorMessage(_ expected: TokenClassStack,
+                                             _ actual: Token,
                                              _ sourceLines: SourceLines)
     {
-        let lineNo = actualToken.info.startIndex.line+1
-        let line = actualToken.line(in: sourceLines)
-        let sourceURL = actualToken.info.sourceURL.lastPathComponent
+        let lineNo = actual.info.startIndex.line+1
+        let line = actual.line(in: sourceLines)
+        let sourceURL = actual.info.sourceURL.lastPathComponent
 
         let comment = """
-        I expected to find a \(expectedTokenClass) token, but I found\
-         "\(actualToken.representation(in: sourceLines))" instead.
+        I unexpectedly found \(actual.tokenClass.english)\
+         `\(actual.representation(in: sourceLines))` here.
         """
 
         let header = "-- Parsing Error in \(sourceURL) ".padding(toLength: 80,
@@ -43,9 +62,13 @@ enum ParserError: Error
         \(lineNoPrefix)\(line)
         """
 
-        let _underline = underline(for: actualToken,
+        let _underline = underline(for: actual,
                                    in: sourceLines,
                                    offset: lineNoPrefix.count)
+
+        let suggestion = """
+        But there should be \(expected.enumeration).
+        """
 
         let msg = """
         \(header)
@@ -53,6 +76,8 @@ enum ParserError: Error
         \(comment)
 
         \(ctxt)\(_underline)
+        \(suggestion)
+
         """
 
         print(msg)

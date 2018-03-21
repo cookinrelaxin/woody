@@ -290,6 +290,7 @@ class LexerTests: XCTestCase
             ("Character", "u2C00"),
             ("RangeSeparator", "-"),
             ("Character", "u2DFF"),
+            ("SetSeparator", ","),
             ("Character", "u2E80"),
             ("RangeSeparator", "-"),
             ("Character", "u2FFF"),
