@@ -57,8 +57,8 @@ identifier -> implicit_parameter_name;
 identifier_head -> 'a-'z | 'A-'Z;
 identifier_head -> '_;
 
-## Note that technically, a character specified like 'u00A8' or ''a'', actually
-## specifies the set containing that character. Hence 'u00B2-u00B5' specifies the
+## Note that technically, a character specified like 'u00A8 or 'a, actually
+## specifies the set containing that character. Hence u00B2-u00B5 specifies the
 ## set containing all characters c such that u00B2 <= c <= u00B5. And the { ... }
 ## construct forms the union of its contents.
 

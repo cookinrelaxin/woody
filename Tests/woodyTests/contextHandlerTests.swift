@@ -17,7 +17,7 @@ class ContextHandlerTests: XCTestCase
 
         XCTAssertEqual(ast.rules.count, 4)
 
-        print(ast)
+        /*print(ast)*/
     }
 }
 

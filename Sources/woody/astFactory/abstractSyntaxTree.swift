@@ -156,10 +156,7 @@ struct AbstractSyntaxTree: Equatable, Hashable
         let basicRegex         : BasicRegex
         let repetitionOperator : RepetitionOperator?
 
-        var hashValue: Int
-        {
-            return basicRegex.hashValue
-        }
+        var hashValue: Int { return basicRegex.hashValue }
 
         init()
         {
@@ -353,6 +350,7 @@ struct AbstractSyntaxTree: Equatable, Hashable
                 else                         { self = .concatenation(r1, r2) }
             }
         }
+
 
     }
 
