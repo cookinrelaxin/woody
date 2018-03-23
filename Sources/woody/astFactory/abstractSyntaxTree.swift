@@ -92,7 +92,9 @@ extension ParseTree
 
 struct AbstractSyntaxTree: Equatable, Hashable
 {
-    let rules: [Rule]
+    typealias OrderedPRegex = Context.OrderedPRegex
+
+    let rules: [TokenDefinition]
 
     var hashValue: Int { return rules.count }
 
@@ -100,15 +102,21 @@ struct AbstractSyntaxTree: Equatable, Hashable
     {
         let pRules: [ParseTree.Rule] = parseTree.flattened
 
-        let idLookup = pRules.reduce(Context.IDLookup())
-        { dict, pRule in
+        let idLookup = pRules.enumerated().reduce(Context.IDLookup())
+        { dict, pair in
+            let (i, pRule) = pair
             var _dict = dict
 
             switch pRule
             {
             case let .cat(id, _, pRegex, _):
-                _dict[id.representation,
-                      default: Set<ParseTree.Regex>()].insert(pRegex)
+                let key = id.representation
+                if let s = _dict[key]
+                {
+                    let order = s.first!.order
+                    _dict[key] = s.union([OrderedPRegex(pRegex, order)])
+                }
+                else { _dict[key] = [OrderedPRegex(pRegex, i)] }
             }
 
             return _dict
@@ -116,12 +124,12 @@ struct AbstractSyntaxTree: Equatable, Hashable
 
         let context = Context(idLookup: idLookup, sourceLines: sourceLines)
 
-        var rules = [Rule]()
+        var rules = [TokenDefinition]()
 
         do
         {
             rules = try ParseTree.unique(in: pRules)
-                             .map { try Rule(pRule: $0, context) }
+                             .map { try TokenDefinition(pRule: $0, context) }
         }
         catch let ContextHandlingError.undefinedIdentifier(id)
         {
@@ -135,9 +143,10 @@ struct AbstractSyntaxTree: Equatable, Hashable
         self.rules = rules
     }
 
-    struct Rule: Equatable, Hashable
+    struct TokenDefinition: Equatable, Hashable
     {
-        let identifier : String
+        let tokenClass : String
+        let order      : Int
         let regex      : Regex
 
         init(pRule: ParseTree.Rule, _ context: Context) throws
@@ -145,8 +154,12 @@ struct AbstractSyntaxTree: Equatable, Hashable
             switch pRule
             {
             case let .cat(id, _, pRegex, _):
-                self.identifier = String(id.representation)
-                try self.regex = Regex(pRegex: pRegex, context)
+                self.tokenClass = String(id.representation)
+                guard let orderedPRegex = context.idLookup[tokenClass]
+                else { throw ContextHandlingError.undefinedIdentifier(id) }
+
+                self.order      = orderedPRegex.first!.order
+                try self.regex  = Regex(pRegex: pRegex, context)
             }
         }
     }
@@ -304,11 +317,13 @@ struct AbstractSyntaxTree: Equatable, Hashable
 
         init(lIdentifier: Lexer.Identifier, _ context: Context) throws
         {
-            guard let pRegexes = context.idLookup[lIdentifier.representation]
+            let key = lIdentifier.representation
+            guard let orderedPRegexes = context.idLookup[key]
             else
-            {
-                throw ContextHandlingError.undefinedIdentifier(lIdentifier)
-            }
+            { throw ContextHandlingError.undefinedIdentifier(lIdentifier) }
+
+            let pRegexes = orderedPRegexes.reduce(Set<ParseTree.Regex>())
+            { $0.union([$1.pRegex]) }
 
             try self.init(pRegexes: pRegexes, context)
         }

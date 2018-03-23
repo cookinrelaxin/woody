@@ -17,13 +17,13 @@ extension AbstractSyntaxTree: SEXPPrintable
     }
 }
 
-extension AST.Rule: SEXPPrintable
+extension AST.TokenDefinition: SEXPPrintable
 {
     func sexp(_ indentation: String) -> String
     {
         let i = indentation+standardIndentation
         let sexp = indentation+"""
-        (rule \(identifier)
+        (rule \(tokenClass)
         \(regex.sexp(i)))
         """
 

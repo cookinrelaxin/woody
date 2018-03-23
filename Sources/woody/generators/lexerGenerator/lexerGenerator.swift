@@ -13,7 +13,7 @@ final class LexerGenerator
 {
     typealias Code            = String
     typealias ScalarString    = String.UnicodeScalarView
-    typealias Rule            = AST.Rule
+    typealias TokenDefinition            = AST.TokenDefinition
     typealias Regex           = AST.Regex
     typealias BasicRegex      = AST.BasicRegex
     typealias CharacterSet    = AST.CharacterSet
@@ -408,7 +408,7 @@ extension LexerGenerator
 
 fileprivate extension AST.Regex
 {
-    typealias Rule            = AST.Rule
+    typealias TokenDefinition            = AST.TokenDefinition
     typealias Regex           = AST.Regex
     typealias BasicRegex      = AST.BasicRegex
     typealias CharacterSet    = AST.CharacterSet
@@ -449,7 +449,7 @@ fileprivate extension AST.Regex
 
 fileprivate extension AST.BasicRegex
 {
-    typealias Rule            = AST.Rule
+    typealias TokenDefinition            = AST.TokenDefinition
     typealias Regex           = AST.Regex
     typealias BasicRegex      = AST.BasicRegex
     typealias CharacterSet    = AST.CharacterSet

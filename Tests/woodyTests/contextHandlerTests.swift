@@ -16,6 +16,14 @@ class ContextHandlerTests: XCTestCase
         let ast = coordinator.astFactory.abstractSyntaxTree
 
         XCTAssertEqual(ast.rules.count, 4)
+        XCTAssert(ast.rules.contains
+            { $0.tokenClass == "whitespace" && $0.order == 0 })
+        XCTAssert(ast.rules.contains
+            { $0.tokenClass == "identifier" && $0.order == 1 })
+        XCTAssert(ast.rules.contains
+            { $0.tokenClass == "keyword" && $0.order == 2 })
+        XCTAssert(ast.rules.contains
+            { $0.tokenClass == "punctuation" && $0.order == 3 })
 
         /*print(ast)*/
     }
