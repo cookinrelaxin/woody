@@ -1,0 +1,12 @@
+identifier       => letter letter_or_digit* underscored_tail*;
+integer          => digit+;
+single_character => operator | separator;
+
+letter           -> { 'a-'z, 'A-'Z };
+digit            -> { '0-'9 };
+underscore       -> '_;
+letter_or_digit  -> letter | digit;
+underscored_tail -> underscore letter_or_digit+;
+
+operator         -> '+ | '- | '* | '/;
+separator        -> ', | '( | ') | '{ | '};

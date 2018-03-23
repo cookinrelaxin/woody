@@ -5,7 +5,27 @@ import Foundation
 class LexerGeneratorTests: XCTestCase
 {
     @available(macOS 10.11, *)
-    func testGenTransitionTable()
+    func testGenTransitionTableSmall()
+    {
+        let url = URL(fileURLWithPath: "testGenTransitionTable.woody",
+                      relativeTo: fixtureURL)
+        let coordinator = PipelineCoordinator(url: url)
+        let lexerGenerator = coordinator.lexerGenerator
+
+        let transitionTable = lexerGenerator.transitionTable
+        let strippedTransitionTable = lexerGenerator.strippedTransitionTable
+
+        XCTAssertEqual(transitionTable.count, strippedTransitionTable.count)
+
+        let values = strippedTransitionTable.values
+
+        XCTAssert(values.contains { $0.tokenClass == "identifier" })
+        XCTAssert(values.contains { $0.tokenClass == "integer" })
+        XCTAssert(values.contains { $0.tokenClass == "single_character" })
+    }
+
+    @available(macOS 10.11, *)
+    func testGenTransitionTableMedium()
     {
         let url = URL(fileURLWithPath: "testBuildAST.woody",
                       relativeTo: fixtureURL)
@@ -19,10 +39,10 @@ class LexerGeneratorTests: XCTestCase
 
         let values = strippedTransitionTable.values
 
-        for (k,v) in strippedTransitionTable
-        {
-            print("\(k): \(v)")
-        }
+        // for (k,v) in strippedTransitionTable
+        // {
+        //     print("\(k): \(v)")
+        // }
 
         XCTAssert(values.contains { $0.tokenClass == "keyword" })
         XCTAssert(values.contains { $0.tokenClass == "punctuation" })
@@ -47,7 +67,7 @@ class LexerGeneratorTests: XCTestCase
         XCTAssertTrue(sbert.count == elementaryRanges.count)
         XCTAssertTrue(sbert.values == elementaryRanges)
 
-        for e in lexerGenerator.elementaryRanges
+        for e in elementaryRanges
         {
             switch e
             {
