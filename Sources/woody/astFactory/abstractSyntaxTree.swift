@@ -175,7 +175,8 @@ struct AbstractSyntaxTree: Equatable, Hashable
             switch pRegexes.count
             {
             case 0: basicRegex = .epsilon
-            case 1: basicRegex = try .regex(Regex(pRegex: pRegexes.first!, context))
+            case 1: basicRegex = try .regex(Regex(pRegex: pRegexes.first!,
+                                                  context))
             default:
                 basicRegex = try
                 .union(Regex(pRegex: pRegexes.first!, context),
@@ -322,9 +323,7 @@ struct AbstractSyntaxTree: Equatable, Hashable
         case characterSet  (CharacterSet)
 
         init(pRegex: ParseTree.Regex, _ context: Context) throws
-        {
-            self = try .regex(Regex(pRegex: pRegex, context))
-        }
+        { self = try .regex(Regex(pRegex: pRegex, context)) }
 
         init(pUnion: ParseTree.Union, _ context: Context) throws
         {
@@ -394,6 +393,28 @@ struct AbstractSyntaxTree: Equatable, Hashable
                 self.negativeSet = CharacterSet._set(for: pSetSubtraction,
                     context)
             }
+        }
+
+        func contains(_ r: LexerGenerator.ElementaryRange) -> Bool
+        {
+            let l: UInt32
+            let u: UInt32
+
+            switch r
+            {
+                case let .scalar(s)            : l = s.value; u = s.value
+                case let .discreteSegment(s,t) : l = s.value+1; u = t.value-1
+            }
+
+            func contained(in set: Set<ScalarRange>) -> Bool
+            {
+                return set.contains
+                { sRange in
+                    sRange.lowerBound.value <= l && u <= sRange.upperBound.value
+                }
+            }
+
+            return contained(in: positiveSet) && !contained(in: negativeSet)
         }
 
         private static func _set(for pSimpleSet: ParseTree.SimpleSet, _ context:

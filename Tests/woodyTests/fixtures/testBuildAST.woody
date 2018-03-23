@@ -6,7 +6,7 @@
 
 # We declare all the token classes up front, for convenience.  A rule may be
 # declared more than once as long as each declaration is identical. Tokens
-# classes are indicated by the "=>" arrow. Rules using the "-> arrow are for
+# classes are indicated by the "=>" arrow. Rules using the "->" arrow are for
 # convenience.
 
 whitespace  => whitespace_item+;
