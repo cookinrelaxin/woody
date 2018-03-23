@@ -8,12 +8,18 @@
 # declared more than once as long as each declaration is identical. Tokens
 # classes are indicated by the "=>" arrow. Rules using the "->" arrow are for
 # convenience.
+#
+# The order in which a token rule first appears determines its precendece. For
+# example, according to this grammar, keywords are a strict subset of
+# identifiers, so in order to make sure that keywords are analyzed as keywords,
+# they must be given higher precedence. This is an additional benefit of
+# summarizing all token rules up front.
 
+keyword => declaration_keyword | statement_keyword | expression_or_type_keyword
+         | pattern_keyword | hash_keyword | contextual_keyword;
+punctuation => '( | ') | '{ | '} | '[ | '] | '. | ', | ': | ';;
 whitespace  => whitespace_item+;
 identifier  => identifier_head identifier_character*;
-keyword     => declaration_keyword | statement_keyword
-             | expression_or_type_keyword;
-punctuation => '( | ') | '{ | '} | '[ | '] | '. | ', | ': | ';;
 
 ### Whitespace
 
@@ -137,12 +143,3 @@ contextual_keyword -> "associativity" | "convenience" | "dynamic"
                     | "optional" | "override" | "postfix" | "precedence"
                     | "prefix" | "Protocol" | "required" | "right" | "set"
                     | "Type" | "unowned" | "weak" | "willSet";
-
-### Punctuation
-#
-#punctuation => "(" | ")" | "{" | "}" | "[" | "]" | "." | "," | ":" | ";"
-#             | "=" | "@" | "#" | "&" | "->" | "`" | "?" | "!"
-#
-#
-### Literals
-## ...

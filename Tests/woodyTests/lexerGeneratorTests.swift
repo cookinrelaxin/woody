@@ -4,21 +4,31 @@ import Foundation
 
 class LexerGeneratorTests: XCTestCase
 {
-/*
- *    @available(macOS 10.11, *)
- *    func testGenTransitionTable()
- *    {
- *        let url = URL(fileURLWithPath: "testBuildAST.woody",
- *                      relativeTo: fixtureURL)
- *        let coordinator = PipelineCoordinator(url: url)
- *        let lexerGenerator = coordinator.lexerGenerator
- *
- *        let transitionTable = lexerGenerator.transitionTable
- *        let strippedTransitionTable = lexerGenerator.strippedTransitionTable
- *
- *        XCTAssertEqual(transitionTable.count, strippedTransitionTable.count)
- *    }
- */
+    @available(macOS 10.11, *)
+    func testGenTransitionTable()
+    {
+        let url = URL(fileURLWithPath: "testBuildAST.woody",
+                      relativeTo: fixtureURL)
+        let coordinator = PipelineCoordinator(url: url)
+        let lexerGenerator = coordinator.lexerGenerator
+
+        let transitionTable = lexerGenerator.transitionTable
+        let strippedTransitionTable = lexerGenerator.strippedTransitionTable
+
+        XCTAssertEqual(transitionTable.count, strippedTransitionTable.count)
+
+        let values = strippedTransitionTable.values
+
+        for (k,v) in strippedTransitionTable
+        {
+            print("\(k): \(v)")
+        }
+
+        XCTAssert(values.contains { $0.tokenClass == "keyword" })
+        XCTAssert(values.contains { $0.tokenClass == "punctuation" })
+        XCTAssert(values.contains { $0.tokenClass == "whitespace" })
+        XCTAssert(values.contains { $0.tokenClass == "identifier" })
+    }
 
     @available(macOS 10.11, *)
     func testBuildSBERT()

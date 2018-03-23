@@ -149,6 +149,13 @@ struct AbstractSyntaxTree: Equatable, Hashable
         let order      : Int
         let regex      : Regex
 
+        init(_ tokenClass: String, _ order: Int, _ regex: Regex)
+        {
+            self.tokenClass = tokenClass
+            self.order      = order
+            self.regex      = regex
+        }
+
         init(pRule: ParseTree.Rule, _ context: Context) throws
         {
             switch pRule

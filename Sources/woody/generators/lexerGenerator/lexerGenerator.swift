@@ -13,12 +13,12 @@ final class LexerGenerator
 {
     typealias Code            = String
     typealias ScalarString    = String.UnicodeScalarView
-    typealias TokenDefinition            = AST.TokenDefinition
+    typealias TokenDefinition = AST.TokenDefinition
     typealias Regex           = AST.Regex
     typealias BasicRegex      = AST.BasicRegex
     typealias CharacterSet    = AST.CharacterSet
     typealias MacroCharacter  = CharacterSet
-    typealias ItemSet         = Set<Regex>
+    typealias ItemSet         = Set<TokenDefinition>
     typealias TransitionTable = [TransitionPair : ItemSet]
 
     let ast: AbstractSyntaxTree
@@ -27,12 +27,12 @@ final class LexerGenerator
     { self.ast = ast }
 
     lazy var initialState: ItemSet =
-    { ast.rules.reduce(ItemSet()) { $0.union(ItemSet([$1.regex])) } }()
+    { Set(ast.rules) }()
 
     lazy var mentionedCharacterSets: Set<MacroCharacter> =
     {
         initialState.reduce(Set<MacroCharacter>())
-        { $0.union(_mentionedCharacterSets(in: $1)) }
+        { $0.union(_mentionedCharacterSets(in: $1.regex)) }
     }()
 
     lazy var elementaryRanges: Set<ElementaryRange> =
@@ -94,24 +94,59 @@ final class LexerGenerator
         { return indentation+"(\(state) \(range))" }
     }
 
-    lazy var strippedTransitionTable: [ StrippedTransitionPair : Int ] =
+    struct LabeledState: Hashable, SEXPPrintable
+    {   let id: Int
+        let tokenClass: String
+
+        init(_ id: Int, _ t: String)
+        {self.id = id; self.tokenClass = t}
+
+        func sexp(_ indentation: String) -> Swift.String
+        { return indentation+"(\(id) \(tokenClass))" }
+    }
+
+    typealias StrippedTransitionTable
+    = [ StrippedTransitionPair : LabeledState ]
+
+    lazy var strippedTransitionTable: StrippedTransitionTable =
     {
-        var t      = [ StrippedTransitionPair : Int ]()
-        var lookup = [ ItemSet : Int ]()
+        var t      = StrippedTransitionTable()
+        var states = [ ItemSet : LabeledState ]()
         var c      = 0
+
+        func first(in tokenDefinitions: ItemSet) -> String
+        {
+            return tokenDefinitions
+                   .reduce((tokenClass: "", order: Int.max))
+                   { $1.order < $0.order ? ($1.tokenClass, $1.order) : $0 }
+                   .tokenClass
+        }
 
         for (k,v) in transitionTable
         {
-            let kInt: Int
-            let vInt: Int
+            let (startItems, endItems) = (k.itemSet, v)
 
-            if let i = lookup[k.itemSet] { kInt = i }
-            else { lookup[k.itemSet] = c; kInt = c; c += 1 }
+            let startStateId: Int
+            let endState: LabeledState
 
-            if let i = lookup[v] { vInt = i }
-            else { lookup[v] = c; vInt = c; c += 1 }
+            if let state = states[startItems] { startStateId = state.id }
+            else
+            {
+                startStateId = c
+                states[startItems] = LabeledState(startStateId,
+                                                  first(in: startItems))
+                c += 1
+            }
 
-            t[StrippedTransitionPair(kInt, k.range)] = vInt
+            if let state = states[endItems] { endState = state }
+            else
+            {
+                endState = LabeledState(c, first(in: endItems))
+                states[endItems] = endState
+                c += 1
+            }
+
+            t[StrippedTransitionPair(startStateId, k.range)] = endState
         }
 
         return t
@@ -232,18 +267,10 @@ extension LexerGenerator
             guard let first = values.first else { return nil }
             let rest = values.dropFirst()
 
-            /*
-             *if rest.isEmpty { self.init(first) }
-             *else            { self.init(SBERT(Set(values.dropFirst()))!
-             *                            .inserting(first)) }
-             */
+            if rest.isEmpty { self.init(first) }
+            else            { self.init(SBERT(Set(values.dropFirst()))!
+                                        .inserting(first)) }
 
-            var sbert = SBERT(first)
-            for e in rest
-            {
-                sbert = sbert.inserting(e)
-            }
-            self.init(sbert)
         }
 
         init(_ value: ElementaryRange, _ left: SBERT?, _ right: SBERT?)
@@ -405,17 +432,28 @@ extension LexerGenerator
         }
     }
 }
+fileprivate extension AST.TokenDefinition
+{
+    typealias TokenDefinition = AST.TokenDefinition
+    typealias ElementaryRange = LexerGenerator.ElementaryRange
+    typealias ItemSet         = Set<TokenDefinition>
+
+    func move(over r: ElementaryRange) -> ItemSet
+    {
+        return Set(regex.move(over: r).map
+        { TokenDefinition(tokenClass, order, $0)} )
+    }
+}
 
 fileprivate extension AST.Regex
 {
-    typealias TokenDefinition            = AST.TokenDefinition
+    typealias TokenDefinition = AST.TokenDefinition
     typealias Regex           = AST.Regex
     typealias BasicRegex      = AST.BasicRegex
     typealias CharacterSet    = AST.CharacterSet
     typealias ElementaryRange = LexerGenerator.ElementaryRange
-    typealias ItemSet         = Set<Regex>
 
-    func move(over r: ElementaryRange) -> ItemSet
+    func move(over r: ElementaryRange) -> Set<Regex>
     {
         guard let repetitionOperator = self.repetitionOperator
         else { return basicRegex.move(over: r) }
@@ -449,20 +487,19 @@ fileprivate extension AST.Regex
 
 fileprivate extension AST.BasicRegex
 {
-    typealias TokenDefinition            = AST.TokenDefinition
+    typealias TokenDefinition = AST.TokenDefinition
     typealias Regex           = AST.Regex
     typealias BasicRegex      = AST.BasicRegex
     typealias CharacterSet    = AST.CharacterSet
     typealias ElementaryRange = LexerGenerator.ElementaryRange
-    typealias ItemSet         = Set<Regex>
 
-    func move(over r: ElementaryRange) -> ItemSet
+    func move(over r: ElementaryRange) -> Set<Regex>
     {
         switch self
         {
         case let .regex(regex): return regex.move(over: r)
 
-        case .epsilon: return ItemSet()
+        case .epsilon: return Set()
 
         case let .union(left, right):
             return left.move(over: r).union(right.move(over: r))
@@ -476,7 +513,7 @@ fileprivate extension AST.BasicRegex
             })
 
         case let .characterSet(characterSet):
-            return characterSet.contains(r) ? ItemSet([Regex()]) : ItemSet()
+            return characterSet.contains(r) ? Set([Regex()]) : Set()
         }
     }
 }
