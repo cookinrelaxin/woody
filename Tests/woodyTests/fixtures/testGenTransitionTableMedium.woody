@@ -15,8 +15,102 @@
 # they must be given higher precedence. This is an additional benefit of
 # summarizing all token rules up front.
 
-keyword => declaration_keyword | statement_keyword | expression_or_type_keyword
-         | pattern_keyword | hash_keyword | contextual_keyword;
+### Keywords
+
+associatedtype_kw      => "associatedtype";
+class_kw               => "class";
+deinit_kw              => "deinit";
+enum_kw                => "enum";
+extension_kw           => "extension";
+fileprivate_kw         => "fileprivate";
+func_kw                => "func";
+import_kw              => "import";
+init_kw                => "init";
+inout_kw               => "inout";
+internal_kw            => "internal";
+let_kw                 => "let";
+open_kw                => "open";
+operator_kw            => "operator";
+private_kw             => "private";
+protocol_kw            => "protocol";
+public_kw              => "public";
+static_kw              => "static";
+struct_kw              => "struct";
+subscript_kw           => "subscript";
+typealias_kw           => "typealias";
+var_kw                 => "var";
+break_kw               => "break";
+case_kw                => "case";
+continue_kw            => "continue";
+default_kw             => "default";
+defer_kw               => "defer";
+do_kw                  => "do";
+else_kw                => "else";
+fallthrough_kw         => "fallthrough";
+for_kw                 => "for";
+guard_kw               => "guard";
+if_kw                  => "if";
+in_kw                  => "in";
+repeat_kw              => "repeat";
+return_kw              => "return";
+switch_kw              => "switch";
+where_kw               => "where";
+while_kw               => "while";
+as_kw                  => "as";
+any_kw                 => "Any";
+catch_kw               => "catch";
+false_kw               => "false";
+is_kw                  => "is";
+nil_kw                 => "nil";
+rethrows_kw            => "rethrows";
+super_kw               => "super";
+lc_self_kw             => "self";
+uc_self_kw             => "Self";
+throw_kw               => "throw";
+throws_kw              => "throws";
+true_kw                => "true";
+try_kw                 => "try";
+underscore_kw          => '_;
+hash_available_kw      => "#available";
+hash_colorLiteral_kw   => "#colorLiteral";
+hash_column_kw         => "#column";
+hash_else_kw           => "#else";
+hash_elseif_kw         => "#elseif";
+hash_endif_kw          => "#endif";
+hash_file_kw           => "#file";
+hash_fileLiteral_kw    => "#fileLiteral";
+hash_function_kw       => "#function";
+hash_if_kw             => "#if";
+hash_imageLiteral_kw   => "#imageLiteral";
+hash_line_kw           => "#line";
+hash_selector_kw       => "#selector";
+hash_sourceLocation_kw => "#sourceLocation";
+associativity_kw       => "associativity";
+convenience_kw         => "convenience";
+dynamic_kw             => "dynamic";
+didSet_kw              => "didSet";
+final_kw               => "final";
+get_kw                 => "get";
+infix_kw               => "infix";
+indirect_kw            => "indirect";
+lazy_kw                => "lazy";
+left_kw                => "left";
+mutating_kw            => "mutating";
+none_kw                => "none";
+nonmutating_kw         => "nonmutating";
+optional_kw            => "optional";
+override_kw            => "override";
+postfix_kw             => "postfix";
+precedence_kw          => "precedence";
+prefix_kw              => "prefix";
+protocol_kw            => "Protocol";
+required_kw            => "required";
+right_kw               => "right";
+set_kw                 => "set";
+type_kw                => "Type";
+unowned_kw             => "unowned";
+weak_kw                => "weak";
+willSet_kw             => "willSet";
 
 punctuation => '( | ') | '{ | '} | '[ | '] | '. | ', | ': | ';;
 whitespace  => whitespace_item+;
@@ -108,39 +202,3 @@ identifier_character    -> identifier_head;
 implicit_parameter_name -> '$ decimal_digit+;
 
 decimal_digit -> '0-'9;
-
-### Keywords
-
-keyword => declaration_keyword | statement_keyword | expression_or_type_keyword
-         | pattern_keyword | hash_keyword | contextual_keyword;
-
-declaration_keyword -> "associatedtype" | "class" | "deinit" | "enum"
-                     | "extension" | "fileprivate" | "func" | "import"
-                     | "init" | "inout" | "internal" | "let" | "open"
-                     | "operator" | "private" | "protocol" | "public"
-                     | "static" | "struct" | "subscript" | "typealias"
-                     | "var";
-
-statement_keyword -> "break" | "case" | "continue" | "default" | "defer"
-                   | "do" | "else" | "fallthrough" | "for" | "guard"
-                   | "if" | "in" | "repeat" | "return" | "switch"
-                   | "where" | "while";
-
-expression_or_type_keyword -> "as" | "Any" | "catch" | "false" | "is"
-                            | "nil" | "rethrows" | "super" | "self"
-                            | "Self" | "throw" | "throws" | "true"
-                            | "try";
-
-pattern_keyword -> '_;
-
-hash_keyword -> "#available" | "#colorLiteral" | "#column" | "#else"
-              | "#elseif" | "#endif" | "#file" | "#fileLiteral"
-              | "#function" | "#if" | "#imageLiteral" | "#line"
-              | "#selector" | "#sourceLocation";
-
-contextual_keyword -> "associativity" | "convenience" | "dynamic"
-                    | "didSet" | "final" | "get" | "infix" | "indirect"
-                    | "lazy" | "left" | "mutating" | "none" | "nonmutating"
-                    | "optional" | "override" | "postfix" | "precedence"
-                    | "prefix" | "Protocol" | "required" | "right" | "set"
-                    | "Type" | "unowned" | "weak" | "willSet";

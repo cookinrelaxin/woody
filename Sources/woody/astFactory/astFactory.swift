@@ -11,9 +11,9 @@ final class ASTFactory
                                   sourceLines: sourceLines)
     }()
 
-    init(parseTree: ParseTree, sourceLines: SourceLines)
+    init(parser: Parser)
     {
-        self.parseTree = parseTree
-        self.sourceLines = sourceLines
+        self.parseTree = parser.parseTree
+        self.sourceLines = parser.source
     }
 }

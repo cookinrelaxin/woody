@@ -37,7 +37,7 @@ class ParserTests: XCTestCase
                       relativeTo: fixtureURL)
         let coordinator = PipelineCoordinator(url: url)
 
-        let actualParseTree = try! coordinator.parser.parseTree()!
+        let actualParseTree = coordinator.parser.parseTree
         let s = coordinator.reader.data
 
         let expectedParseTree = ParseTree(
@@ -68,7 +68,7 @@ class ParserTests: XCTestCase
                       relativeTo: fixtureURL)
         let coordinator = PipelineCoordinator(url: url)
 
-        let actualParseTree = try! coordinator.parser.parseTree()!
+        let actualParseTree = coordinator.parser.parseTree
         let s = coordinator.reader.data
 
 let expectedParseTree = ParseTree(
@@ -134,7 +134,7 @@ RegularDescription.cat(
                       relativeTo: fixtureURL)
         let coordinator = PipelineCoordinator(url: url)
 
-        let actualParseTree = try! coordinator.parser.parseTree()!
+        let actualParseTree = coordinator.parser.parseTree
         let s = coordinator.reader.data
 
         let group2: GroupedRegex =
@@ -200,7 +200,7 @@ RegularDescription.cat(
                       relativeTo: fixtureURL)
         let coordinator = PipelineCoordinator(url: url)
 
-        let actualParseTree = try! coordinator.parser.parseTree()!
+        let actualParseTree = coordinator.parser.parseTree
         let s = coordinator.reader.data
 
         let set1 =
@@ -271,8 +271,7 @@ RegularDescription.cat(
                       relativeTo: fixtureURL)
         let coordinator = PipelineCoordinator(url: url)
 
-        guard let parseTree = try! coordinator.parser.parseTree()
-        else { XCTFail(); return }
+        let parseTree = coordinator.parser.parseTree
 
         XCTAssertEqual(parseTree.flattened.count, 33)
     }

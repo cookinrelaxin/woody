@@ -27,7 +27,7 @@ class LexerGeneratorTests: XCTestCase
     @available(macOS 10.11, *)
     func testGenTransitionTableMedium()
     {
-        let url = URL(fileURLWithPath: "testBuildAST.woody",
+        let url = URL(fileURLWithPath: "testGenTransitionTableMedium.woody",
                       relativeTo: fixtureURL)
         let coordinator = PipelineCoordinator(url: url)
         let lexerGenerator = coordinator.lexerGenerator
@@ -39,12 +39,101 @@ class LexerGeneratorTests: XCTestCase
 
         let values = strippedTransitionTable.values
 
-        // for (k,v) in strippedTransitionTable
-        // {
-        //     print("\(k): \(v)")
-        // }
+        XCTAssert(values.contains { $0.tokenClass == "associatedtype_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "class_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "deinit_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "enum_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "extension_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "fileprivate_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "func_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "import_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "init_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "inout_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "internal_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "let_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "open_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "operator_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "private_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "protocol_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "public_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "static_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "struct_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "subscript_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "typealias_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "var_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "break_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "case_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "continue_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "default_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "defer_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "do_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "else_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "fallthrough_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "for_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "guard_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "if_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "in_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "repeat_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "return_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "switch_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "where_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "while_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "as_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "any_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "catch_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "false_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "is_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "nil_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "rethrows_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "super_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "lc_self_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "uc_self_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "throw_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "throws_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "true_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "try_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "underscore_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "hash_available_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "hash_colorLiteral_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "hash_column_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "hash_else_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "hash_elseif_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "hash_endif_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "hash_file_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "hash_fileLiteral_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "hash_function_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "hash_if_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "hash_imageLiteral_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "hash_line_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "hash_selector_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "hash_sourceLocation_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "associativity_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "convenience_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "dynamic_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "didSet_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "final_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "get_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "infix_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "indirect_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "lazy_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "left_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "mutating_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "none_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "nonmutating_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "optional_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "override_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "postfix_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "precedence_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "prefix_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "protocol_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "required_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "right_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "set_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "type_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "unowned_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "weak_kw" })
+        XCTAssert(values.contains { $0.tokenClass == "willSet_kw" })
 
-        XCTAssert(values.contains { $0.tokenClass == "keyword" })
         XCTAssert(values.contains { $0.tokenClass == "punctuation" })
         XCTAssert(values.contains { $0.tokenClass == "whitespace" })
         XCTAssert(values.contains { $0.tokenClass == "identifier" })
@@ -53,7 +142,7 @@ class LexerGeneratorTests: XCTestCase
     @available(macOS 10.11, *)
     func testBuildSBERT()
     {
-        let url = URL(fileURLWithPath: "testBuildAST.woody",
+        let url = URL(fileURLWithPath: "testGenTransitionTableMedium.woody",
                       relativeTo: fixtureURL)
         let coordinator = PipelineCoordinator(url: url)
         let lexerGenerator = coordinator.lexerGenerator
@@ -64,8 +153,20 @@ class LexerGeneratorTests: XCTestCase
         XCTAssertTrue(sbert.isBalanced)
         XCTAssertTrue(sbert.bstInvariantHolds)
         XCTAssertTrue(sbert.isAVL)
-        XCTAssertTrue(sbert.count == elementaryRanges.count)
-        XCTAssertTrue(sbert.values == elementaryRanges)
+        XCTAssertEqual(sbert.count, elementaryRanges.count)
+        XCTAssertEqual(sbert.values, elementaryRanges)
+        do
+        {
+            let l = Scalar(UInt32(0))!
+            let u = Scalar(UInt32(0x100000))!
+            let r = ScalarRange(l...u)
+            let ranges = sbert.ranges(for: r)
+
+            XCTAssertEqual(ranges.count, elementaryRanges.count)
+
+            for (r1, r2) in zip(ranges.sorted(), elementaryRanges.sorted())
+            { XCTAssertEqual(r1, r2) }
+        }
 
         for e in elementaryRanges
         {

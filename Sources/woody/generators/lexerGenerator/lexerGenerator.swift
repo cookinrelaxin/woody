@@ -23,11 +23,9 @@ final class LexerGenerator
 
     let ast: AbstractSyntaxTree
 
-    init(ast: AbstractSyntaxTree)
-    { self.ast = ast }
+    init(astFactory: ASTFactory) { self.ast = astFactory.abstractSyntaxTree }
 
-    lazy var initialState: ItemSet =
-    { Set(ast.rules) }()
+    lazy var initialState: ItemSet = { Set(ast.rules) }()
 
     lazy var allMentionedCharacterSets: Set<CharacterSet> =
     {
@@ -41,8 +39,7 @@ final class LexerGenerator
 
         let endPoints = allMentionedCharacterSets.reduce(Set<Scalar>())
         {
-            $1.positiveSet
-              .union($1.negativeSet)
+            $1.positiveSet.union($1.negativeSet)
               .reduce(Set<Scalar>())
             { $0.union([$1.lowerBound, $1.upperBound]) }.union($0)
         }.sorted()
@@ -50,6 +47,8 @@ final class LexerGenerator
         var _elementaryRanges = Set<ElementaryRange>()
         for (i, p) in endPoints.enumerated()
         {
+            /*print("(i, p): \(i, p)")*/
+
             _elementaryRanges.insert(.scalar(p))
             if i+1 < endPoints.count,
             case let q = endPoints[i+1],
@@ -97,25 +96,43 @@ final class LexerGenerator
 
     lazy var transitionTable: TransitionTable =
     {
-        var transitionFunction = TransitionTable()
-        var q = Set<TransitionPair>(elementaryRanges
-                                    .map { TransitionPair(initialState, $0) })
+        var f = TransitionTable()
+        var q: Set<ItemSet> = [initialState]
 
-        while let t = q.pop()
+        while let itemSet = q.pop()
         {
-            let endState = _endState(for: t)
+            let erDict = elementaryRangeDictionary(for: itemSet)
 
-            transitionFunction[t] = endState
-
-            for e in elementaryRanges(in: endState)
+            for e in erDict.keys
             {
-                let p = TransitionPair(endState, e)
-                if transitionFunction[p] == nil { q.insert(p) }
+                guard let itemSet = erDict[e],
+                case let p = TransitionPair(itemSet, e),
+                f[p] == nil
+                else { continue }
+
+                let endState = _endState(for: p)
+
+                q.insert(endState)
+                f[p] = endState
             }
         }
 
-        return transitionFunction
+        return f
     }()
+
+    typealias ERDict = [ ElementaryRange : ItemSet ]
+    func elementaryRangeDictionary(for itemSet: ItemSet) -> ERDict
+    {
+        return itemSet.reduce(ERDict())
+        { dict, item in
+            var _dict = dict
+
+            for e in elementaryRanges(in: item)
+            { _dict[e, default: ItemSet()].insert(item) }
+
+            return _dict
+        }
+    }
 
     struct StrippedTransitionPair: Hashable, SEXPPrintable
     {   let state: Int; let range: ElementaryRange
@@ -126,15 +143,15 @@ final class LexerGenerator
         { return indentation+"(\(state) \(range))" }
     }
 
-    struct LabeledState: Hashable, SEXPPrintable
+    struct LabeledState: SEXPPrintable
     {   let id: Int
-        let tokenClass: String
+        let tokenClass: String?
 
-        init(_ id: Int, _ t: String)
+        init(_ id: Int, _ t: String?)
         {self.id = id; self.tokenClass = t}
 
         func sexp(_ indentation: String) -> Swift.String
-        { return indentation+"(\(id) \(tokenClass))" }
+        { return indentation+"(\(id) \(tokenClass ?? "nil"))" }
     }
 
     typealias StrippedTransitionTable
@@ -146,10 +163,12 @@ final class LexerGenerator
         var states = [ ItemSet : LabeledState ]()
         var c      = 0
 
-        func first(in tokenDefinitions: ItemSet) -> String
+        func first(in tokenDefinitions: ItemSet) -> String?
         {
-            return tokenDefinitions
-                   .reduce((tokenClass: "", order: Int.max))
+            let candidates: ItemSet = tokenDefinitions
+                                      .filter{ $0.regex == Regex() }
+
+            return candidates.reduce((tokenClass: nil, order: Int.max))
                    { $1.order < $0.order ? ($1.tokenClass, $1.order) : $0 }
                    .tokenClass
         }
@@ -278,7 +297,7 @@ extension LexerGenerator
             switch r
             {
                 case let .scalar(s)             : return l.upperBound < s
-                case let .discreteSegment(_, s) : return l.upperBound <= s
+                case let .discreteSegment(s, _) : return l.upperBound <= s
             }
         }
 

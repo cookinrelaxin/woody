@@ -105,7 +105,6 @@ func isHexDigit(_ scalar: Scalar) -> Bool
     {
     case _ where isDigit(scalar) : return true
     case 0x0041...0x0046         : return true
-    case 0x0061...0x0066         : return true
     default                      : return false
     }
 
@@ -123,9 +122,12 @@ func isStringTerminator(_ scalar: Scalar) -> Bool
 
 func isStandardSetHead(_ scalar: Scalar) -> Bool
 {
-    switch scalar.value
-    {
-        case 0x0041...0x005A : return true
-        default              : return false
-    }
+    return scalar.value == 0x0055
+    /*
+     *switch scalar.value
+     *{
+     *    [>case 0x0041...0x005A : return true<]
+     *    default              : return false
+     *}
+     */
 }

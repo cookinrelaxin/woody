@@ -13,11 +13,13 @@ struct ScalarRange: Equatable, Hashable
         upperBound = scalar
     }
 
-    init(_ range: Range<Scalar>)
-    {
-        lowerBound = range.lowerBound
-        upperBound = range.upperBound
-    }
+    /*
+     *init(_ range: Range<Scalar>)
+     *{
+     *    lowerBound = range.lowerBound
+     *    upperBound = range.upperBound
+     *}
+     */
 
     init(_ range: ClosedRange<Scalar>)
     {
@@ -148,10 +150,12 @@ struct AbstractSyntaxTree: Equatable, Hashable
         catch let ContextHandlingError.undefinedIdentifier(id)
         {
             ContextHandlingError.print(.undefinedIdentifier(id), context)
+            exit(1)
         }
         catch let e
         {
-            fatalError("\(e)")
+            print(e)
+            exit(1)
         }
 
         self.rules = rules

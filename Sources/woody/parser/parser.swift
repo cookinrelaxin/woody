@@ -24,11 +24,10 @@ fileprivate typealias BasicSetList       = ParseTree.BasicSetList
 fileprivate typealias BasicSets          = ParseTree.BasicSets
 fileprivate typealias Range              = ParseTree.Range
 
-
 final class Parser
 {
-    private var tokens: [Token]
-    private var source: SourceLines
+    private let tokens: [Token]
+    let source: SourceLines
     fileprivate var dot = 0
 
     private var expectedTokenStack: TokenClassStack
@@ -45,7 +44,7 @@ final class Parser
         dot += 1
     }
 
-    func parseTree() throws -> ParseTree?
+    lazy var parseTree: ParseTree =
     {
         do
         {
@@ -60,9 +59,15 @@ final class Parser
                                                      source)
             expectedTokenStack.clear()
         }
+        catch let e
+        {
+            print(e)
+        }
 
-        return nil
-    }
+        exit(1)
+
+        /*return nil*/
+    }()
 
     init(lexer: Lexer)
     {
