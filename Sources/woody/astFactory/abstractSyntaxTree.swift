@@ -13,21 +13,13 @@ struct ScalarRange: Equatable, Hashable
         upperBound = scalar
     }
 
-    /*
-     *init(_ range: Range<Scalar>)
-     *{
-     *    lowerBound = range.lowerBound
-     *    upperBound = range.upperBound
-     *}
-     */
-
     init(_ range: ClosedRange<Scalar>)
     {
         lowerBound = range.lowerBound
         upperBound = range.upperBound
     }
 
-    func contains(_ r: LexerGenerator.ElementaryRange) -> Bool
+    func contains(_ r: ElementaryRange) -> Bool
     {
         let l: UInt32
         let u: UInt32
@@ -435,7 +427,7 @@ struct AbstractSyntaxTree: Equatable, Hashable
             }
         }
 
-        func contains(_ r: LexerGenerator.ElementaryRange) -> Bool
+        func contains(_ r: ElementaryRange) -> Bool
         {
             func contained(in set: Set<ScalarRange>) -> Bool
             { return set.contains { $0.contains(r) } }

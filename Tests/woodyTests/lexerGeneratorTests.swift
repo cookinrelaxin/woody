@@ -13,7 +13,8 @@ class LexerGeneratorTests: XCTestCase
         let lexerGenerator = coordinator.lexerGenerator
 
         let transitionTable = lexerGenerator.transitionTable
-        let strippedTransitionTable = lexerGenerator.strippedTransitionTable
+        let strippedTransitionTable =
+        lexerGenerator.strippedTransitionTable.table
 
         XCTAssertEqual(transitionTable.count, strippedTransitionTable.count)
 
@@ -33,7 +34,8 @@ class LexerGeneratorTests: XCTestCase
         let lexerGenerator = coordinator.lexerGenerator
 
         let transitionTable = lexerGenerator.transitionTable
-        let strippedTransitionTable = lexerGenerator.strippedTransitionTable
+        let strippedTransitionTable =
+        lexerGenerator.strippedTransitionTable.table
 
         XCTAssertEqual(transitionTable.count, strippedTransitionTable.count)
 
@@ -160,7 +162,7 @@ class LexerGeneratorTests: XCTestCase
             let l = Scalar(UInt32(0))!
             let u = Scalar(UInt32(0x100000))!
             let r = ScalarRange(l...u)
-            let ranges = sbert.ranges(for: r)
+            let ranges = sbert[r]
 
             XCTAssertEqual(ranges.count, elementaryRanges.count)
 
@@ -173,19 +175,52 @@ class LexerGeneratorTests: XCTestCase
             switch e
             {
             case let .scalar(s):
-                let r = sbert.range(for: s)
+                let r = sbert[s]
                 XCTAssertNotNil(r)
                 XCTAssertEqual(e, r!)
 
             case let .discreteSegment(s,t):
                 if let member = Scalar(UInt32((s.value+t.value)/2))
                 {
-                    let r = sbert.range(for: member)
+                    let r = sbert[member]
                     XCTAssertNotNil(r)
                     XCTAssertEqual(e, r!)
                 }
             }
         }
+    }
+
+    @available(macOS 10.11, *)
+    func testAnalysis()
+    {
+        let url = URL(fileURLWithPath: "testGenTransitionTableMedium.woody",
+                      relativeTo: fixtureURL)
+        let coordinator = PipelineCoordinator(url: url)
+        let lexerGenerator = coordinator.lexerGenerator
+
+        let source = """
+        @available(macOS 10.11, *)
+        func testGenTransitionTableSmall()
+        {
+            let url = URL(fileURLWithPath: "testGenTransitionTable.woody",
+                          relativeTo: fixtureURL)
+            let coordinator = PipelineCoordinator(url: url)
+            let lexerGenerator = coordinator.lexerGenerator
+
+            let transitionTable = lexerGenerator.transitionTable
+            let strippedTransitionTable = lexerGenerator.strippedTransitionTable
+
+            XCTAssertEqual(transitionTable.count, strippedTransitionTable.count)
+
+            let values = strippedTransitionTable.values
+
+            XCTAssert(values.contains { $0.tokenClass == "identifier" })
+            XCTAssert(values.contains { $0.tokenClass == "integer" })
+            XCTAssert(values.contains { $0.tokenClass == "single_character" })
+        }
+        """
+
+        print(lexerGenerator.analyze(source.unicodeScalars))
     }
 
 }
