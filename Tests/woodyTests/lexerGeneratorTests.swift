@@ -136,9 +136,50 @@ class LexerGeneratorTests: XCTestCase
         XCTAssert(values.contains { $0.tokenClass == "weak_kw" })
         XCTAssert(values.contains { $0.tokenClass == "willSet_kw" })
 
-        XCTAssert(values.contains { $0.tokenClass == "punctuation" })
+        XCTAssert(values.contains { $0.tokenClass == "left_parenthesis_punc" })
+        XCTAssert(values.contains { $0.tokenClass == "right_parenthesis_punc" })
+        XCTAssert(values.contains { $0.tokenClass == "left_brace_punc" })
+        XCTAssert(values.contains { $0.tokenClass == "right_brace_punc" })
+        XCTAssert(values.contains { $0.tokenClass == "left_bracket_punc" })
+        XCTAssert(values.contains { $0.tokenClass == "right_bracket_punc" })
+        XCTAssert(values.contains { $0.tokenClass == "period_punc" })
+        XCTAssert(values.contains { $0.tokenClass == "comma_punc" })
+        XCTAssert(values.contains { $0.tokenClass == "colon_punc" })
+        XCTAssert(values.contains { $0.tokenClass == "semicolon_punc" })
+        XCTAssert(values.contains { $0.tokenClass == "equals_punc" })
+        XCTAssert(values.contains { $0.tokenClass == "at_punc" })
+        XCTAssert(values.contains { $0.tokenClass == "hash_punc" })
+        XCTAssert(values.contains { $0.tokenClass == "ampersand_punc" })
+        XCTAssert(values.contains { $0.tokenClass == "arrow_punc" })
+        XCTAssert(values.contains { $0.tokenClass == "backtick_punc" })
+        XCTAssert(values.contains { $0.tokenClass == "question_punc" })
+        XCTAssert(values.contains { $0.tokenClass == "exclamation_punc" })
+
         XCTAssert(values.contains { $0.tokenClass == "whitespace" })
         XCTAssert(values.contains { $0.tokenClass == "identifier" })
+    }
+
+    @available(macOS 10.11, *)
+    func testRelativeSubstateLookup()
+    {
+        let url = URL(fileURLWithPath: "testGenTransitionTableMedium.woody",
+                      relativeTo: fixtureURL)
+        let coordinator = PipelineCoordinator(url: url)
+        let lexerGenerator = coordinator.lexerGenerator
+
+        let lookup = lexerGenerator.relevantSubstateLookup(for:
+            lexerGenerator.initialState)
+
+        let e = ElementaryRange.scalar(" ")
+
+        let relevantSubstate = lookup[e]
+
+        XCTAssertNotNil(relevantSubstate)
+
+        let p = LexerGenerator.TransitionPair(relevantSubstate!, e)
+        let endState = lexerGenerator._endState(for: p)
+
+        XCTAssert(endState.contains { $0.regex == AST.Regex() })
     }
 
     @available(macOS 10.11, *)
@@ -208,7 +249,8 @@ class LexerGeneratorTests: XCTestCase
             let lexerGenerator = coordinator.lexerGenerator
 
             let transitionTable = lexerGenerator.transitionTable
-            let strippedTransitionTable = lexerGenerator.strippedTransitionTable
+            let strippedTransitionTable =
+            lexerGenerator.strippedTransitionTable.table
 
             XCTAssertEqual(transitionTable.count, strippedTransitionTable.count)
 
@@ -220,7 +262,10 @@ class LexerGeneratorTests: XCTestCase
         }
         """
 
-        print(lexerGenerator.analyze(source.unicodeScalars))
+        for token in lexerGenerator.analyze(source.unicodeScalars)
+        {
+            print("token: \(token ?? "nil")")
+        }
     }
 
 }

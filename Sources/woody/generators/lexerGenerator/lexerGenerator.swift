@@ -77,26 +77,26 @@ final class LexerGenerator
     }()
 
     func elementaryRanges(in itemSet: ItemSet,
-                          immediateOnly: Bool = false) -> Set<ElementaryRange>
+                          immediateOnly: Bool = true) -> Set<ElementaryRange>
     {
         return itemSet.unionMap
         { elementaryRanges(in: $0, immediateOnly: immediateOnly) }
     }
 
     func elementaryRanges(in tokenDefinition: TokenDefinition,
-                          immediateOnly: Bool = false)
+                          immediateOnly: Bool = true)
     -> Set<ElementaryRange>
     { return _elementaryRanges(in: tokenDefinition.regex,
                                immediateOnly: immediateOnly) }
 
     private func _elementaryRanges(in regex: Regex,
-                                   immediateOnly: Bool = false)
+                                   immediateOnly: Bool = true)
     -> Set<ElementaryRange>
     { return _elementaryRanges(in: regex.basicRegex,
                                immediateOnly: immediateOnly) }
 
     private func _elementaryRanges(in basicRegex: BasicRegex,
-                                   immediateOnly: Bool = false)
+                                   immediateOnly: Bool = true)
     -> Set<ElementaryRange>
     {
         switch basicRegex
@@ -119,41 +119,40 @@ final class LexerGenerator
 
     typealias ERDict = [ ElementaryRange : ItemSet ]
     func relevantSubstateLookup(for itemSet: ItemSet,
-                                immediateOnly: Bool = false) -> ERDict
+                                immediateOnly: Bool = true) -> ERDict
     {
-        return itemSet.reduce(ERDict())
-        { dict, item in
-            var _dict = dict
+        var dict = ERDict()
 
+        for item in itemSet
+        {
             for e in elementaryRanges(in: item, immediateOnly: immediateOnly)
-            { _dict[e, default: ItemSet()].insert(item) }
-
-            return _dict
+            { dict[e, default: ItemSet()].insert(item) }
         }
+
+        return dict
     }
 
     lazy var sbert: SBERT = { SBERT(elementaryRanges)! }()
 
     lazy var transitionTable: TransitionTable =
     {
-        var f = TransitionTable()
-        var q = Set([initialState])
+        var f                = TransitionTable()
+        var q                = [initialState]
+        var discoveredStates = Set<ItemSet>()
 
-        while let state = q.pop()
+        while let state = q.popLast()
         {
-            let lookup = self.relevantSubstateLookup(for: state,
-                                                     immediateOnly: true)
-            for e in lookup.keys
+            for (e, subState) in relevantSubstateLookup(for: state)
             {
-                let p1 = TransitionPair(state, e)
+                let endState = _endState(for: TransitionPair(subState, e))
 
-                guard f[p1] == nil else { continue }
+                f[TransitionPair(state, e)] = endState
 
-                let p2 = TransitionPair(lookup[e]!, e)
-                let endState = self._endState(for: p2)
-
-                q.insert(endState)
-                f[p1] = endState
+                if !discoveredStates.contains(endState)
+                {
+                    discoveredStates.insert(endState)
+                    q.append(endState)
+                }
             }
         }
 
@@ -165,7 +164,14 @@ final class LexerGenerator
     {
         var t      = StrippedTransitionTable()
         var states = [ ItemSet : LabeledState ]()
-        var c      = 0
+        let c =
+        { () -> (() -> Int) in
+            var _c = 0
+            return { () -> Int in
+                _c += 1
+                return _c - 1
+            }
+        }()
 
         func first(in tokenDefinitions: ItemSet) -> String?
         {
@@ -187,18 +193,16 @@ final class LexerGenerator
             if let state = states[startItems] { startStateId = state.id }
             else
             {
-                startStateId = c
+                startStateId = c()
                 states[startItems] = LabeledState(startStateId,
                                                   first(in: startItems))
-                c += 1
             }
 
             if let state = states[endItems] { endState = state }
             else
             {
-                endState = LabeledState(c, first(in: endItems))
+                endState = LabeledState(c(), first(in: endItems))
                 states[endItems] = endState
-                c += 1
             }
 
             t[StrippedTransitionPair(startStateId, k.range)] = endState
@@ -207,9 +211,6 @@ final class LexerGenerator
         let _initialState = states[initialState]!
         return (_initialState, t)
     }()
-
-    func _endState(for t: TransitionPair) -> ItemSet
-    { return t.itemSet.unionMap { $0.move(over: t.range) } }
 
     func mentionedCharacterSets(in tokenDefinition: TokenDefinition)
     -> Set<CharacterSet>
@@ -237,31 +238,45 @@ final class LexerGenerator
 
     func analyze(_ source: ScalarString) -> [(String, String?)]
     {
+        typealias STP = StrippedTransitionPair
+
         var dot          = source.startIndex
         let f            = strippedTransitionTable.table
         let initialState = strippedTransitionTable.initialState
 
         func nextToken() -> (String, String?)
         {
-            let startOfToken = dot
-            var tokenClass: String? = nil
-            var state: LabeledState = initialState
+            let startOfToken               = dot
+            var endOfToken : String.Index? = nil
+            var tokenClass : String?       = nil
+            var state      : LabeledState? = initialState
 
-            while dot != source.endIndex
+            while state != nil
             {
-                let c = source[dot]
+                let e = sbert[source[dot]]
+                state = e == nil ? nil : f[STP(state!.id, e!)]
 
-                guard let e = sbert[c],
-                let endState = f[StrippedTransitionPair(state.id, e)]
-                else { break }
-
-                state = endState
-                tokenClass = endState.tokenClass
+                if let tc = state?.tokenClass
+                {
+                    tokenClass = tc
+                    endOfToken = dot
+                }
 
                 dot = source.index(after: dot)
             }
 
-            return (String(source[startOfToken..<dot]), tokenClass)
+            var representation = ""
+
+            if let endOfToken = endOfToken
+            {
+                representation = String(source[startOfToken...endOfToken])
+                dot            = source.index(after: endOfToken)
+            }
+            else { representation = String(source[startOfToken..<dot]) }
+
+            let token = (representation, tokenClass)
+
+            return token
         }
 
         var tokens = [(String, String?)]()
@@ -270,6 +285,9 @@ final class LexerGenerator
 
         return tokens
     }
+
+    func _endState(for t: TransitionPair) -> ItemSet
+    { return t.itemSet.unionMap { $0.move(over: t.range) } }
 }
 
 extension LexerGenerator
@@ -363,7 +381,8 @@ fileprivate extension AST.Regex
             case nil          : return basicRegex.move(over: r)
             case .zeroOrOne?  : return Set([ε]).union(once.move(over: r))
             case .zeroOrMore? : return Set([ε]).union(oneOrMore.move(over: r))
-            case .oneOrMore?  : return (once + zeroOrMore).move(over: r)
+            case .oneOrMore?  : return once.move(over: r)
+                                       .union((once+oneOrMore).move(over: r))
         }
     }
 }

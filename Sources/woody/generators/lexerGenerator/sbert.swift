@@ -176,7 +176,6 @@ ElementaryRangeQueryable
 
     private func _range(for r: ElementaryRange) -> ElementaryRange?
     {
-        /*print("find \(r) in \(self)")*/
         if r < value      { return left?._range(for: r) }
         else if r > value { return right?._range(for: r) }
         else              { return value }

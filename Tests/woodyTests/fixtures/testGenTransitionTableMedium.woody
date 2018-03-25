@@ -15,7 +15,7 @@
 # they must be given higher precedence. This is an additional benefit of
 # summarizing all token rules up front.
 
-### Keywords
+# Keywords
 
 associatedtype_kw      => "associatedtype";
 class_kw               => "class";
@@ -112,9 +112,26 @@ unowned_kw             => "unowned";
 weak_kw                => "weak";
 willSet_kw             => "willSet";
 
-punctuation => '( | ') | '{ | '} | '[ | '] | '. | ', | ': | ';;
-whitespace  => whitespace_item+;
-identifier  => identifier_head identifier_character*;
+# Punctuation
+
+left_parenthesis_punc  => '(;
+right_parenthesis_punc => ');
+left_brace_punc        => '{;
+right_brace_punc       => '};
+left_bracket_punc      => '[;
+right_bracket_punc     => '];
+period_punc            => '.;
+comma_punc             => ',;
+colon_punc             => ':;
+semicolon_punc         => ';;
+equals_punc            => '=;
+at_punc                => '@;
+hash_punc              => '#;
+ampersand_punc         => '&;
+arrow_punc             => "->";
+backtick_punc          => '`;
+question_punc          => '?;
+exclamation_punc       => '!;
 
 ### Whitespace
 
