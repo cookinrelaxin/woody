@@ -137,23 +137,37 @@ final class LexerGenerator
     lazy var transitionTable: TransitionTable =
     {
         var f                = TransitionTable()
-        var q                = [initialState]
+        var q                = Set([initialState])
         var discoveredStates = Set<ItemSet>()
 
-        while let state = q.popLast()
+        let dq = DispatchQueue(label: "transitions")
+        let dg = DispatchGroup()
+
+        while !q.isEmpty
         {
-            for (e, subState) in relevantSubstateLookup(for: state)
+            var newlyDiscoveredStates = Set<ItemSet>()
+
+            while let state = q.pop()
             {
-                let endState = _endState(for: TransitionPair(subState, e))
+                let lookup = self.relevantSubstateLookup(for: state)
 
-                f[TransitionPair(state, e)] = endState
-
-                if !discoveredStates.contains(endState)
+                for (e, subState) in lookup
                 {
-                    discoveredStates.insert(endState)
-                    q.append(endState)
+                    dq.async(group: dg)
+                    {
+                        let endState
+                        = self._endState(for: TransitionPair(subState, e))
+
+                        newlyDiscoveredStates.insert(endState)
+                        f[TransitionPair(state, e)] = endState
+                    }
                 }
             }
+
+            dg.wait()
+
+            q = newlyDiscoveredStates.subtracting(discoveredStates)
+            discoveredStates.formUnion(newlyDiscoveredStates)
         }
 
         return f

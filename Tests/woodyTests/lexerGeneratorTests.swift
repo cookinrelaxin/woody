@@ -167,6 +167,9 @@ class LexerGeneratorTests: XCTestCase
         let coordinator = PipelineCoordinator(url: url)
         let lexerGenerator = coordinator.lexerGenerator
 
+        measure { _ = lexerGenerator.relevantSubstateLookup(for:
+            lexerGenerator.initialState) }
+
         let lookup = lexerGenerator.relevantSubstateLookup(for:
             lexerGenerator.initialState)
 
@@ -263,9 +266,7 @@ class LexerGeneratorTests: XCTestCase
         """
 
         for token in lexerGenerator.analyze(source.unicodeScalars)
-        {
-            print("token: \(token ?? "nil")")
-        }
+        { print("token: (\(token.0) \(token.1 ?? "nil"))") }
     }
 
 }
