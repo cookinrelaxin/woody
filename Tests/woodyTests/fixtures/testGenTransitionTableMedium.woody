@@ -218,4 +218,133 @@ identifier_character    -> u0300-u036F | u1DC0-u1DFF | u20D0-u20FF
 identifier_character    -> identifier_head;
 implicit_parameter_name -> '$ decimal_digit+;
 
-decimal_digit -> '0-'9;
+# Literals
+# Integer Literals
+
+integer_literal => '-? unsigned_literal;
+
+unsigned_literal -> binary_literal | octal_literal | decimal_literal
+                  | hexadecimal_literal;
+
+binary_literal -> "0b" binary_digit binary_literal_character*;
+binary_digit -> { '0, '1 };
+binary_literal_character -> binary_digit | '_;
+
+octal_literal -> "0o" octal_digit octal_literal_character*;
+octal_digit -> binary_digit | '2 - '7;
+octal_literal_character -> octal_digit | '_;
+
+decimal_literal -> decimal_digit decimal_literal_character*;
+decimal_digit -> octal_digit | { '8, '9 };
+decimal_literal_character -> decimal_digit | '_;
+
+hexadecimal_literal -> "0x" hexadecimal_digit hexadecimal_literal_character*;
+hexadecimal_digit -> decimal_digit | { 'a - 'f, 'A - 'F };
+hexadecimal_literal_character -> hexadecimal_digit | '_;
+
+# Floating-point literals
+
+floating_point_literal => decimal_floating_point_literal
+                        | hexadecimal_floating_point_literal;
+
+decimal_floating_point_literal -> decimal_literal decimal_fraction;
+decimal_floating_point_literal -> decimal_literal decimal_exponent;
+decimal_floating_point_literal -> decimal_literal decimal_fraction decimal_exponent;
+
+hexadecimal_floating_point_literal -> hexadecimal_literal hexadecimal_fraction;
+hexadecimal_floating_point_literal -> hexadecimal_literal hexadecimal_exponent;
+hexadecimal_floating_point_literal -> hexadecimal_literal hexadecimal_fraction
+                                      hexadecimal_exponent;
+
+decimal_fraction -> '. decimal_literal;
+decimal_exponent -> floating_point_e sign? decimal_literal;
+
+hexadecimal_fraction -> '. hexadecimal_digit hexadecimal_literal_character*;
+hexadecimal_exponent -> floating_point_p sign? decimal_literal;
+
+floating_point_e -> 'e | 'E;
+floating_point_p -> 'p | 'P;
+
+sign -> '+ | '-;
+
+# String literals
+
+string_literal => static_string_literal | interpolated_string_literal;
+
+static_string_literal -> '" quoted_text? '";
+static_string_literal -> '" '" '" multiline_quoted_text? '" '" '";
+
+quoted_text -> quoted_text_item+;
+quoted_text_item -> escaped_character;
+quoted_text_item -> . \ { '", '\, uA, uD };
+
+multiline_quoted_text -> multiline_quoted_text_item+;
+multiline_quoted_text_item -> escaped_character;
+multiline_quoted_text_item -> . \ '\;
+multiline_quoted_text_item -> escaped_newline;
+
+interpolated_string_literal -> '" interpolated_text? '";
+interpolated_string_literal -> '" '" '" multiline_interpolated_text? '" '" '";
+interpolated_text -> interpolated_text_item+;
+interpolated_text_item -> "\(" expression ")" quoted_text_item;
+
+# This is a stub until we define expressions in the grammar
+expression -> identifier;
+
+multiline_interpolated_text -> multiline_interpolated_text_item+;
+multiline_interpolated_text_item -> "\(" expression ")" multiline_quoted_text_item;
+
+escaped_character -> "\0" | "\\" | "\t" | "\n" | "\r" | '\ '" | "\'";
+escaped_character -> "\u{" unicode_scalar_digits '};
+
+hd -> hexadecimal_digit;
+
+unicode_scalar_digits -> hd
+                       | hd hd
+                       | hd hd hd
+                       | hd hd hd hd
+                       | hd hd hd hd hd
+                       | hd hd hd hd hd hd
+                       | hd hd hd hd hd hd hd
+                       | hd hd hd hd hd hd hd hd;
+
+escaped_newline -> '\ whitespace? line_break;
+
+# Operators
+
+operator => operator_head operator_character*;
+operator => dot_operator_head dot_operator_character*;
+
+operator_head -> { '/, '=, '-, '+, '!, '*, '%, '<, '>, '&, '|, '^, '~, '? };
+operator_head -> u00A1-u00A7;
+operator_head -> u00A9 | u00AB;
+operator_head -> u00AC | u00AE;
+operator_head -> { u00B0-u00B1, u00B6, u00BB, u00BF, u00D7, u00F7 };
+operator_head -> u2016-u2017 | u2020-u2027;
+operator_head -> u2030-u203E;
+operator_head -> u2041-u2053;
+operator_head -> u2055-u205E;
+operator_head -> u2190-u23FF;
+operator_head -> u2500-u2775;
+operator_head -> u2794-u2BFF;
+operator_head -> u2E00-u2E7F;
+operator_head -> u3001-u3003;
+operator_head -> u3008-u3030;
+
+operator_character -> operator_head;
+operator_character -> u0300-u036F;
+operator_character -> u1DC0-u1DFF;
+operator_character -> u20D0-u20FF;
+operator_character -> uFE00-uFE0F;
+operator_character -> uFE20-uFE2F;
+operator_character -> uE0100-uE01EF;
+
+dot_operator_head -> '.;
+
+dot_operator_character -> '. operator_character;
+
+binary_operator -> operator;
+
+prefix_operator -> operator;
+
+postfix_operator -> operator;

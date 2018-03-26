@@ -39,7 +39,6 @@ struct TokenClassStack
 enum ParserError: Error
 {
     case expected(TokenClass)
-
     static func printExpectationErrorMessage(_ expected: TokenClassStack,
                                              _ actual: Token,
                                              _ sourceLines: SourceLines)
@@ -61,8 +60,7 @@ enum ParserError: Error
         \(lineNoPrefix)\(actual.line)
         """
 
-        let underline = actual.underline(in: sourceLines,
-                                         offset: lineNoPrefix.count)
+        let underline = actual.underline(offset: lineNoPrefix.count)
 
         let suggestion = """
         But there should be \(expected.enumeration).
@@ -82,16 +80,51 @@ enum ParserError: Error
     }
 
     case unexpectedEndOfInput
+    static func printUnexpectedEndOfInputMessage(_ lastToken: Token)
+    {
+        let lineNo = lastToken.info.startIndex.line+1
+        let sourceURL = lastToken.info.source.url.lastPathComponent
+
+        let comment = """
+        I unexpectedly found the end of input here.
+        """
+
+        let header = "-- Parsing Error in \(sourceURL) ".padding(toLength: 80,
+                                                                withPad: "-",
+                                                                startingAt: 0)
+
+        let lineNoPrefix = "\(lineNo)|"
+        let ctxt = """
+        \(lineNoPrefix)\(lastToken.line)
+        """
+
+        let underline = lastToken.underlineAfter(offset: lineNoPrefix.count)
+
+        let suggestion = """
+        Did you forget a semicolon?
+        """
+
+        let msg = """
+        \(header)
+
+        \(comment)
+
+        \(ctxt)\(underline)
+        \(suggestion)
+
+        """
+
+        print(msg)
+    }
 }
 
 extension Token
 {
-    func underline(in sourceLines: SourceLines,
-                   offset: Int) -> String
+    func underline(offset: Int) -> String
     {
         let start = info.startIndex
         let end = info.endIndex
-        let scalars = sourceLines[start.line]
+        let scalars = info.source[start.line]
 
         var underline = [Scalar]()
 
@@ -104,6 +137,15 @@ extension Token
         }
 
         underline = [Scalar](repeating: " ", count: offset) + underline
+
+        return String(String.UnicodeScalarView(underline))
+    }
+
+    func underlineAfter(offset: Int) -> String
+    {
+        let line = info.source[info.startIndex.line]
+        var underline = [Scalar](repeating: " ", count: offset+line.count-1)
+        underline.append(Scalar("^")!)
 
         return String(String.UnicodeScalarView(underline))
     }

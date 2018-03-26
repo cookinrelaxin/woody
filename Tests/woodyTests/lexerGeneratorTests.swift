@@ -13,8 +13,7 @@ class LexerGeneratorTests: XCTestCase
         let lexerGenerator = coordinator.lexerGenerator
 
         let transitionTable = lexerGenerator.transitionTable
-        let strippedTransitionTable =
-        lexerGenerator.strippedTransitionTable.table
+        let strippedTransitionTable = lexerGenerator.strippedTransitionTable.f
 
         XCTAssertEqual(transitionTable.count, strippedTransitionTable.count)
 
@@ -34,8 +33,7 @@ class LexerGeneratorTests: XCTestCase
         let lexerGenerator = coordinator.lexerGenerator
 
         let transitionTable = lexerGenerator.transitionTable
-        let strippedTransitionTable =
-        lexerGenerator.strippedTransitionTable.table
+        let strippedTransitionTable = lexerGenerator.strippedTransitionTable.f
 
         XCTAssertEqual(transitionTable.count, strippedTransitionTable.count)
 
@@ -235,7 +233,7 @@ class LexerGeneratorTests: XCTestCase
     }
 
     @available(macOS 10.11, *)
-    func testAnalysis()
+    func testAnalysis_release()
     {
         let url = URL(fileURLWithPath: "testGenTransitionTableMedium.woody",
                       relativeTo: fixtureURL)
@@ -253,7 +251,7 @@ class LexerGeneratorTests: XCTestCase
 
             let transitionTable = lexerGenerator.transitionTable
             let strippedTransitionTable =
-            lexerGenerator.strippedTransitionTable.table
+            lexerGenerator.strippedTransitionTable.f
 
             XCTAssertEqual(transitionTable.count, strippedTransitionTable.count)
 
@@ -265,8 +263,94 @@ class LexerGeneratorTests: XCTestCase
         }
         """
 
-        for token in lexerGenerator.analyze(source.unicodeScalars)
-        { print("token: (\(token.0) \(token.1 ?? "nil"))") }
+        /*
+         *for token in lexerGenerator.analyze(source.unicodeScalars)
+         *{ print("token: (\(token.0) \(token.1 ?? "nil"))") }
+         */
+    }
+
+    @available(macOS 10.11, *)
+    func testAnalysis_development()
+    {
+        let url = URL(fileURLWithPath: "testGenTransitionTableMedium.woody",
+                      relativeTo: fixtureURL)
+        let coordinator = PipelineCoordinator(url: url)
+        let lexerGenerator = coordinator.lexerGenerator
+
+        let source = """
+        @available(macOS 10.11, *)
+        func testGenTransitionTable_small()
+        {
+            let url = URL(fileURLWithPath: "testGenTransitionTable_small.woody",
+                          relativeTo: fixtureURL)
+            let transitionTable = lexerGenerator.transitionTable
+            let ml = "XCTAssert(values.contains { $0.tokenClass == \"identifier\" })"
+            var x = 2.6e-11 + 0xa.0fp+3 * 42
+        }
+        """
+
+/*
+ *        let expectedTokens =
+ *        [
+ *        ("@", "at_punc"),
+ *        ("available", "identifier"),
+ *        ("(", "left_parenthesis_punc"),
+ *        ("macOS", "identifier"),
+ *        ("10.11", "floating_point_literal"),
+ *        (",", "comma_punc"),
+ *        ("*", "operator"),
+ *        (")", "right_parenthesis_punc"),
+ *        ("func", "func_kw"),
+ *        ("testGenTransitionTable_small", "identifier"),
+ *        ("(", "left_parenthesis_punc"),
+ *        (")", "right_parenthesis_punc"),
+ *        ("{", "left_brace_punc"),
+ *        ("let", "let_kw"),
+ *        ("url", "identifier"),
+ *        ("=", "equals_punc"),
+ *        ("URL", "identifier"),
+ *        ("(", "left_parenthesis_punc"),
+ *        ("fileURLWithPath", "identifier"),
+ *        (":", "colon_punc"),
+ *        ("testGenTransitionTable_small.woody", "string_literal"),
+ *        (",", "comma_punc"),
+ *        ("relativeTo", "identifier"),
+ *        (":", "colon_punc"),
+ *        ("fixtureURL", "identifier"),
+ *        (")", "right_parenthesis_punc"),
+ *        ("let", "let_kw"),
+ *        ("transitionTable", "identifier"),
+ *        ("=", "equals_punc"),
+ *        ("lexerGenerator", "identifier"),
+ *        (".", "dot_punc"),
+ *        ("transitionTable", "identifier"),
+ *        ("var", "var_kw"),
+ *        ("x", "identifier"),
+ *        ("=", "equals_punc"),
+ *        ("2.6e-11", "floating_point_literal"),
+ *        ("+", "operator"),
+ *        ("a.01e+3", "floating_point_literal"),
+ *        ("*", "operator"),
+ *        ("42", "integer_literal"),
+ *        ("}", "right_brace_punc")
+ *        ]
+ *
+ *        let actualTokens = lexerGenerator.analyze(source.unicodeScalars,
+ *                                                  mode: .development)
+ *
+ *        XCTAssertEqual(actualTokens.count, expectedTokens.count)
+ *
+ *        for (actualToken, expectedToken) in zip(actualTokens, expectedTokens)
+ *        {
+ *            XCTAssertNotNil(actualToken.1)
+ *            XCTAssertEqual(actualToken.0, expectedToken.0)
+ *            XCTAssertEqual(actualToken.1!, expectedToken.1)
+ *        }
+ */
+
+         for token in lexerGenerator.analyze(source.unicodeScalars,
+                                             mode: .development)
+         { print("token: (\"\(token.0)\" \(token.1 ?? "nil"))") }
     }
 
 }

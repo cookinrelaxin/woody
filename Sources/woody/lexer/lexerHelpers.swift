@@ -122,7 +122,7 @@ func isStringTerminator(_ scalar: Scalar) -> Bool
 
 func isStandardSetHead(_ scalar: Scalar) -> Bool
 {
-    return scalar.value == 0x0055
+    return scalar.value == 0x0055 || scalar.value == 0x002E
     /*
      *switch scalar.value
      *{

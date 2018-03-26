@@ -26,9 +26,17 @@ final class Reader
         return SourceLines(lines: lines, url: source)
     }()
 
-    init(source: URL) throws
+    init(source: URL)
     {
         self.source = source
-        fileHandle = try FileHandle(forReadingFrom: source)
+        do
+        {
+            fileHandle = try FileHandle(forReadingFrom: source)
+        }
+        catch let e
+        {
+            print("Unexpected error in reader: \(e)")
+            exit(1)
+        }
     }
 }

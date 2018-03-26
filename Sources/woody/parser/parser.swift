@@ -34,7 +34,8 @@ final class Parser
 
     func nextToken() throws -> Token
     {
-        guard dot < tokens.endIndex else { throw ParserError.unexpectedEndOfInput }
+        guard dot < tokens.endIndex
+        else { throw ParserError.unexpectedEndOfInput }
 
         return tokens[dot]
     }
@@ -59,14 +60,17 @@ final class Parser
                                                      source)
             expectedTokenStack.clear()
         }
+        catch ParserError.unexpectedEndOfInput
+        {
+            let lastToken = tokens.last!
+            ParserError.printUnexpectedEndOfInputMessage(lastToken)
+        }
         catch let e
         {
-            print(e)
+            print("Unexpected error in parser: \(e)")
         }
 
         exit(1)
-
-        /*return nil*/
     }()
 
     init(lexer: Lexer)
@@ -240,8 +244,6 @@ fileprivate extension Parser
             expectedTokenStack.push(expectedTokenClass)
             dot = _dot
         }
-
-        dot = _dot
 
         let n = RepetitionOperator.zeroOrOneOperator(try zeroOrOneOperator())
         return n

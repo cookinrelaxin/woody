@@ -21,8 +21,8 @@ struct SourceLines: Equatable, Hashable
 
         static func < (lhs: Index, rhs: Index) -> Bool
         {
-            return lhs.line < rhs.line ||
-                   (lhs.line == rhs.line && lhs.char < rhs.char)
+            return (lhs.line < rhs.line) ||
+                   ((lhs.line == rhs.line) && (lhs.char < rhs.char))
         }
 
         var debugDescription: Swift.String

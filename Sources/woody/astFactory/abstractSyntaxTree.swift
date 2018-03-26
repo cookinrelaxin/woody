@@ -1,6 +1,7 @@
 import Foundation
 
 typealias AST = AbstractSyntaxTree
+let ε = AST.Regex()
 
 struct ScalarRange: Equatable, Hashable
 {
@@ -130,7 +131,9 @@ struct AbstractSyntaxTree: Equatable, Hashable
             return _dict
         }
 
-        let context = Context(idLookup: idLookup, sourceLines: sourceLines)
+        let context = Context(idLookup: idLookup,
+                              sourceLines: sourceLines,
+                              boundIdentifiers: [])
 
         var rules = [TokenDefinition]()
 
@@ -144,9 +147,14 @@ struct AbstractSyntaxTree: Equatable, Hashable
             ContextHandlingError.print(.undefinedIdentifier(id), context)
             exit(1)
         }
+        catch let ContextHandlingError.recursiveTokenDefinition(id)
+        {
+            ContextHandlingError.print(.recursiveTokenDefinition(id), context)
+            exit(1)
+        }
         catch let e
         {
-            print(e)
+            print("Unexpected error in astFactory: \(e)")
             exit(1)
         }
 
@@ -176,7 +184,9 @@ struct AbstractSyntaxTree: Equatable, Hashable
                 else { throw ContextHandlingError.undefinedIdentifier(id) }
 
                 self.order      = orderedPRegex.first!.order
-                try self.regex  = Regex(pRegex: pRegex, context)
+
+                let newContext = Context(context, id.representation)
+                try self.regex  = Regex(pRegex: pRegex, newContext)
             }
         }
     }
@@ -335,14 +345,22 @@ struct AbstractSyntaxTree: Equatable, Hashable
         init(lIdentifier: Lexer.Identifier, _ context: Context) throws
         {
             let key = lIdentifier.representation
-            guard let orderedPRegexes = context.idLookup[key]
+
+            guard !context.boundIdentifiers.contains(key)
             else
-            { throw ContextHandlingError.undefinedIdentifier(lIdentifier) }
+            {
+                throw ContextHandlingError.recursiveTokenDefinition(lIdentifier)
+            }
+
+            guard let orderedPRegexes = context.idLookup[key]
+            else { throw ContextHandlingError.undefinedIdentifier(lIdentifier) }
 
             let pRegexes = orderedPRegexes.reduce(Set<ParseTree.Regex>())
             { $0.union([$1.pRegex]) }
 
-            try self.init(pRegexes: pRegexes, context)
+            let newContext = Context(context, key)
+
+            try self.init(pRegexes: pRegexes, newContext)
         }
     }
 
@@ -451,7 +469,7 @@ struct AbstractSyntaxTree: Equatable, Hashable
         private static func _set(for pStandardSet: ParseTree.StandardSet, _
             context: Context) -> Set<ScalarRange>
         {
-            let range = Scalar(UInt32(0))! ... Scalar(UInt32(0x100000))!
+            let range = Scalar(UInt32(0))! ... Scalar(UInt32(0x100_000))!
 
             switch pStandardSet
             {

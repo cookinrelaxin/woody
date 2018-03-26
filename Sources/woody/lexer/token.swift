@@ -84,8 +84,8 @@ struct TokenInfo: Equatable, Hashable, CustomDebugStringConvertible
          source: SourceLines)
     {
         self.startIndex = startIndex
-        self.endIndex = endIndex
-        self.source = source
+        self.endIndex   = endIndex
+        self.source     = source
     }
 
     init(_ startIndex: (Int, Int),
