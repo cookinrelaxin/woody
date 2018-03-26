@@ -35,31 +35,15 @@ extension AST.Regex: SEXPPrintable
 {
     func sexp(_ indentation: String) -> String
     {
-        if let r = repetitionOperator
-        {
-            return indentation+"""
-            (\(r.sexp(""))
-            \(basicRegex.sexp(indentation+standardIndentation)))
-            """
-        }
-        return basicRegex.sexp(indentation)
-    }
-}
+        let i = indentation+standardIndentation
 
-extension AST.BasicRegex: SEXPPrintable
-{
-    func sexp(_ indentation: String) -> String
-    {
         switch self
         {
-        case let .regex(regex):
-            return regex.sexp(indentation)
+        case .ε: return indentation+"ε"
 
-        case .epsilon:
-            return indentation+"ε"
+        case let .oneOrMore(r): return indentation+"(+ \(r.sexp(i)))"
 
         case let .union(r1, r2):
-            let i = indentation+standardIndentation
             return indentation+"""
             (∪
             \(r1.sexp(i))
@@ -67,7 +51,6 @@ extension AST.BasicRegex: SEXPPrintable
             """
 
         case let .concatenation(r1, r2):
-            let i = indentation+standardIndentation
             return indentation+"""
             (cat
             \(r1.sexp(i))
@@ -75,20 +58,6 @@ extension AST.BasicRegex: SEXPPrintable
             """
         case let .characterSet(c):
             return c.sexp(indentation)
-        }
-    }
-}
-
-extension AST.RepetitionOperator: SEXPPrintable
-{
-    func sexp(_ indentation: String) -> String
-    {
-        let i = indentation
-        switch self
-        {
-        case .zeroOrOne  : return "\(i)?"
-        case .zeroOrMore : return "\(i)*"
-        case .oneOrMore  : return "\(i)+"
         }
     }
 }

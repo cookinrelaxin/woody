@@ -7,7 +7,6 @@ final class LexerGenerator
     typealias ScalarString    = String.UnicodeScalarView
     typealias TokenDefinition = AST.TokenDefinition
     typealias Regex           = AST.Regex
-    typealias BasicRegex      = AST.BasicRegex
     typealias CharacterSet    = AST.CharacterSet
     typealias MacroCharacter  = CharacterSet
     typealias ItemSet         = Set<TokenDefinition>
@@ -48,40 +47,34 @@ final class LexerGenerator
     }()
 
     func elementaryRanges(in itemSet: ItemSet,
-                          immediateOnly: Bool = true) -> Set<ElementaryRange>
+                          _ immediateOnly: Bool) -> Set<ElementaryRange>
     {
-        return itemSet.unionMap
-        { elementaryRanges(in: $0, immediateOnly: immediateOnly) }
+        return itemSet.unionMap { elementaryRanges(in: $0, immediateOnly) }
     }
 
     func elementaryRanges(in tokenDefinition: TokenDefinition,
-                          immediateOnly: Bool = true)
+                          _ immediateOnly: Bool)
     -> Set<ElementaryRange>
-    { return _elementaryRanges(in: tokenDefinition.regex,
-                               immediateOnly: immediateOnly) }
+    { return _elementaryRanges(in: tokenDefinition.regex, immediateOnly) }
 
-    private func _elementaryRanges(in regex: Regex,
-                                   immediateOnly: Bool = true)
-    -> Set<ElementaryRange>
-    { return _elementaryRanges(in: regex.basicRegex,
-                               immediateOnly: immediateOnly) }
-
-    private func _elementaryRanges(in basicRegex: BasicRegex,
-                                   immediateOnly: Bool = true)
+    private func _elementaryRanges(in regex: Regex, _ immediateOnly: Bool)
     -> Set<ElementaryRange>
     {
-        switch basicRegex
+        let io = immediateOnly
+
+        switch regex
         {
-        case let .regex(r): return _elementaryRanges(in: r)
+        case .ε: return []
 
-        case .epsilon: return []
+        case let .oneOrMore(r): return _elementaryRanges(in: r, io)
 
-        case let .union(r, s):
-            return _elementaryRanges(in: r).union(_elementaryRanges(in: s))
+        case let .union(r, s): return _elementaryRanges(in: r, io)
+                                      .union(_elementaryRanges(in: s, io))
 
         case let .concatenation(r, s):
-            if immediateOnly { return _elementaryRanges(in: r) }
-            return _elementaryRanges(in: r).union(_elementaryRanges(in: s))
+            if io { return _elementaryRanges(in: r, io) }
+            return _elementaryRanges(in: r, io)
+                   .union(_elementaryRanges(in: s, io))
 
         case let .characterSet(characterSet):
             return characterSet.positiveSet.unionMap { sbert[$0] }
@@ -90,13 +83,13 @@ final class LexerGenerator
 
     typealias ERDict = [ ElementaryRange : ItemSet ]
     func relevantSubstateLookup(for itemSet: ItemSet,
-                                immediateOnly: Bool = true) -> ERDict
+                                _ immediateOnly: Bool) -> ERDict
     {
         var dict = ERDict()
 
         for item in itemSet
         {
-            for e in elementaryRanges(in: item, immediateOnly: immediateOnly)
+            for e in elementaryRanges(in: item, immediateOnly)
             { dict[e, default: ItemSet()].insert(item) }
         }
 
@@ -120,7 +113,7 @@ final class LexerGenerator
 
             while let state = q.pop()
             {
-                let lookup = self.relevantSubstateLookup(for: state)
+                let lookup = self.relevantSubstateLookup(for: state, true)
 
                 for (e, subState) in lookup
                 {
@@ -146,8 +139,7 @@ final class LexerGenerator
 
     private func first(in tokenDefinitions: ItemSet) -> String?
     {
-        let candidates: ItemSet = tokenDefinitions
-                                  .filter{ $0.regex == Regex() }
+        let candidates: ItemSet = tokenDefinitions .filter{ $0.regex == .ε }
 
         return candidates.reduce((tokenClass: nil, order: Int.max))
                { $1.order < $0.order ? ($1.tokenClass, $1.order) : $0 }
@@ -203,11 +195,11 @@ final class LexerGenerator
 
     private func _mentionedCharacterSets(in regex: Regex) -> Set<CharacterSet>
     {
-        switch regex.basicRegex
+        switch regex
         {
-        case let .regex(r): return _mentionedCharacterSets(in: r)
+        case .ε: return []
 
-        case .epsilon: return []
+        case let .oneOrMore(r): return _mentionedCharacterSets(in: r)
 
         case let .union(r1, r2):
             return _mentionedCharacterSets(in: r1)
@@ -386,9 +378,8 @@ fileprivate extension AST.TokenDefinition
 
     func move(over r: ElementaryRange) -> ItemSet
     {
-        return regex.move(over: r)
-               .filter { $0.didConsumeInput }
-               .unionMap { TokenDefinition(tokenClass, order, $0.regex) }
+        return regex.move(over: r).unionMap
+        { TokenDefinition(tokenClass, order, $0) }
     }
 }
 
@@ -396,99 +387,28 @@ fileprivate extension AST.Regex
 {
     typealias TokenDefinition = AST.TokenDefinition
     typealias Regex           = AST.Regex
-    typealias BasicRegex      = AST.BasicRegex
     typealias CharacterSet    = AST.CharacterSet
 
-    struct Move: Hashable
-    {
-        let regex: Regex
-        let didConsumeInput: Bool
-
-        init(_ regex: Regex, _ didConsumeInput: Bool)
-        {
-            self.regex = regex
-            self.didConsumeInput = didConsumeInput
-        }
-    }
-
-    var once: Regex
-    { return Regex(basicRegex: basicRegex, repetitionOperator: nil) }
-
-    var zeroOrOne: Regex
-    { return Regex(basicRegex: basicRegex, repetitionOperator: .zeroOrOne) }
-
-    var oneOrMore: Regex
-    { return Regex(basicRegex: basicRegex, repetitionOperator: .oneOrMore) }
-
-    var zeroOrMore: Regex
-    { return Regex(basicRegex: basicRegex, repetitionOperator: .zeroOrMore) }
-
-    static func +(_ l: Regex, _ r: Regex) -> Regex
-    {
-        switch (l.basicRegex, r.basicRegex)
-        {
-            case (.epsilon, .epsilon) : return l
-            case (.epsilon, _)        : return r
-            case (_, .epsilon)        : return l
-            default:
-                return Regex(basicRegex: .concatenation(l, r),
-                             repetitionOperator: nil)
-        }
-    }
-
-    func move(over r: ElementaryRange) -> Set<Move>
-    {
-        switch repetitionOperator
-        {
-            case nil          : return basicRegex.move(over: r)
-
-            case .zeroOrOne?  : return Set([Move(ε, false)])
-                                       .union(once.move(over: r))
-
-            case .zeroOrMore? : return Set([Move(ε, false)])
-                                       .union(oneOrMore.move(over: r))
-
-            case .oneOrMore?  : return once.move(over: r)
-                                       .union((once+oneOrMore).move(over: r))
-        }
-    }
-}
-
-fileprivate extension AST.BasicRegex
-{
-    typealias TokenDefinition = AST.TokenDefinition
-    typealias Regex           = AST.Regex
-    typealias BasicRegex      = AST.BasicRegex
-    typealias CharacterSet    = AST.CharacterSet
-    typealias Move            = AST.Regex.Move
-
-    func move(over r: ElementaryRange) -> Set<Move>
+    func move(over r: ElementaryRange) -> Set<Regex>
     {
         switch self
         {
-        case let .regex(regex): return regex.move(over: r)
+        case .ε: return []
 
-        case .epsilon: return [ Move(ε, false) ]
+        case let .oneOrMore(regex):
+            return regex.move(over: r)
+                   .union((regex + .oneOrMore(regex)).move(over: r))
 
         case let .union(left, right): return left.move(over: r)
                                              .union(right.move(over: r))
 
         case let .concatenation(left, right):
-            return left.move(over: r)
-                       .unionMap
-                        { (m) -> Set<Move> in
-                            if !m.didConsumeInput { return right.move(over: r) }
-                            if right.repetitionOperator == .zeroOrOne ||
-                               right.repetitionOperator == .zeroOrMore
-                            {
-                                return right.move(over: r).unionMap
-                                { Move(m.regex + $0.regex, true) }
-                            }
-                            return Set([Move(m.regex + right, true)])
-                        }.union()
+            if left.εSimplified == .ε { return right.move(over: r) }
+
+            return left.εSimplified.move(over: r).unionMap { $0 + right }
 
         case let .characterSet(characterSet):
-            return characterSet.contains(r) ? [ Move(ε, true) ] : []
+            return characterSet.contains(r) ? [ .ε ] : []
         }
     }
 }

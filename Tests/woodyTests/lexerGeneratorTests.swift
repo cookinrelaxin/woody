@@ -165,11 +165,8 @@ class LexerGeneratorTests: XCTestCase
         let coordinator = PipelineCoordinator(url: url)
         let lexerGenerator = coordinator.lexerGenerator
 
-        measure { _ = lexerGenerator.relevantSubstateLookup(for:
-            lexerGenerator.initialState) }
-
         let lookup = lexerGenerator.relevantSubstateLookup(for:
-            lexerGenerator.initialState)
+            lexerGenerator.initialState, true)
 
         let e = ElementaryRange.scalar(" ")
 
@@ -180,7 +177,7 @@ class LexerGeneratorTests: XCTestCase
         let p = LexerGenerator.TransitionPair(relevantSubstate!, e)
         let endState = lexerGenerator._endState(for: p)
 
-        XCTAssert(endState.contains { $0.regex == AST.Regex() })
+        XCTAssert(endState.contains { $0.regex == .ε })
     }
 
     @available(macOS 10.11, *)

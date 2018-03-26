@@ -1,7 +1,6 @@
 import Foundation
 
 typealias AST = AbstractSyntaxTree
-let ε = AST.Regex()
 
 struct ScalarRange: Equatable, Hashable
 {
@@ -191,40 +190,87 @@ struct AbstractSyntaxTree: Equatable, Hashable
         }
     }
 
-    struct Regex: Equatable, Hashable
+    indirect enum Regex: Equatable, Hashable
     {
-        let basicRegex         : BasicRegex
-        let repetitionOperator : RepetitionOperator?
+        case ε
+        case oneOrMore     (Regex)
+        case union         (Regex, Regex)
+        case concatenation (Regex, Regex)
+        case characterSet  (CharacterSet)
 
-        var hashValue: Int { return basicRegex.hashValue }
-
-        init()
+        static func +(_ l: Regex, _ r: Regex) -> Regex
         {
-            basicRegex         = .epsilon
-            repetitionOperator = nil
+            switch (l, r)
+            {
+                case (ε, _) : return r
+                case (_, ε) : return l
+                default     : return .concatenation(l, r)
+            }
         }
 
-        init(basicRegex: BasicRegex, repetitionOperator: RepetitionOperator?)
+        var εSimplified: Regex
         {
-            self.basicRegex         = basicRegex
-            self.repetitionOperator = repetitionOperator
+            switch self
+            {
+            case .ε: return .ε
+
+            case let .oneOrMore(r):
+                let l = r.εSimplified
+                return (l == .ε) ? .ε : .oneOrMore(l)
+
+            case let .union(r1, r2):
+                let l = r1.εSimplified
+                let r = r2.εSimplified
+
+                switch(l, r)
+                {
+                    case (.ε, _) : return r
+                    case (_, .ε) : return l
+                    default      : return .union(l, r)
+                }
+
+            case let .concatenation(r1, r2):
+                let l = r1.εSimplified
+                let r = r2.εSimplified
+
+                switch(l, r)
+                {
+                    case (.ε, _) : return r
+                    case (_, .ε) : return l
+                    default      : return .concatenation(l, r)
+                }
+
+            case .characterSet(_): return self
+            }
+        }
+
+        init(regex: Regex, pRepetitionOperator: ParseTree.RepetitionOperator?)
+        {
+            guard let pRepetitionOperator = pRepetitionOperator
+            else { self = regex; return }
+
+            switch pRepetitionOperator
+            {
+            case .zeroOrMoreOperator(_): self = .union(.ε, .oneOrMore(regex))
+
+            case .oneOrMoreOperator(_): self = .oneOrMore(regex)
+
+            case .zeroOrOneOperator(_): self = .union(.ε, regex)
+            }
         }
 
         init(pRegexes: Set<ParseTree.Regex>, _ context: Context) throws
         {
             switch pRegexes.count
             {
-            case 0: basicRegex = .epsilon
-            case 1: basicRegex = try .regex(Regex(pRegex: pRegexes.first!,
-                                                  context))
+            case 0: self = .ε
+            case 1: self = try Regex(pRegex: pRegexes.first!, context)
             default:
-                basicRegex = try
+                self = try
                 .union(Regex(pRegex: pRegexes.first!, context),
                        Regex(pRegexes: Set(pRegexes.dropFirst()),
                              context))
             }
-
-            repetitionOperator = nil
         }
 
         init(pRegex: ParseTree.Regex, _ context: Context) throws
@@ -243,9 +289,8 @@ struct AbstractSyntaxTree: Equatable, Hashable
             switch pGroupedRegex
             {
             case let .cat(_, _pRegex, _, pRepetitionOperator):
-                basicRegex = try BasicRegex(pRegex: _pRegex, context)
-                repetitionOperator = RepetitionOperator(pRepetitionOperator:
-                                                        pRepetitionOperator)
+                let r = try Regex(pRegex: _pRegex, context)
+                self.init(regex: r, pRepetitionOperator: pRepetitionOperator)
             }
         }
 
@@ -261,119 +306,6 @@ struct AbstractSyntaxTree: Equatable, Hashable
                 try self.init(pSimpleRegex: pSimpleRegex, context)
             }
         }
-
-        init(pUnion: ParseTree.Union, _ context: Context) throws
-        {
-            basicRegex = try BasicRegex(pUnion: pUnion, context)
-            repetitionOperator = nil
-        }
-
-        init(pConcatenation: ParseTree.Concatenation, _ context: Context) throws
-        {
-            basicRegex = try BasicRegex(pConcatenation: pConcatenation, context)
-            repetitionOperator = nil
-        }
-
-        init(pSimpleRegex: ParseTree.SimpleRegex, _ context: Context) throws
-        {
-            switch pSimpleRegex
-            {
-            case let .concatenation(pConcatenation):
-                try self.init(pConcatenation: pConcatenation, context)
-
-            case let .basicRegex(pBasicRegex):
-                try self.init(pBasicRegex: pBasicRegex, context)
-            }
-        }
-
-        init(pBasicRegex: ParseTree.BasicRegex, _ context: Context) throws
-        {
-            switch pBasicRegex
-            {
-            case let .cat(pElementaryRegex, pRepetitionOperator):
-                switch pElementaryRegex
-                {
-                case let .string(lString):
-                    self.init(basicRegex:
-                        try Regex(lString: lString, context).basicRegex,
-                        repetitionOperator:
-                            RepetitionOperator(pRepetitionOperator:
-                                               pRepetitionOperator))
-
-                case let .identifier(lIdentifier):
-                    self.init(basicRegex:
-                        try Regex(lIdentifier: lIdentifier, context).basicRegex,
-                        repetitionOperator:
-                            RepetitionOperator(pRepetitionOperator:
-                                               pRepetitionOperator))
-
-                case let .set(pSet):
-                    self.init(basicRegex:
-                        .characterSet(CharacterSet(pSet: pSet, context)),
-                              repetitionOperator:
-                        RepetitionOperator(pRepetitionOperator:
-                              pRepetitionOperator))
-                }
-            }
-        }
-
-        init(lString: Lexer.String, _ context: Context) throws
-        {
-            let unquoted = String(lString.representation.dropFirst().dropLast())
-
-            try self.init(string: unquoted, context)
-        }
-
-        init(string: String, _ context: Context) throws
-        {
-            if string.isEmpty { basicRegex = .epsilon }
-            else
-            {
-                let first   : Scalar  = string.unicodeScalars.first!
-                let charset : BasicRegex = .characterSet(CharacterSet(first))
-                let rest    : String     = String(string.dropFirst())
-                let r1 = Regex(basicRegex: charset, repetitionOperator: nil)
-                let r2 = try Regex(string: String(rest), context)
-
-                if string.count == 1 { basicRegex = .regex(r1) }
-                else                 { basicRegex = .concatenation(r1, r2) }
-            }
-
-            repetitionOperator = nil
-        }
-
-        init(lIdentifier: Lexer.Identifier, _ context: Context) throws
-        {
-            let key = lIdentifier.representation
-
-            guard !context.boundIdentifiers.contains(key)
-            else
-            {
-                throw ContextHandlingError.recursiveTokenDefinition(lIdentifier)
-            }
-
-            guard let orderedPRegexes = context.idLookup[key]
-            else { throw ContextHandlingError.undefinedIdentifier(lIdentifier) }
-
-            let pRegexes = orderedPRegexes.reduce(Set<ParseTree.Regex>())
-            { $0.union([$1.pRegex]) }
-
-            let newContext = Context(context, key)
-
-            try self.init(pRegexes: pRegexes, newContext)
-        }
-    }
-
-    indirect enum BasicRegex: Equatable, Hashable
-    {
-        case regex         (Regex)
-        case epsilon
-        case union         (Regex, Regex)
-        case concatenation (Regex, Regex)
-        case characterSet  (CharacterSet)
-
-        init(pRegex: ParseTree.Regex, _ context: Context) throws
-        { self = try .regex(Regex(pRegex: pRegex, context)) }
 
         init(pUnion: ParseTree.Union, _ context: Context) throws
         {
@@ -395,31 +327,87 @@ struct AbstractSyntaxTree: Equatable, Hashable
                 let r1 = try Regex(pBasicRegex: pBasicRegex, context)
                 let r2 = try Regex(pSimpleRegex: pSimpleRegex, context)
 
-                if r2.basicRegex == .epsilon { self = .regex(r1) }
-                else                         { self = .concatenation(r1, r2) }
+                self = .concatenation(r1, r2)
             }
         }
 
-
-    }
-
-    enum RepetitionOperator: Equatable, Hashable
-    {
-        case zeroOrOne
-        case zeroOrMore
-        case oneOrMore
-
-        init?(pRepetitionOperator: ParseTree.RepetitionOperator?)
+        init(pSimpleRegex: ParseTree.SimpleRegex, _ context: Context) throws
         {
-            guard let pRepetitionOperator = pRepetitionOperator
-            else { return nil }
-
-            switch pRepetitionOperator
+            switch pSimpleRegex
             {
-                case .zeroOrOneOperator(_)  : self = .zeroOrOne
-                case .zeroOrMoreOperator(_) : self = .zeroOrMore
-                case .oneOrMoreOperator(_)  : self = .oneOrMore
+            case let .concatenation(pConcatenation):
+                try self.init(pConcatenation: pConcatenation, context)
+
+            case let .basicRegex(pBasicRegex):
+                try self.init(pBasicRegex: pBasicRegex, context)
             }
+        }
+
+        init(pBasicRegex: ParseTree.BasicRegex, _ context: Context) throws
+        {
+            switch pBasicRegex
+            {
+            case let .cat(pElementaryRegex, pRepetitionOperator):
+                let r: Regex
+
+                switch pElementaryRegex
+                {
+                case let .string(lString):
+                    r = try Regex(lString: lString, context)
+
+                case let .identifier(lIdentifier):
+                    r = try Regex(lIdentifier: lIdentifier, context)
+
+                case let .set(pSet):
+                    r = Regex.characterSet(CharacterSet(pSet: pSet, context))
+                }
+
+                self.init(regex: r, pRepetitionOperator: pRepetitionOperator)
+            }
+        }
+
+        init(lString: Lexer.String, _ context: Context) throws
+        {
+            let unquoted = String(lString.representation.dropFirst().dropLast())
+
+            try self.init(string: unquoted, context)
+        }
+
+        init(string: String, _ context: Context) throws
+        {
+            if string.isEmpty { self = .ε }
+            else
+            {
+                let first   : Scalar  = string.unicodeScalars.first!
+                let charset : Regex = .characterSet(CharacterSet(first))
+                let rest    : String     = String(string.dropFirst())
+                let r1 = charset
+                let r2 = try Regex(string: String(rest), context)
+
+                if string.count == 1 { self = r1 }
+                else                 { self = .concatenation(r1, r2) }
+            }
+        }
+
+        init(lIdentifier: Lexer.Identifier, _ context: Context) throws
+        {
+            let key = lIdentifier.representation
+
+            guard !context.boundIdentifiers.contains(key)
+            else
+            {
+                throw ContextHandlingError.recursiveTokenDefinition(lIdentifier)
+            }
+
+            guard let orderedPRegexes = context.idLookup[key]
+            else { throw ContextHandlingError.undefinedIdentifier(lIdentifier) }
+
+            let pRegexes = orderedPRegexes.reduce(Set<ParseTree.Regex>())
+            { $0.union([$1.pRegex]) }
+
+            let newContext = Context(context, key)
+
+            try self.init(pRegexes: pRegexes, newContext)
         }
     }
 
