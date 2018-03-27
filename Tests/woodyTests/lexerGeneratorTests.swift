@@ -275,16 +275,26 @@ class LexerGeneratorTests: XCTestCase
         let lexerGenerator = coordinator.lexerGenerator
 
         let source = """
-        @available(macOS 10.11, *)
-        func testGenTransitionTable_small()
-        {
-            let url = URL(fileURLWithPath: "testGenTransitionTable_small.woody",
-                          relativeTo: fixtureURL)
-            let transitionTable = lexerGenerator.transitionTable
-            let ml = "XCTAssert(values.contains { $0.tokenClass == \"identifier\" })"
-            var x = 2.6e-11 + 0xa.0fp+3 * 42
-        }
-        """
+            2
+            """
+
+        let source = """
+            2.6e-11
+            """
+
+        /*
+         *let source = """
+         *@available(macOS 10.11, *)
+         *func testGenTransitionTable_small()
+         *{
+         *    let url = URL(fileURLWithPath: "testGenTransitionTable_small.woody",
+         *                  relativeTo: fixtureURL)
+         *    let transitionTable = lexerGenerator.transitionTable
+         *    let ml = "XCTAssert(values.contains { $0.tokenClass == \"identifier\" })"
+         *    var x = 2.6e-11 + 0xa.0fp+3 * 42
+         *}
+         *"""
+         */
 
 /*
  *        let expectedTokens =

@@ -41,7 +41,11 @@ extension AST.Regex: SEXPPrintable
         {
         case .ε: return indentation+"ε"
 
-        case let .oneOrMore(r): return indentation+"(+ \(r.sexp(i)))"
+        case let .oneOrMore(r):
+            return indentation+"""
+            (+
+            \(r.sexp(i)))
+            """
 
         case let .union(r1, r2):
             return indentation+"""

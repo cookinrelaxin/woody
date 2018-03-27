@@ -2383,8 +2383,7 @@ Set U+64)
       (positiveSet U+3F)
       (negativeSet ())))
   (rule exclamation_punc
-    (
-characterSet
+    (characterSet
       (positiveSet U+21)
       (negativeSet ())))
   (rule whitespace
@@ -2399,7 +2398,8 @@ characterSet
               (characterSet
                 (positiveSet U+D)
                 (negativeSet ()))
-              (characterSet
+              (characterSe
+t
                 (positiveSet U+A)
                 (negativeSet ())))
             (characterSet
@@ -2533,105 +2533,108 @@ characterSet
               (scalarRange U+90000 U+9FFFD)
               (scalarRange U+B2 U+B5))
             (negativeSet ()))))
-      (*
-        (∪
-          (∪
-            (characterSet
-              (positiveSet U+5F)
-              (negativeSet ()))
-            (∪
-              (∪
-                (characterSet
-                  (positiveSet (scalarRange U+61 U+7A))
-                  (negativeSet ()))
-                (characterSet
-                  (positiveSet (scalarRange U+41 U+5A))
-                  (negativeSet ())))
-              (characterSet
-                (positiveSet
-                  (scalarRange U+2E80 U+2FFF)
-                  (scalarRange U+20000 U+2FFFD)
-                  (scalarRange U+3040 U+D7FF)
-                  (scalarRange U+2100 U+218F)
-                  (scalarRange U+E0000 U+EFFFD)
-                  (scalarRange U+3004 U+3007)
-                  (scalarRange U+C0000 U+CFFFD)
-                  (scalarRange U+70000 U+7FFFD)
-                  (scalarRange U+80000 U+8FFFD)
-                  (scalarRange U+B0000 U+BFFFD)
-                  (scalarRange U+202A U+202E)
-                  (scalarRange U+2C00 U+2DFF)
-                  U+A8
-                  (scalarRange U+C0 U+D6)
-                  (scalarRange U+40000 U+4FFFD)
-                  (scalarRange U+60000 U+6FFFD)
-                  (scalarRange U+F8 U+FF)
-                  (scalarRange U+1E00 U+1FFF)
-                  (scalarRange U+10000 U+1FFFD)
-                  (scalarRange U+200B U+200D)
-                  (scalarRange U+370 U+167F)
-                  (scalarRange U+2070 U+20CF)
-                  (scalarRange U+A0000 U+AFFFD)
-                  (scalarRange U+D0000 U+DFFFD)
-                  (scalarRange U+F900 U+FD3D)
-                  (scalarRange U+3021 U+302F)
-                  (scalarRange U+30000 U+3FFFD)
-                  U+AA
-                  (scalarRange U+2460 U+24FF)
-                  (scalarRange U+3031 U+303F)
-                  (scalarRange U+2060 U+206F)
-                  (scalarRange U+FE30 U+FE44)
-                  (scalarRange U+180F U+1DBF)
-                  (scalarRange U+BC U+BE)
-                  (scalarRange U+FE47 U+FFFD)
-                  (scalarRange U+B7 U+BA)
-                  (scalarRange U+2776 U+2793)
-                  (scalarRange U+50000 U+5FFFD)
-                  (scalarRange U+FDF0 U+FE1F)
-                  (scalarRange U+100 U+2FF)
-                  (scalarRange U+1681 U+180D)
-                  (scalarRange U+D8 U+F6)
-                  U+AF
-                  U+2054
-                  (scalarRange U+203F U+2040)
-                  (scalarRange U+FD40 U+FDCF)
-                  (scalarRange U+90000 U+9FFFD)
-                  (scalarRange U+B2 U+B5))
-                (negativeSet ()))))
+      (∪
+        ε
+        (+
           (∪
             (∪
               (characterSet
-                (positiveSet (scalarRange U+300 U+36F))
+                (positiveSet U+5F)
                 (negativeSet ()))
               (∪
+                (∪
+                  (characterSet
+                    (positiveSet (scalarRange U+61 U+7A))
+                    (negativeSet ()))
+                  (characterSet
+                    (positiveSet (scalarRange U+41 U+5A))
+                    (negativeSet ())))
                 (characterSet
-                  (positiveSet (scalarRange U+1DC0 U+1DFF))
+                  (positiveSet
+                    (scalarRange U+2E80 U+2FFF)
+                    (scalarRange U+20000 U+2FFFD)
+                    (scalarRange U+3040 U+D7FF)
+                    (scalarRange U+2100 U+218F)
+                    (scalarRange U+E0000 U+EFFFD)
+                    (scalarRange U+3004 U+3007)
+                    (scalarRange U+C0000 U+CFFFD)
+                    (scalarRange U+70000 U+7FFFD)
+                    (scalarRange U+80000 U+8FFFD)
+                    (scalarRange U+B0000 U+BFFFD)
+                    (scalarRange U+202A U+202E)
+                    (scalarRange U+2C00 U+2DFF)
+                    U+A8
+                    (scalarRange U+C0 U+D6)
+                    (scalarRange U+40000 U+4FFFD)
+                    (scalarRange U+60000 U+6FFFD)
+                    (scalarRange U+F8 U+FF)
+                    (scalarRange U+1E00 U+1FFF)
+                    (scalarRange U+10000 U+1FFFD)
+                    (scalarRange U+200B U+200D)
+                    (scalarRange U+370 U+167F)
+                    (scalarRange U+2070 U+20CF)
+                    (scalarRange U+A0000 U+AFFFD)
+                    (scalarRange U+D0000 U+DFFFD)
+                    (scalarRange U+F900 U+FD3D)
+                    (scalarRange U+3021 U+302F)
+                    (scalarRange U+30000 U+3FFFD)
+                    U+AA
+                    (scalarRange U+2460 U+24FF)
+                    (scalarRange U+3031 U+303F)
+                    (scalarRange U+2060 U+206F)
+                    (scalarRange U+FE30 U+FE44)
+                    (scalarRange U+180F U+1DBF)
+                    (scalarRange U+BC U+BE)
+                    (scalarRange U+FE47 U+FFFD)
+                    (scalarRange U+B7 U+BA)
+                    (scalarRange U+2776 U+2793)
+                    (scalarRange U+50000 U+5FFFD)
+                    (scalarRange U+FDF0 U+FE1F)
+                    (scalarRange U+100 U+2FF)
+                    (scalarRange U+1681 U+180D)
+                    (scalarRange U+D8 U+F6)
+                    U+AF
+                    U+2054
+                    (scalarRange U+203F U+2040)
+                    (scalarRange U+FD40 U+FDCF)
+                    (scalarRange U+90000 U+9FFFD)
+                    (scalarRange U+B2 U+B5))
+                  (negativeSet ()))))
+            (∪
+              (∪
+                (characterSet
+                  (positiveSet (scalarRange U+300 U+36F))
                   (negativeSet ()))
                 (∪
                   (characterSet
-                    (positiveSet (scalarRange U+20D0 U+20FF))
+                    (positiveSet (scalarRange U+1DC0 U+1DFF))
+                    (negativeSet ()))
+                  (∪
+                    (characterSet
+                      (positiveSet (scalarRange U+20D0 U+20FF))
+                      (negativeSet ()))
+                    (characterSet
+                      (positiveSet (scalarRange U+FE20 U+FE2F))
+                      (negativeSet ())))))
+              (∪
+                (∪
+                  (characterSet
+                    (positiveSet
+                      U+30
+                      U+31)
                     (negativeSet ()))
                   (characterSet
-                    (positiveSet (scalarRange U+FE20 U+FE2F))
-                    (negativeSet ())))))
-            (∪
-              (∪
+                    (positiveSet (scalarRange U+32 U+37))
+                    (negativeSet ())))
                 (characterSet
                   (positiveSet
-                    U+30
-                    U+31)
-                  (negativeSet ()))
-                (characterSet
-                  (positiveSet (scalarRange U+32 U+37))
-                  (negativeSet ())))
-              (characterSet
-                (positiveSet
-                  U+39
-                  U+38)
-                (negativeSet ()))))))))
+                    U+39
+                    U+38)
+                  (negativeSet ())))))))))
   (rule integer_literal
     (cat
-      (?
+      (∪
+        ε
         (characterSet
           (positiveSet U+2D)
           (negativeSet ())))
@@ -2650,16 +2653,18 @@ characterSet
                 U+30
                 U+31)
               (negativeSet ()))
-            (*
-              (cat
-                (characterSet
-                  (positiveSet
-                    U+30
-                    U+31)
-                  (negativeSet ()))
-                (characterSet
-                  (positiveSet U+5F)
-                  (negativeSet ()))))))
+            (∪
+              ε
+              (+
+                (∪
+                  (characterSet
+                    (positiveSet
+                      U+30
+                      U+31)
+                    (negativeSet ()))
+                  (characterSet
+                    (positiveSet U+5F)
+                    (negativeSet ())))))))
         (∪
           (cat
             (cat
@@ -2667,7 +2672,8 @@ characterSet
                 (positiveSet U+30)
                 (negativeSet ()))
               (characterSet
-                (positiveSet U+6F)
+                (
+positiveSet U+6F)
                 (negativeSet ())))
             (cat
               (∪
@@ -2677,23 +2683,24 @@ characterSet
                     U+31)
                   (negativeSet ()))
                 (characterSet
-
-  (positiveSet (scalarRange U+32 U+37))
+                  (positiveSet (scalarRange U+32 U+37))
                   (negativeSet ())))
-              (*
-                (cat
+              (∪
+                ε
+                (+
                   (∪
+                    (∪
+                      (characterSet
+                        (positiveSet
+                          U+30
+                          U+31)
+                        (negativeSet ()))
+                      (characterSet
+                        (positiveSet (scalarRange U+32 U+37))
+                        (negativeSet ())))
                     (characterSet
-                      (positiveSet
-                        U+30
-                        U+31)
-                      (negativeSet ()))
-                    (characterSet
-                      (positiveSet (scalarRange U+32 U+37))
-                      (negativeSet ())))
-                  (characterSet
-                    (positiveSet U+5F)
-                    (negativeSet ()))))))
+                      (positiveSet U+5F)
+                      (negativeSet ())))))))
           (∪
             (cat
               (∪
@@ -2711,26 +2718,28 @@ characterSet
                     U+39
                     U+38)
                   (negativeSet ())))
-              (*
-                (cat
+              (∪
+                ε
+                (+
                   (∪
                     (∪
+                      (∪
+                        (characterSet
+                          (positiveSet
+                            U+30
+                            U+31)
+                          (negativeSet ()))
+                        (characterSet
+                          (positiveSet (scalarRange U+32 U+37))
+                          (negativeSet ())))
                       (characterSet
                         (positiveSet
-                          U+30
-                          U+31)
-                        (negativeSet ()))
-                      (characterSet
-                        (positiveSet (scalarRange U+32 U+37))
+                          U+39
+                          U+38)
                         (negativeSet ())))
                     (characterSet
-                      (positiveSet
-                        U+39
-                        U+38)
-                      (negativeSet ())))
-                  (characterSet
-                    (positiveSet U+5F)
-                    (negativeSet ())))))
+                      (positiveSet U+5F)
+                      (negativeSet ()))))))
             (cat
               (cat
                 (characterSet
@@ -2761,52 +2770,80 @@ characterSet
                       (scalarRange U+61 U+66)
                       (scalarRange U+41 U+46))
                     (negativeSet ())))
-                (*
-                  (cat
+                (∪
+                  ε
+                  (+
                     (∪
                       (∪
                         (∪
+                          (∪
+                            (characterSet
+                              (positiveSet
+                                U+30
+                                U+31)
+                              (negativeSet ()))
+                            (characterSet
+                              (positiveSet (scalarRange U+32 U+37))
+                              (negativeSet ())))
                           (characterSet
                             (positiveSet
-                              U+30
-                              U+31)
-                            (negativeSet ()))
-                          (characterSet
-                            (positiveSet (scalarRange U+32 U+37))
+                              U+39
+                              U+38)
                             (negativeSet ())))
                         (characterSet
                           (positiveSet
-                            U+39
-                            U+38)
+                            (scalarRange U+61 U+66)
+                            (scalarRange U+41 U+46))
                           (negativeSet ())))
                       (characterSet
-                        (positiveSet
-                          (scalarRange U+61 U+66)
-                          (scalarRange U+41 U+46))
-                        (negativeSet ())))
-                    (characterSet
-                      (positiveSet U+5F)
-                      (negativeSet ())))))))))))
+                        (positiveSet U+5F)
+                        (negativeSet ()))))))))))))
   (rule floating_point_literal
     (∪
-      (cat
+      (∪
         (cat
-          (∪
+          (cat
             (∪
+              (∪
+                (characterSet
+                  (positiveSet
+                    U+30
+                    U+31)
+                  (negativeSet ()))
+                (characterSet
+                  (positiveSet (scalarRange U+32 U+37))
+                  (negativeSet ())))
               (characterSet
                 (positiveSet
-                  U+30
-                  U+31)
-                (negativeSet ()))
-              (characterSet
-                (positiveSet (scalarRange U+32 U+37))
+                  U+39
+                  U+38)
                 (negativeSet ())))
+            (∪
+              ε
+              (+
+                (∪
+                  (∪
+                    (∪
+                      (characterSet
+                        (positiveSet
+                          U+30
+                          U+31)
+                        (negativeSet ()))
+                      (characterSet
+                        (positiveSet (scalarRange U+32 U+37))
+                        (negativeSet ())))
+                    (characterSet
+                      (positiveSet
+                        U+39
+                        U+38)
+                      (negativeSet ())))
+                  (characterSet
+                    (positiveSet U+5F)
+                    (negativeSet ()))))))
+          (cat
             (characterSet
-              (positiveSet
-                U+39
-                U+38)
-              (negativeSet ())))
-          (*
+              (positiveSet U+2E)
+              (negativeSet ()))
             (cat
               (∪
                 (∪
@@ -2823,33 +2860,10 @@ characterSet
                     U+39
                     U+38)
                   (negativeSet ())))
-              (characterSet
-                (positiveSet U+5F)
-                (negativeSet ())))))
-        (cat
-          (?
-            (cat
-              (characterSet
-                (positiveSet (scalarRange U+0 U+100000))
-                (negativeSet ()))
-              (cat
-                (∪
+              (∪
+                ε
+                (+
                   (∪
-                    (characterSet
-                      (positiveSet
-                        U+30
-                        U+31)
-                      (negativeSet ()))
-                    (characterSet
-                      (positiveSet (scalarRange U+32 U+37))
-                      (negativeSet ())))
-                  (characterSet
-                    (positiveSet
-                      U+39
-                      U+38)
-                    (negativeSet ())))
-                (*
-                  (cat
                     (∪
                       (∪
                         (characterSet
@@ -2867,9 +2881,49 @@ characterSet
                         (negativeSet ())))
                     (characterSet
                       (positiveSet U+5F)
-                      (negativeSet ())))))))
-          (?
+                      (negativeSet ()))))))))
+        (∪
+          (cat
             (cat
+              (∪
+                (∪
+                  (characterSet
+                    (positiveSet
+                      U+30
+                      U+31)
+                    (negativeSet ()))
+                  (characterSet
+                    (positiveSet (scalarRange U+32 U+37))
+                    (negativeSet ())))
+                (characterSet
+                  (positiveSet
+                    U+39
+                    U+38)
+                  (negativeSet ())))
+              (∪
+                ε
+                (+
+                  (∪
+                    (∪
+                      (∪
+                        (characterSet
+                          (positiveSet
+                            U+30
+                            U+31)
+                          (negativeSet ()))
+                        (characterSet
+                          (positiveSet (scalarRange U+32 U+37))
+                          (negativeSet ())))
+                      (characterSet
+                        (positiveSet
+                          U+39
+                          U+38)
+                        (negativeSet ())))
+                    (characterSet
+                      (positiveSet U+5F)
+                      (negativeSet ()))))))
+
+          (cat
               (∪
                 (characterSet
                   (positiveSet U+65)
@@ -2878,7 +2932,8 @@ characterSet
                   (positiveSet U+45)
                   (negativeSet ())))
               (cat
-                (?
+                (∪
+                  ε
                   (∪
                     (characterSet
                       (positiveSet U+2B)
@@ -2902,38 +2957,30 @@ characterSet
                         U+39
                         U+38)
                       (negativeSet ())))
-                  (*
-                    (cat
+                  (∪
+                    ε
+                    (+
                       (∪
                         (∪
+                          (∪
+                            (characterSet
+                              (positiveSet
+                                U+30
+                                U+31)
+                              (negativeSet ()))
+                            (characterSet
+                              (positiveSet (scalarRange U+32 U+37))
+                              (negativeSet ())))
                           (characterSet
                             (positiveSet
-                              U+30
-                              U+31)
-                            (negativeSet ()))
-                          (characterSet
-                            (positiveSet (scalarRange U+32 U+37))
+                              U+39
+                              U+38)
                             (negativeSet ())))
                         (characterSet
-                          (positiveSet
-                            U+39
-                            U+38)
-                          (negativeSet ())))
-                      (characterSet
-                        (positiveSet U+5F)
-                        (negativeSet ()))))))))))
-      (cat
-        (cat
+                          (positiveSet U+5F)
+                          (negativeSet ())))))))))
           (cat
-
-     (characterSet
-              (positiveSet U+30)
-              (negativeSet ()))
-            (characterSet
-              (positiveSet U+78)
-              (negativeSet ())))
-          (cat
-            (∪
+            (cat
               (∪
                 (∪
                   (characterSet
@@ -2949,126 +2996,10 @@ characterSet
                     U+39
                     U+38)
                   (negativeSet ())))
-              (characterSet
-                (positiveSet
-                  (scalarRange U+61 U+66)
-                  (scalarRange U+41 U+46))
-                (negativeSet ())))
-            (*
-              (cat
-                (∪
+              (∪
+                ε
+                (+
                   (∪
-                    (∪
-                      (characterSet
-                        (positiveSet
-                          U+30
-                          U+31)
-                        (negativeSet ()))
-                      (characterSet
-                        (positiveSet (scalarRange U+32 U+37))
-                        (negativeSet ())))
-                    (characterSet
-                      (positiveSet
-                        U+39
-                        U+38)
-                      (negativeSet ())))
-                  (characterSet
-                    (positiveSet
-                      (scalarRange U+61 U+66)
-                      (scalarRange U+41 U+46))
-                    (negativeSet ())))
-                (characterSet
-                  (positiveSet U+5F)
-                  (negativeSet ()))))))
-        (cat
-          (?
-            (cat
-              (characterSet
-                (positiveSet (scalarRange U+0 U+100000))
-                (negativeSet ()))
-              (cat
-                (∪
-                  (∪
-                    (∪
-                      (characterSet
-                        (positiveSet
-                          U+30
-                          U+31)
-                        (negativeSet ()))
-                      (characterSet
-                        (positiveSet (scalarRange U+32 U+37))
-                        (negativeSet ())))
-                    (characterSet
-                      (positiveSet
-                        U+39
-                        U+38)
-                      (negativeSet ())))
-                  (characterSet
-                    (positiveSet
-                      (scalarRange U+61 U+66)
-                      (scalarRange U+41 U+46))
-                    (negativeSet ())))
-                (*
-                  (cat
-                    (∪
-                      (∪
-                        (∪
-                          (characterSet
-                            (positiveSet
-                              U+30
-                              U+31)
-                            (negativeSet ()))
-                          (characterSet
-                            (positiveSet (scalarRange U+32 U+37))
-                            (negativeSet ())))
-                        (characterSet
-                          (positiveSet
-                            U+39
-                            U+38)
-                          (negativeSet ())))
-                      (characterSet
-                        (positiveSet
-                          (scalarRange U+61 U+66)
-                          (scalarRange U+41 U+46))
-                        (negativeSet ())))
-                    (characterSet
-                      (positiveSet U+5F)
-                      (negativeSet ())))))))
-          (cat
-            (∪
-              (characterSet
-                (positiveSet U+70)
-                (negativeSet ()))
-              (characterSet
-                (positiveSet U+50)
-                (negativeSet ())))
-            (cat
-              (?
-                (∪
-                  (characterSet
-                    (positiveSet U+2B)
-                    (negativeSet ()))
-                  (characterSet
-                    (positiveSet U+2D)
-                    (negativeSet ()))))
-              (cat
-                (∪
-                  (∪
-                    (characterSet
-                      (positiveSet
-                        U+30
-                        U+31)
-                      (negativeSet ()))
-                    (characterSet
-                      (positiveSet (scalarRange U+32 U+37))
-                      (negativeSet ())))
-                  (characterSet
-                    (positiveSet
-                      U+39
-                      U+38)
-                    (negativeSet ())))
-                (*
-                  (cat
                     (∪
                       (∪
                         (characterSet
@@ -3086,7 +3017,508 @@ characterSet
                         (negativeSet ())))
                     (characterSet
                       (positiveSet U+5F)
-                      (negativeSet ())))))))))))
+                      (negativeSet ()))))))
+            (cat
+              (cat
+                (characterSet
+                  (positiveSet U+2E)
+                  (negativeSet ()))
+                (cat
+                  (∪
+                    (∪
+                      (characterSet
+                        (positiveSet
+                          U+30
+                          U+31)
+                        (negativeSet ()))
+                      (characterSet
+                        (positiveSet (scalarRange U+32 U+37))
+                        (negativeSet ())))
+                    (characterSet
+                      (positiveSet
+                        U+39
+                        U+38)
+                      (negativeSet ())))
+                  (∪
+                    ε
+                    (+
+                      (∪
+                        (∪
+                          (∪
+                            (characterSet
+                              (positiveSet
+                                U+30
+                                U+31)
+                              (negativeSet ()))
+                            (characterSet
+                              (positiveSet (scalarRange U+32 U+37))
+                              (negativeSet ())))
+                          (characterSet
+                            (positiveSet
+                              U+39
+                              U+38)
+                            (negativeSet ())))
+                        (characterSet
+                          (positiveSet U+5F)
+                          (negativeSet ())))))))
+              (cat
+                (∪
+                  (characterSet
+                    (positiveSet U+65)
+                    (negativeSet ()))
+                  (characterSet
+                    (positiveSet U+45)
+                    (negativeSet ())))
+                (cat
+                  (∪
+                    ε
+                    (∪
+                      (characterSet
+                        (positiveSet U+2B)
+                        (negativeSet ()))
+                      (characterSet
+                        (positiveSet U+2D)
+                        (negativeSet ()))))
+                  (cat
+                    (∪
+                      (∪
+                        (characterSet
+                          (positiveSet
+                            U+30
+                            U+31)
+                          (negativeSet ()))
+                        (characterSet
+                          (positiveSet (scalarRange U+32 U+37))
+                          (negativeSet ())))
+                      (characterSet
+                        (positiveSet
+                          U+39
+                          U+38)
+                        (negativeSet ())))
+                    (∪
+                      ε
+                      (+
+                        (∪
+                          (∪
+                            (∪
+                              (characterSet
+                                (positiveSet
+                                  U+30
+                                  U+31)
+                                (negativeSet ()))
+                              (characterSet
+                                (positiveSet (scalarRange U+32 U+37))
+                                (negativeSet ())))
+                            (characterSet
+                              (positiveSet
+                                U+39
+                                U+38)
+                              (negativeSet ())))
+                          (characterSet
+                            (positiveSet U+5F)
+                            (negativeSet ()))))))))))))
+      (∪
+        (cat
+          (cat
+            (cat
+              (characterSet
+                (positiveSet U+30)
+                (negativeSet ()))
+              (characterSet
+                (positiveSet U+78)
+                (negativeSet ())))
+            (cat
+              (∪
+                (∪
+                  (∪
+                    (characterSet
+                      (positiveSet
+                        U+30
+                        U+31)
+                      (negativeSet ()))
+                    (characterSet
+                      (positiveSet (scalarRange U+32 U+37))
+                      (negativeSet ())))
+                  (characterSet
+                    (positiveSet
+                      U+39
+                      U+38)
+                    (negativeSet ())))
+                (characterSet
+                  (positiveSet
+                    (scalarRange U+61 U+66)
+                    (scalarRange U+41 U+46))
+                  (negativeSet ())))
+              (∪
+                ε
+                (+
+                  (∪
+                    (∪
+                      (∪
+                        (∪
+                          (characterSet
+                            (positiveSet
+                              U+30
+                              U+31)
+
+         (negativeSet ()))
+                          (characterSet
+                            (positiveSet (scalarRange U+32 U+37))
+                            (negativeSet ())))
+                        (characterSet
+                          (positiveSet
+                            U+39
+                            U+38)
+                          (negativeSet ())))
+                      (characterSet
+                        (positiveSet
+                          (scalarRange U+61 U+66)
+                          (scalarRange U+41 U+46))
+                        (negativeSet ())))
+                    (characterSet
+                      (positiveSet U+5F)
+                      (negativeSet ())))))))
+          (cat
+            (cat
+              (characterSet
+                (positiveSet U+2E)
+                (negativeSet ()))
+              (cat
+                (∪
+                  (∪
+                    (∪
+                      (characterSet
+                        (positiveSet
+                          U+30
+                          U+31)
+                        (negativeSet ()))
+                      (characterSet
+                        (positiveSet (scalarRange U+32 U+37))
+                        (negativeSet ())))
+                    (characterSet
+                      (positiveSet
+                        U+39
+                        U+38)
+                      (negativeSet ())))
+                  (characterSet
+                    (positiveSet
+                      (scalarRange U+61 U+66)
+                      (scalarRange U+41 U+46))
+                    (negativeSet ())))
+                (∪
+                  ε
+                  (+
+                    (∪
+                      (∪
+                        (∪
+                          (∪
+                            (characterSet
+                              (positiveSet
+                                U+30
+                                U+31)
+                              (negativeSet ()))
+                            (characterSet
+                              (positiveSet (scalarRange U+32 U+37))
+                              (negativeSet ())))
+                          (characterSet
+                            (positiveSet
+                              U+39
+                              U+38)
+                            (negativeSet ())))
+                        (characterSet
+                          (positiveSet
+                            (scalarRange U+61 U+66)
+                            (scalarRange U+41 U+46))
+                          (negativeSet ())))
+                      (characterSet
+                        (positiveSet U+5F)
+                        (negativeSet ())))))))
+            (cat
+              (∪
+                (characterSet
+                  (positiveSet U+70)
+                  (negativeSet ()))
+                (characterSet
+                  (positiveSet U+50)
+                  (negativeSet ())))
+              (cat
+                (∪
+                  ε
+                  (∪
+                    (characterSet
+                      (positiveSet U+2B)
+                      (negativeSet ()))
+                    (characterSet
+                      (positiveSet U+2D)
+                      (negativeSet ()))))
+                (cat
+                  (∪
+                    (∪
+                      (characterSet
+                        (positiveSet
+                          U+30
+                          U+31)
+                        (negativeSet ()))
+                      (characterSet
+                        (positiveSet (scalarRange U+32 U+37))
+                        (negativeSet ())))
+                    (characterSet
+                      (positiveSet
+                        U+39
+                        U+38)
+                      (negativeSet ())))
+                  (∪
+                    ε
+                    (+
+                      (∪
+                        (∪
+                          (∪
+                            (characterSet
+                              (positiveSet
+                                U+30
+                                U+31)
+                              (negativeSet ()))
+                            (characterSet
+                              (positiveSet (scalarRange U+32 U+37))
+                              (negativeSet ())))
+                          (characterSet
+                            (positiveSet
+                              U+39
+                              U+38)
+                            (negativeSet ())))
+                        (characterSet
+                          (positiveSet U+5F)
+                          (negativeSet ()))))))))))
+        (∪
+          (cat
+            (cat
+              (cat
+                (characterSet
+                  (positiveSet U+30)
+                  (negativeSet ()))
+                (characterSet
+                  (positiveSet U+78)
+                  (negativeSet ())))
+              (cat
+                (∪
+                  (∪
+                    (∪
+                      (characterSet
+                        (positiveSet
+                          U+30
+                          U+31)
+                        (negativeSet ()))
+                      (characterSet
+                        (positiveSet (scalarRange U+32 U+37))
+                        (negativeSet ())))
+                    (characterSet
+                      (positiveSet
+                        U+39
+                        U+38)
+                      (negativeSet ())))
+                  (characterSet
+                    (positiveSet
+                      (scalarRange U+61 U+66)
+                      (scalarRange U+41 U+46))
+                    (negativeSet ())))
+                (∪
+                  ε
+                  (+
+                    (∪
+                      (∪
+                        (∪
+                          (∪
+                            (characterSet
+                              (positiveSet
+                                U+30
+                                U+31)
+                              (negativeSet ()))
+                            (characterSet
+                              (positiveSet (scalarRange U+32 U+37))
+                              (negativeSet ())))
+                          (characterSet
+                            (positiveSet
+                              U+39
+                              U+38)
+                            (negativeSet ())))
+                        (characterSet
+                          (positiveSet
+                            (scalarRange U+61 U+66)
+                            (scalarRange U+41 U+46))
+                          (negativeSet ())))
+                      (characterSet
+                        (positiveSet U+5F)
+                        (negativeSet ())))))))
+            (cat
+              (characterSet
+                (positiveSet U+2E)
+                (negativeSet ()))
+              (cat
+                (∪
+                  (∪
+                    (∪
+                      (characterSet
+                        (positiveSet
+                          U+30
+                          U+31)
+                        (negativeSet ()))
+                      (characterSet
+                        (positiveSet (scalarRange U+32 U+37))
+                        (negativeSet ())))
+                    (characterSet
+                      (positiveSet
+                        U+39
+                        U+38)
+                      (negativeSet ())))
+                  (characterSet
+                    (positiveSet
+                      (scalarRange U+61 U+66)
+                      (scalarRange U+41 U+46))
+                    (negativeSet ())))
+                (∪
+                  ε
+                  (+
+                    (∪
+                      (∪
+                        (∪
+                          (∪
+                            (characterSet
+                              (positiveSet
+                                U+30
+                                U+31)
+                              (negativeSet ()))
+                            (characterSet
+                              (positiveSet (scalarRange U+32 U+37))
+
+                              (negativeSet ())))
+                          (characterSet
+                            (positiveSet
+                              U+39
+                              U+38)
+                            (negativeSet ())))
+                        (characterSet
+                          (positiveSet
+                            (scalarRange U+61 U+66)
+                            (scalarRange U+41 U+46))
+                          (negativeSet ())))
+                      (characterSet
+                        (positiveSet U+5F)
+                        (negativeSet ()))))))))
+          (cat
+            (cat
+              (cat
+                (characterSet
+                  (positiveSet U+30)
+                  (negativeSet ()))
+                (characterSet
+                  (positiveSet U+78)
+                  (negativeSet ())))
+              (cat
+                (∪
+                  (∪
+                    (∪
+                      (characterSet
+                        (positiveSet
+                          U+30
+                          U+31)
+                        (negativeSet ()))
+                      (characterSet
+                        (positiveSet (scalarRange U+32 U+37))
+                        (negativeSet ())))
+                    (characterSet
+                      (positiveSet
+                        U+39
+                        U+38)
+                      (negativeSet ())))
+                  (characterSet
+                    (positiveSet
+                      (scalarRange U+61 U+66)
+                      (scalarRange U+41 U+46))
+                    (negativeSet ())))
+                (∪
+                  ε
+                  (+
+                    (∪
+                      (∪
+                        (∪
+                          (∪
+                            (characterSet
+                              (positiveSet
+                                U+30
+                                U+31)
+                              (negativeSet ()))
+                            (characterSet
+                              (positiveSet (scalarRange U+32 U+37))
+                              (negativeSet ())))
+                          (characterSet
+                            (positiveSet
+                              U+39
+                              U+38)
+                            (negativeSet ())))
+                        (characterSet
+                          (positiveSet
+                            (scalarRange U+61 U+66)
+                            (scalarRange U+41 U+46))
+                          (negativeSet ())))
+                      (characterSet
+                        (positiveSet U+5F)
+                        (negativeSet ())))))))
+            (cat
+              (∪
+                (characterSet
+                  (positiveSet U+70)
+                  (negativeSet ()))
+                (characterSet
+                  (positiveSet U+50)
+                  (negativeSet ())))
+              (cat
+                (∪
+                  ε
+                  (∪
+                    (characterSet
+                      (positiveSet U+2B)
+                      (negativeSet ()))
+                    (characterSet
+                      (positiveSet U+2D)
+                      (negativeSet ()))))
+                (cat
+                  (∪
+                    (∪
+                      (characterSet
+                        (positiveSet
+                          U+30
+                          U+31)
+                        (negativeSet ()))
+                      (characterSet
+                        (positiveSet (scalarRange U+32 U+37))
+                        (negativeSet ())))
+                    (characterSet
+                      (positiveSet
+                        U+39
+                        U+38)
+                      (negativeSet ())))
+                  (∪
+                    ε
+                    (+
+                      (∪
+                        (∪
+                          (∪
+                            (characterSet
+                              (positiveSet
+                                U+30
+                                U+31)
+                              (negativeSet ()))
+                            (characterSet
+                              (positiveSet (scalarRange U+32 U+37))
+                              (negativeSet ())))
+                          (characterSet
+                            (positiveSet
+                              U+39
+                              U+38)
+                            (negativeSet ())))
+                        (characterSet
+                          (positiveSet U+5F)
+                          (negativeSet ())))))))))))))
   (rule string_literal
     (∪
       (∪
@@ -3095,7 +3527,8 @@ characterSet
             (positiveSet U+22)
             (negativeSet ()))
           (cat
-            (?
+            (∪
+              ε
               (+
                 (∪
                   (∪
@@ -3155,8 +3588,7 @@ characterSet
                                 (characterSet
                                   (positiveSet
                                     (scalarRange U+61 U+66)
-
-                    (scalarRange U+41 U+46))
+                                    (scalarRange U+41 U+46))
                                   (negativeSet ())))
                               (∪
                                 (∪
@@ -3170,7 +3602,8 @@ characterSet
                                       (positiveSet (scalarRange U+32 U+37))
                                       (negativeSet ())))
                                   (characterSet
-                                    (positiveSet
+                                    (po
+sitiveSet
                                       U+39
                                       U+38)
                                     (negativeSet ())))
@@ -3310,8 +3743,7 @@ characterSet
                                         (characterSet
                                           (positiveSet
                                             (scalarRange U+61 U+66)
-
-    (scalarRange U+41 U+46))
+                                            (scalarRange U+41 U+46))
                                           (negativeSet ())))
                                       (∪
                                         (∪
@@ -3324,7 +3756,8 @@ characterSet
                                             (characterSet
                                               (positiveSet (scalarRange U+32 U+37))
                                               (negativeSet ())))
-                                          (characterSet
+
+                                   (characterSet
                                             (positiveSet
                                               U+39
                                               U+38)
@@ -3452,8 +3885,7 @@ characterSet
                                             (characterSet
                                               (positiveSet
                                                 U+30
-
-       U+31)
+                                                U+31)
                                               (negativeSet ()))
                                             (characterSet
                                               (positiveSet (scalarRange U+32 U+37))
@@ -3465,7 +3897,8 @@ characterSet
                                             (negativeSet ())))
                                         (characterSet
                                           (positiveSet
-                                            (scalarRange U+61 U+66)
+                                            (scalarRang
+e U+61 U+66)
                                             (scalarRange U+41 U+46))
                                           (negativeSet ())))
                                       (cat
@@ -3578,7 +4011,8 @@ characterSet
                                                     (scalarRange U+41 U+46))
                                                   (negativeSet ()))))))))
                                     (∪
-                                      (cat
+                                      (c
+at
                                         (∪
                                           (∪
                                             (∪
@@ -3586,8 +4020,7 @@ characterSet
                                                 (positiveSet
                                                   U+30
                                                   U+31)
-
-                                        (negativeSet ()))
+                                                (negativeSet ()))
                                               (characterSet
                                                 (positiveSet (scalarRange U+32 U+37))
                                                 (negativeSet ())))
@@ -3598,7 +4031,8 @@ characterSet
                                               (negativeSet ())))
                                           (characterSet
                                             (positiveSet
-                                              (scalarRange U+61 U+66)
+                                              (scalarR
+ange U+61 U+66)
                                               (scalarRange U+41 U+46))
                                             (negativeSet ())))
                                         (cat
@@ -3713,8 +4147,7 @@ characterSet
                                                       (negativeSet ())))
                                                   (∪
                                                     (∪
-
-                (∪
+                                                      (∪
                                                         (characterSet
                                                           (positiveSet
                                                             U+30
@@ -3724,7 +4157,8 @@ characterSet
                                                           (positiveSet (scalarRange U+32 U+37))
                                                           (negativeSet ())))
                                                       (characterSet
-                                                        (positiveSet
+
+         (positiveSet
                                                           U+39
                                                           U+38)
                                                         (negativeSet ())))
@@ -3820,8 +4254,7 @@ characterSet
                                                   (positiveSet
                                                     (scalarRange U+61 U+66)
                                                     (scalarRange U+41 U+46))
-
-                                           (negativeSet ())))
+                                                  (negativeSet ())))
                                               (cat
                                                 (∪
                                                   (∪
@@ -3842,8 +4275,7 @@ characterSet
                                                   (characterSet
                                                     (positiveSet
                                                       (scalarRange U+61 U+66)
-                                                      (scalarRange U+41 U
-+46))
+                                                      (scalarRange U+41 U+46))
                                                     (negativeSet ())))
                                                 (cat
                                                   (∪
@@ -3855,7 +4287,8 @@ characterSet
                                                             U+31)
                                                           (negativeSet ()))
                                                         (characterSet
-                                                          (positiveSet (scalarRange U+32 U+37))
+
+                                                  (positiveSet (scalarRange U+32 U+37))
                                                           (negativeSet ())))
                                                       (characterSet
                                                         (positiveSet
@@ -3991,7 +4424,8 @@ characterSet
                 (positiveSet U+22)
                 (negativeSet ()))
               (cat
-                (?
+                (∪
+                  ε
                   (+
                     (∪
                       (characterSet
@@ -3999,8 +4433,7 @@ characterSet
                         (negativeSet U+5C))
                       (∪
                         (∪
-
-                        (cat
+                          (cat
                             (cat
                               (characterSet
                                 (positiveSet U+5C)
@@ -4016,7 +4449,8 @@ characterSet
                               (∪
                                 (∪
                                   (∪
-                                    (∪
+
+                      (∪
                                       (characterSet
                                         (positiveSet
                                           U+30
@@ -4149,8 +4583,7 @@ characterSet
                                       (cat
                                         (∪
                                           (∪
-
-              (∪
+                                            (∪
                                               (characterSet
                                                 (positiveSet
                                                   U+30
@@ -4162,7 +4595,8 @@ characterSet
                                             (characterSet
                                               (positiveSet
                                                 U+39
-                                                U+38)
+
+                                            U+38)
                                               (negativeSet ())))
                                           (characterSet
                                             (positiveSet
@@ -4282,8 +4716,7 @@ characterSet
                                             (cat
                                               (∪
                                                 (∪
-
-   (∪
+                                                  (∪
                                                     (characterSet
                                                       (positiveSet
                                                         U+30
@@ -4294,7 +4727,8 @@ characterSet
                                                       (negativeSet ())))
                                                   (characterSet
                                                     (positiveSet
-                                                      U+39
+
+                                              U+39
                                                       U+38)
                                                     (negativeSet ())))
                                                 (characterSet
@@ -4408,8 +4842,7 @@ characterSet
                                                         U+38)
                                                       (negativeSet ())))
                                                   (characterSet
-
-                                                   (positiveSet
+                                                    (positiveSet
                                                       (scalarRange U+61 U+66)
                                                       (scalarRange U+41 U+46))
                                                     (negativeSet ())))
@@ -4419,7 +4852,8 @@ characterSet
                                                       (∪
                                                         (characterSet
                                                           (positiveSet
-                                                            U+30
+
+             U+30
                                                             U+31)
                                                           (negativeSet ()))
                                                         (characterSet
@@ -4528,8 +4962,7 @@ characterSet
                                                     (∪
                                                       (∪
                                                         (characterSet
-
-          (positiveSet
+                                                          (positiveSet
                                                             U+30
                                                             U+31)
                                                           (negativeSet ()))
@@ -4539,7 +4972,8 @@ characterSet
                                                       (characterSet
                                                         (positiveSet
                                                           U+39
-                                                          U+38)
+
+                           U+38)
                                                         (negativeSet ())))
                                                     (characterSet
                                                       (positiveSet
@@ -4636,14 +5070,14 @@ characterSet
                                             (cat
                                               (∪
                                                 (∪
-                                                  (∪
+
+                        (∪
                                                     (characterSet
                                                       (positiveSet
                                                         U+30
                                                         U+31)
                                                       (negativeSet ()))
-
-  (characterSet
+                                                    (characterSet
                                                       (positiveSet (scalarRange U+32 U+37))
                                                       (negativeSet ())))
                                                   (characterSet
@@ -4754,13 +5188,13 @@ characterSet
                                                                   U+31)
                                                                 (negativeSet ()))
                                                               (characterSet
-                                                                (positiveSet (scalarRange U+32 U+37))
+
+(positiveSet (scalarRange U+32 U+37))
                                                                 (negativeSet ())))
                                                             (characterSet
                                                               (positiveSet
                                                                 U+39
-                                                                U+38
-)
+                                                                U+38)
                                                               (negativeSet ())))
                                                           (characterSet
                                                             (positiveSet
@@ -4770,7 +5204,8 @@ characterSet
                                                         (cat
                                                           (∪
                                                             (∪
-                                                              (∪
+
+                           (∪
                                                                 (characterSet
                                                                   (positiveSet
                                                                     U+30
@@ -4867,14 +5302,14 @@ characterSet
                                           (negativeSet ()))
                                         (characterSet
                                           (positiveSet U+27)
-                                          (negativeSe
-t ()))))))))))
+                                          (negativeSet ()))))))))))
                         (cat
                           (characterSet
                             (positiveSet U+5C)
                             (negativeSet ()))
                           (cat
-                            (?
+                            (∪
+                              ε
                               (+
                                 (∪
                                   (∪
@@ -4898,8 +5333,7 @@ t ()))))))))))
                                         (characterSet
                                           (positiveSet U+2F)
                                           (negativeSet ()))
-                                        (characterS
-et
+                                        (characterSet
                                           (positiveSet U+2F)
                                           (negativeSet ())))
                                       (cat
@@ -4911,7 +5345,8 @@ et
                                               U+A)))
                                         (∪
                                           (characterSet
-                                            (positiveSet U+D)
+                                            (positiveSet
+ U+D)
                                             (negativeSet ()))
                                           (∪
                                             (cat
@@ -4995,7 +5430,8 @@ et
                 (positiveSet U+22)
                 (negativeSet ()))
               (cat
-                (?
+                (∪
+                  ε
                   (+
                     (cat
                       (cat
@@ -5061,8 +5497,196 @@ et
                                       (scalarRange U+180F U+1DBF)
                                       (scalarRange U+BC U+BE)
                                       (scalarRange U+FE47 U+FFFD)
-
-                                  (scalarRange U+B7 U+BA)
+                                      (scalarRange U+B7 U+BA)
+                                      (scalarRange U+2776 U+2793)
+                                      (scalarRange U+50000 U+5FFFD)
+                                      (scalarRange U+FDF0 U+FE1F)
+                                      (scalarRange U+100 U+2FF)
+                                      (scalarRange U+1681 U+180D)
+                                      (scalarRange U+D8 U+F6)
+                                      U+AF
+                                      U+2054
+                                      (scalarRange U+203F U+2040)
+                                      (sca
+larRange U+FD40 U+FDCF)
+                                      (scalarRange U+90000 U+9FFFD)
+                                      (scalarRange U+B2 U+B5))
+                                    (negativeSet ()))))
+                              (cat
+                                (∪
+                                  ε
+                                  (+
+                                    (∪
+                                      (∪
+                                        (characterSet
+                                          (positiveSet U+5F)
+                                          (negativeSet ()))
+                                        (∪
+                                          (∪
+                                            (characterSet
+                                              (positiveSet (scalarRange U+61 U+7A))
+                                              (negativeSet ()))
+                                            (characterSet
+                                              (positiveSet (scalarRange U+41 U+5A))
+                                              (negativeSet ())))
+                                          (characterSet
+                                            (positiveSet
+                                              (scalarRange U+2E80 U+2FFF)
+                                              (scalarRange U+20000 U+2FFFD)
+                                              (scalarRange U+3040 U+D7FF)
+                                              (scalarRange U+2100 U+218F)
+                                              (scalarRange U+E0000 U+EFFFD)
+                                              (scalarRange U+3004 U+3007)
+                                              (scalarRange U+C0000 U+CFFFD)
+                                              (scalarRange U+70000 U+7FFFD)
+                                              (scalarRange U+80000 U+8FFFD)
+                                              (scalarRange U+B0000 U+BFFFD)
+                                              (scalarRange U+202A U+202E)
+                                              (scalarRange U+2C00 U+2DFF)
+                                              U+A8
+                                              (scalarRange U+C0 U+D6)
+                                              (scalarRange U+40000 U+4FFFD)
+                                              (scalarRange U+60000 U+6FFFD)
+                                              (scalarRange U+F8 U+FF)
+                                              (scalarRange U+1E00 U+1FFF)
+                                              (scalarRange U+10000 U+1FFFD)
+                                              (scalarRange U+200B U+200D)
+                                              (scalarRange U+370 U+167F)
+                                              (scalarRange U+2070 U+20CF)
+                                              (scalarRange U+A0000 U+AFFFD)
+                                              (scalarRange U+D0000 U+DFFFD)
+                                              (scalarRange U+F900 U+FD3D)
+                                              (scalarRange U+3021 U+302F)
+                                              (scalarRange U+30000 U+3FFFD)
+                                              U+AA
+                                              (scalarRange U+2460 U+24FF)
+                                              (scalarRange U+3031 U+303F)
+                                              (scalarRange U+2060 U+206F)
+                                              (scalarRange U+FE30 U+FE44)
+                                              (scalarRange U+180F U+1DBF)
+                                              (scalarRange U+BC U+BE)
+                                              (scalarRange U+FE47 U+FFFD)
+                                              (scalarRange U+B7 U+BA)
+                                              (scalarRange U+2776 U+2793)
+                                              (scalarRange U+50000 U+5FFFD)
+                                              (scalarRange U+FDF0 U+FE1F)
+                                              (scalarRange U+100 U+2FF)
+                                              (scalarRange U+1681 U+180D)
+                                              (scalarRange U+D8 U+F6)
+                                              U+AF
+                                              U+2054
+                                              (scalarRange U+203F U+2040)
+                                              (scalarRange U+FD40 U+FDCF)
+                                              (scalarRange U+90000 U+9FFFD)
+                                              (scalarRange U+B2 U+B5))
+                                            (negativeSet ()))))
+                                      (∪
+                                        (∪
+                                          (characterSet
+                                            (positiveSet (scalarRange U+300 U+36F))
+                                            (negativeSet ()))
+                                          (∪
+                                            (characterSet
+                                              (positiveSet (scalarRange U+1DC0 U+1DFF))
+                                              (negativeSet ()))
+                                            (∪
+                                              (characterSet
+                                                (positiveSet (scalarRange U+20D0 U+20FF))
+                                                (negativeSet ()))
+                                              (characterSet
+                                                (positiveSet (scalarRange U+FE20 U+FE2F))
+                                                (negativeSet ())))))
+                                        (∪
+                                          (∪
+                                            (characterSet
+                                              (positiveSet
+                                                U+30
+                                                U+31)
+                                              (negativeSet ()))
+                                            (characterSet
+                                              (positiveSet (scalarRange U+32 U+37))
+                                              (negativeSet ())))
+                                          (characterSet
+                                            (positiveSet
+                                              U+39
+                                              U+38)
+                                            (negativeSet ())))))))
+                                (characterSet
+                                  (positiveSet U+60)
+                                  (negativeSet ())))))
+                          (∪
+                            (cat
+                              (characterSet
+                                (positiveSet U+24)
+                                (negativeSet ()))
+                              (+
+                                (∪
+                                  (∪
+                                    (characterSet
+                                      (positiveSet
+                                        U+30
+                                        U+31)
+                                      (negativeSet ()))
+                                    (characterSet
+                                      (positiveSet (scalarRange U+32 U+37))
+                                      (negativeSet ())))
+                                  (characterSet
+                                    (positiveSet
+                                      U+39
+                                      U+38)
+                                    (negativeSet ())))))
+                            (cat
+                              (∪
+                                (characterSet
+                                  (positiveSet U+5F)
+                                  (negativeSet ()))
+                                (∪
+                                  (∪
+                                    (characterSet
+                                      (p
+ositiveSet (scalarRange U+61 U+7A))
+                                      (negativeSet ()))
+                                    (characterSet
+                                      (positiveSet (scalarRange U+41 U+5A))
+                                      (negativeSet ())))
+                                  (characterSet
+                                    (positiveSet
+                                      (scalarRange U+2E80 U+2FFF)
+                                      (scalarRange U+20000 U+2FFFD)
+                                      (scalarRange U+3040 U+D7FF)
+                                      (scalarRange U+2100 U+218F)
+                                      (scalarRange U+E0000 U+EFFFD)
+                                      (scalarRange U+3004 U+3007)
+                                      (scalarRange U+C0000 U+CFFFD)
+                                      (scalarRange U+70000 U+7FFFD)
+                                      (scalarRange U+80000 U+8FFFD)
+                                      (scalarRange U+B0000 U+BFFFD)
+                                      (scalarRange U+202A U+202E)
+                                      (scalarRange U+2C00 U+2DFF)
+                                      U+A8
+                                      (scalarRange U+C0 U+D6)
+                                      (scalarRange U+40000 U+4FFFD)
+                                      (scalarRange U+60000 U+6FFFD)
+                                      (scalarRange U+F8 U+FF)
+                                      (scalarRange U+1E00 U+1FFF)
+                                      (scalarRange U+10000 U+1FFFD)
+                                      (scalarRange U+200B U+200D)
+                                      (scalarRange U+370 U+167F)
+                                      (scalarRange U+2070 U+20CF)
+                                      (scalarRange U+A0000 U+AFFFD)
+                                      (scalarRange U+D0000 U+DFFFD)
+                                      (scalarRange U+F900 U+FD3D)
+                                      (scalarRange U+3021 U+302F)
+                                      (scalarRange U+30000 U+3FFFD)
+                                      U+AA
+                                      (scalarRange U+2460 U+24FF)
+                                      (scalarRange U+3031 U+303F)
+                                      (scalarRange U+2060 U+206F)
+                                      (scalarRange U+FE30 U+FE44)
+                                      (scalarRange U+180F U+1DBF)
+                                      (scalarRange U+BC U+BE)
+                                      (scalarRange U+FE47 U+FFFD)
+                                      (scalarRange U+B7 U+BA)
                                       (scalarRange U+2776 U+2793)
                                       (scalarRange U+50000 U+5FFFD)
                                       (scalarRange U+FDF0 U+FE1F)
@@ -5076,8 +5700,9 @@ et
                                       (scalarRange U+90000 U+9FFFD)
                                       (scalarRange U+B2 U+B5))
                                     (negativeSet ()))))
-                              (cat
-                                (*
+                              (∪
+                                ε
+                                (+
                                   (∪
                                     (∪
                                       (characterSet
@@ -5147,7 +5772,8 @@ et
                                         (characterSet
                                           (positiveSet (scalarRange U+300 U+36F))
                                           (negativeSet ()))
-                                        (∪
+
+                  (∪
                                           (characterSet
                                             (positiveSet (scalarRange U+1DC0 U+1DFF))
                                             (negativeSet ()))
@@ -5172,193 +5798,7 @@ et
                                           (positiveSet
                                             U+39
                                             U+38)
-                                          (negativeSet ()))))))
-                                (characterSet
-                                  (positiveSet U+60)
-                                  (negativeSet ())))))
-                          (∪
-                            (cat
-                              (characterSet
-                                (positiveSet U+24)
-                                (negativeSet ()))
-                              (+
-                                (∪
-                                  (∪
-                                    (characterSet
-                                      (positiveSet
-                                        U+30
-                                        U+31)
-                                      (negativeSet ()))
-                                    (characterSet
-                                      (positiveSet (scalarRange U+32 U+37))
-                                      (negativeSet ())))
-                                  (characterSet
-                                    (positiveSet
-                                      U+39
-                                      U+38)
-                                    (negativeSet ())))))
-
-                      (cat
-                              (∪
-                                (characterSet
-                                  (positiveSet U+5F)
-                                  (negativeSet ()))
-                                (∪
-                                  (∪
-                                    (characterSet
-                                      (positiveSet (scalarRange U+61 U+7A))
-                                      (negativeSet ()))
-                                    (characterSet
-                                      (positiveSet (scalarRange U+41 U+5A))
-                                      (negativeSet ())))
-                                  (characterSet
-                                    (positiveSet
-                                      (scalarRange U+2E80 U+2FFF)
-                                      (scalarRange U+20000 U+2FFFD)
-                                      (scalarRange U+3040 U+D7FF)
-                                      (scalarRange U+2100 U+218F)
-                                      (scalarRange U+E0000 U+EFFFD)
-                                      (scalarRange U+3004 U+3007)
-                                      (scalarRange U+C0000 U+CFFFD)
-                                      (scalarRange U+70000 U+7FFFD)
-                                      (scalarRange U+80000 U+8FFFD)
-                                      (scalarRange U+B0000 U+BFFFD)
-                                      (scalarRange U+202A U+202E)
-                                      (scalarRange U+2C00 U+2DFF)
-                                      U+A8
-                                      (scalarRange U+C0 U+D6)
-                                      (scalarRange U+40000 U+4FFFD)
-                                      (scalarRange U+60000 U+6FFFD)
-                                      (scalarRange U+F8 U+FF)
-                                      (scalarRange U+1E00 U+1FFF)
-                                      (scalarRange U+10000 U+1FFFD)
-                                      (scalarRange U+200B U+200D)
-                                      (scalarRange U+370 U+167F)
-                                      (scalarRange U+2070 U+20CF)
-                                      (scalarRange U+A0000 U+AFFFD)
-                                      (scalarRange U+D0000 U+DFFFD)
-                                      (scalarRange U+F900 U+FD3D)
-                                      (scalarRange U+3021 U+302F)
-                                      (scalarRange U+30000 U+3FFFD)
-                                      U+AA
-                                      (scalarRange U+2460 U+24FF)
-                                      (scalarRange U+3031 U+303F)
-                                      (scalarRange U+2060 U+206F)
-                                      (scalarRange U+FE30 U+FE44)
-                                      (scalarRange U+180F U+1DBF)
-                                      (scalarRange U+BC U+BE)
-                                      (scalarRange U+FE47 U+FFFD)
-                                      (scalarRange U+B7 U+BA)
-                                      (scalarRange U+2776 U+2793)
-                                      (scalarRange U+50000 U+5FFFD)
-                                      (scalarRange U+FDF0 U+FE1F)
-                                      (scalarRange U+100 U+2FF)
-                                      (scalarRange U+1681 U+180D)
-                                      (scalarRange U+D8 U+F6)
-                                      U+AF
-                                      U+2054
-                                      (scalarRange U+203F U+2040)
-                                      (scalarRange U+FD40 U+FDCF)
-                                      (scalarRange U+90000 U+9FFFD)
-                                      (scalarRange U+B2 U+B5))
-                                    (negativeSet ()))))
-                              (*
-                                (∪
-                                  (∪
-                                    (characterSet
-                                      (positiveSet U+5F)
-                                      (negativeSet ()))
-                                    (∪
-                                      (∪
-                                        (characterSet
-                                          (positiveSet (scalarRange U+61 U+7A))
-                                          (negativeSet ()))
-                                        (characterSet
-                                          (positiveSet (scalarRange U+41 U+5A))
-                                          (negativeSet ())))
-                                      (characterSet
-                                        (positiveSet
-                                          (scalarRange U+2E80 U+2FFF)
-                                          (scalarRange U+20000 U+2FFFD)
-                                          (scalarRange U+3040 U+D7FF)
-                                          (scalarRange U+2100 U+218F)
-                                          (scalarRange U+E0000 U+EFFFD)
-                                          (scalarRange U+3004 U+3007)
-                                          (scalarRange U+C0000 U+CFFFD)
-                                          (scalarRange U+70000 U+7FFFD)
-                                          (scalarRange U+80000 U+8FFFD)
-                                          (scalarRange U+B0000 U+BFFFD)
-                                          (scalarRange U+202A U+202E)
-                                          (scalarRange U+2C00 U+2DFF)
-                                          U+A8
-                                          (scalarRange U+C0 U+D6)
-                                          (scalarRange U+40000 U+4FFFD)
-                                          (scalarRange U+60000 U+6FFFD)
-                                          (scalarRange U+F8 U+FF)
-                                          (scalarRange U+1E00 U+1FFF)
-                                          (scalarRange U+10000 U+1FFFD)
-                                          (scalarRange U+200B U+200D)
-                                          (scalarRange U+370 U+167F)
-                                          (scalarRange U+2070 U+20CF)
-                                          (scalarRange U+A0000 U+AFFFD)
-                                          (scalarRange U+D0000 U+DFFFD)
-                                          (scalarRange U+F900 U+FD3D)
-                                          (scalarRange U+3021 U+302F)
-                                          (scalarRange U+30000 U+3FFFD)
-                                          U+AA
-                                          (scalarRange U+2460 U+24FF)
-                                          (scalarRange U+3031 U+303F)
-                                          (scalarRange U+2060 U+206F)
-                                          (scalarRange U+FE30 U+FE44)
-                                          (scalarRange U+180F U+1DBF)
-                                          (scalarRange U+BC U+BE)
-                                          (scalarRange U+FE47 U+FFFD)
-                                          (scalarRange U+B7 U+BA)
-                                          (scalarRange U+2776 U+2793)
-                                          (scalarRange U+50000 U+5FFFD)
-                                          (scalarRange U+FDF0 U+FE1F)
-                                          (scalarRange U+100 U+2FF)
-                                          (scalarRange U+1681 U+180D)
-                                          (scalarRange U+D8 U+F6)
-                                          U+AF
-                                          U+2054
-                                          (scalarRange U+203F U+2040)
-                                          (scalarRange U+FD40 U+FDCF)
-                                          (scalarRange U+90000 U+9FFFD)
-                                          (scalarRange U+B2 U+B5))
-                                        (negativeSet ()))))
-                                  (∪
-                                    (∪
-                                      (char
-acterSet
-                                        (positiveSet (scalarRange U+300 U+36F))
-                                        (negativeSet ()))
-                                      (∪
-                                        (characterSet
-                                          (positiveSet (scalarRange U+1DC0 U+1DFF))
-                                          (negativeSet ()))
-                                        (∪
-                                          (characterSet
-                                            (positiveSet (scalarRange U+20D0 U+20FF))
-                                            (negativeSet ()))
-                                          (characterSet
-                                            (positiveSet (scalarRange U+FE20 U+FE2F))
-                                            (negativeSet ())))))
-                                    (∪
-                                      (∪
-                                        (characterSet
-                                          (positiveSet
-                                            U+30
-                                            U+31)
-                                          (negativeSet ()))
-                                        (characterSet
-                                          (positiveSet (scalarRange U+32 U+37))
-                                          (negativeSet ())))
-                                      (characterSet
-                                        (positiveSet
-                                          U+39
-                                          U+38)
-                                        (negativeSet ())))))))))
+                                          (negativeSet ()))))))))))
                         (cat
                           (characterSet
                             (positiveSet U+29)
@@ -5472,10 +5912,10 @@ acterSet
                                                   (scalarRange U+41 U+46))
                                                 (negativeSet ())))
                                             (cat
-
-                      (∪
+                                              (∪
                                                 (∪
-                                                  (∪
+
+              (∪
                                                     (characterSet
                                                       (positiveSet
                                                         U+30
@@ -5596,9 +6036,9 @@ acterSet
                                                       (characterSet
                                                         (positiveSet
                                                           U+39
-
-                                                    U+38)
-                                                        (negativeSet ())))
+                                                          U+38)
+                                                        (n
+egativeSet ())))
                                                     (characterSet
                                                       (positiveSet
                                                         (scalarRange U+61 U+66)
@@ -5700,7 +6140,8 @@ acterSet
                                                               (positiveSet
                                                                 U+30
                                                                 U+31)
-                                                              (negativeSet ()))
+
+                                                            (negativeSet ()))
                                                             (characterSet
                                                               (positiveSet (scalarRange U+32 U+37))
                                                               (negativeSet ())))
@@ -5712,8 +6153,7 @@ acterSet
                                                         (characterSet
                                                           (positiveSet
                                                             (scalarRange U+61 U+66)
-                                                            (scalarRange U+41
-U+46))
+                                                            (scalarRange U+41 U+46))
                                                           (negativeSet ())))))))
                                               (∪
                                                 (cat
@@ -5813,7 +6253,8 @@ U+46))
                                                                     U+30
                                                                     U+31)
                                                                   (negativeSet ()))
-                                                                (characterSet
+                                                                (c
+haracterSet
                                                                   (positiveSet (scalarRange U+32 U+37))
                                                                   (negativeSet ())))
                                                               (characterSet
@@ -5826,8 +6267,7 @@ U+46))
                                                                 (scalarRange U+61 U+66)
                                                                 (scalarRange U+41 U+46))
                                                               (negativeSet ())))
-
-                                                  (∪
+                                                          (∪
                                                             (∪
                                                               (∪
                                                                 (characterSet
@@ -5918,14 +6358,14 @@ U+46))
                                                         (cat
                                                           (∪
                                                             (∪
-
-                                  (∪
+                                                              (∪
                                                                 (characterSet
                                                                   (positiveSet
                                                                     U+30
                                                                     U+31)
                                                                   (negativeSet ()))
-                                                                (characterSet
+
+                        (characterSet
                                                                   (positiveSet (scalarRange U+32 U+37))
                                                                   (negativeSet ())))
                                                               (characterSet
@@ -5937,10 +6377,10 @@ U+46))
                                                               (positiveSet
                                                                 (scalarRange U+61 U+66)
                                                                 (scalarRange U+41 U+46))
-                                                              (
-negativeSet ())))
+                                                              (negativeSet ())))
                                                           (cat
-                                                            (∪
+
+                         (∪
                                                               (∪
                                                                 (∪
                                                                   (characterSet
@@ -6044,10 +6484,10 @@ negativeSet ())))
                                                               U+38)
                                                             (negativeSet ())))
                                                         (characterSet
-                                                          (positi
-veSet
+                                                          (positiveSet
                                                             (scalarRange U+61 U+66)
-                                                            (scalarRange U+41 U+46))
+
+                                  (scalarRange U+41 U+46))
                                                           (negativeSet ())))
                                                       (cat
                                                         (∪
@@ -6150,9 +6590,9 @@ veSet
                                                                         (positiveSet (scalarRange U+32 U+37))
                                                                         (negativeSet ())))
                                                                     (characterSet
-
                                                                       (positiveSet
-                                                                        U+39
+
+                                        U+39
                                                                         U+38)
                                                                       (negativeSet ())))
                                                                   (characterSet
@@ -6244,7 +6684,8 @@ veSet
                                   (positiveSet U+5C)
                                   (negativeSet ()))
                                 (cat
-                                  (?
+                                  (∪
+                                    ε
                                     (+
                                       (∪
                                         (∪
@@ -6281,9 +6722,9 @@ veSet
                                               (∪
                                                 (characterSet
                                                   (positiveSet U+D)
+                                                  (negativeSet ()))
 
-                                       (negativeSet ()))
-                                                (∪
+                              (∪
                                                   (cat
                                                     (characterSet
                                                       (positiveSet U+D)
@@ -6356,7 +6797,8 @@ veSet
             (positiveSet U+22)
             (negativeSet ()))
           (cat
-            (?
+            (∪
+              ε
               (+
                 (cat
                   (cat
@@ -6437,8 +6879,197 @@ veSet
                                   (scalarRange U+B2 U+B5))
                                 (negativeSet ()))))
                           (cat
+                            (∪
 
-                         (*
+    ε
+                              (+
+                                (∪
+                                  (∪
+                                    (characterSet
+                                      (positiveSet U+5F)
+                                      (negativeSet ()))
+                                    (∪
+                                      (∪
+                                        (characterSet
+                                          (positiveSet (scalarRange U+61 U+7A))
+                                          (negativeSet ()))
+                                        (characterSet
+                                          (positiveSet (scalarRange U+41 U+5A))
+                                          (negativeSet ())))
+                                      (characterSet
+                                        (positiveSet
+                                          (scalarRange U+2E80 U+2FFF)
+                                          (scalarRange U+20000 U+2FFFD)
+                                          (scalarRange U+3040 U+D7FF)
+                                          (scalarRange U+2100 U+218F)
+                                          (scalarRange U+E0000 U+EFFFD)
+                                          (scalarRange U+3004 U+3007)
+                                          (scalarRange U+C0000 U+CFFFD)
+                                          (scalarRange U+70000 U+7FFFD)
+                                          (scalarRange U+80000 U+8FFFD)
+                                          (scalarRange U+B0000 U+BFFFD)
+                                          (scalarRange U+202A U+202E)
+                                          (scalarRange U+2C00 U+2DFF)
+                                          U+A8
+                                          (scalarRange U+C0 U+D6)
+                                          (scalarRange U+40000 U+4FFFD)
+                                          (scalarRange U+60000 U+6FFFD)
+                                          (scalarRange U+F8 U+FF)
+                                          (scalarRange U+1E00 U+1FFF)
+                                          (scalarRange U+10000 U+1FFFD)
+                                          (scalarRange U+200B U+200D)
+                                          (scalarRange U+370 U+167F)
+                                          (scalarRange U+2070 U+20CF)
+                                          (scalarRange U+A0000 U+AFFFD)
+                                          (scalarRange U+D0000 U+DFFFD)
+                                          (scalarRange U+F900 U+FD3D)
+                                          (scalarRange U+3021 U+302F)
+                                          (scalarRange U+30000 U+3FFFD)
+                                          U+AA
+                                          (scalarRange U+2460 U+24FF)
+                                          (scalarRange U+3031 U+303F)
+                                          (scalarRange U+2060 U+206F)
+                                          (scalarRange U+FE30 U+FE44)
+                                          (scalarRange U+180F U+1DBF)
+                                          (scalarRange U+BC U+BE)
+                                          (scalarRange U+FE47 U+FFFD)
+                                          (scalarRange U+B7 U+BA)
+                                          (scalarRange U+2776 U+2793)
+                                          (scalarRange U+50000 U+5FFFD)
+                                          (scalarRange U+FDF0 U+FE1F)
+                                          (scalarRange U+100 U+2FF)
+                                          (scalarRange U+1681 U+180D)
+                                          (scalarRange U+D8 U+F6)
+                                          U+AF
+                                          U+2054
+                                          (scalarRange U+203F U+2040)
+                                          (scalarRange U+FD40 U+FDCF)
+                                          (scalarRange U+90000 U+9FFFD)
+                                          (scalarRange U+B2 U+B5))
+                                        (negativeSet ()))))
+                                  (∪
+                                    (∪
+                                      (characterSet
+                                        (positiveSet (scalarRange U+300 U+36F))
+                                        (negativeSet ()))
+                                      (∪
+                                        (characterSet
+                                          (positiveSet (scalarRange U+1DC0 U+1DFF))
+                                          (negativeSet ()))
+                                        (∪
+                                          (characterSet
+                                            (positiveSet (scalarRange U+20D0 U+20FF))
+                                            (negativeSet ()))
+                                          (characterSet
+                                            (positiveSet (scalarRange U+FE20 U+FE2F))
+                                            (negativeSet ())))))
+                                    (∪
+                                      (∪
+                                        (characterSet
+                                          (positiveSet
+                                            U+30
+                                            U+31)
+                                          (negativeSet ()))
+                                        (characterSet
+                                          (positiveSet (scalarRange U+32 U+37))
+                                          (negativeSet ())))
+                                      (characterSet
+                                        (positiveSet
+                                          U+39
+                                          U+38)
+                                        (negativeSet ())))))))
+                            (characterSet
+                              (positiveSet U+60)
+                              (negativeSet ())))))
+                      (∪
+                        (cat
+                          (characterSet
+                            (positiveSet U+24)
+                            (negativeSet ()))
+                          (+
+                            (∪
+                              (∪
+                                (characterSet
+                                  (positiveSet
+                                    U+30
+                                    U+31)
+                                  (negativeSet ()))
+                                (characterSet
+                                  (positiveSet (scalarRange U+32 U+37))
+                                  (negativeSet ())))
+                              (characterSet
+                                (positiveSet
+                                  U+39
+                                  U+38)
+                                (negativeSet ())))))
+                        (cat
+                          (∪
+                            (characterSet
+                              (positiveSet U+5F)
+                              (negativeSet ()))
+                            (∪
+                              (∪
+                                (characterSet
+                                  (positiveSet (scalarRange U+61 U+7A))
+                                  (negativeSet ()))
+                                (characterSet
+                                  (positiveSet (scalarRange U+41 U+5A))
+                                  (negativeSet ())))
+                              (characterSet
+                                (positiveSet
+                                  (scalarRange U+2E80 U+2FFF)
+                                  (scalarRange U+20000 U+2FFFD)
+                                  (scalarRange U+3040 U+D7FF)
+                                  (scalarRange U+2100 U+218F)
+                                  (scalarRange U+E0000 U+EFFFD)
+                                  (scalarRange U+3004 U+3007)
+                                  (scalarRange U+C0000 U+CFFFD)
+                                  (scalar
+Range U+70000 U+7FFFD)
+                                  (scalarRange U+80000 U+8FFFD)
+                                  (scalarRange U+B0000 U+BFFFD)
+                                  (scalarRange U+202A U+202E)
+                                  (scalarRange U+2C00 U+2DFF)
+                                  U+A8
+                                  (scalarRange U+C0 U+D6)
+                                  (scalarRange U+40000 U+4FFFD)
+                                  (scalarRange U+60000 U+6FFFD)
+                                  (scalarRange U+F8 U+FF)
+                                  (scalarRange U+1E00 U+1FFF)
+                                  (scalarRange U+10000 U+1FFFD)
+                                  (scalarRange U+200B U+200D)
+                                  (scalarRange U+370 U+167F)
+                                  (scalarRange U+2070 U+20CF)
+                                  (scalarRange U+A0000 U+AFFFD)
+                                  (scalarRange U+D0000 U+DFFFD)
+                                  (scalarRange U+F900 U+FD3D)
+                                  (scalarRange U+3021 U+302F)
+                                  (scalarRange U+30000 U+3FFFD)
+                                  U+AA
+                                  (scalarRange U+2460 U+24FF)
+                                  (scalarRange U+3031 U+303F)
+                                  (scalarRange U+2060 U+206F)
+                                  (scalarRange U+FE30 U+FE44)
+                                  (scalarRange U+180F U+1DBF)
+                                  (scalarRange U+BC U+BE)
+                                  (scalarRange U+FE47 U+FFFD)
+                                  (scalarRange U+B7 U+BA)
+                                  (scalarRange U+2776 U+2793)
+                                  (scalarRange U+50000 U+5FFFD)
+                                  (scalarRange U+FDF0 U+FE1F)
+                                  (scalarRange U+100 U+2FF)
+                                  (scalarRange U+1681 U+180D)
+                                  (scalarRange U+D8 U+F6)
+                                  U+AF
+                                  U+2054
+                                  (scalarRange U+203F U+2040)
+                                  (scalarRange U+FD40 U+FDCF)
+                                  (scalarRange U+90000 U+9FFFD)
+                                  (scalarRange U+B2 U+B5))
+                                (negativeSet ()))))
+                          (∪
+                            ε
+                            (+
                               (∪
                                 (∪
                                   (characterSet
@@ -6512,7 +7143,8 @@ veSet
                                       (characterSet
                                         (positiveSet (scalarRange U+1DC0 U+1DFF))
                                         (negativeSet ()))
-                                      (∪
+
+                       (∪
                                         (characterSet
                                           (positiveSet (scalarRange U+20D0 U+20FF))
                                           (negativeSet ()))
@@ -6533,192 +7165,7 @@ veSet
                                       (positiveSet
                                         U+39
                                         U+38)
-                                      (negativeSet ()))))))
-                            (characterSet
-                              (positiveSet U+60)
-                              (negativeSet ())))))
-                      (∪
-                        (cat
-                          (characterSet
-                            (positiveSet U+24)
-                            (negativeSet ()))
-                          (+
-                            (∪
-                              (∪
-                                (characterSet
-                                  (positiveSet
-                                    U+30
-                                    U+31)
-                                  (negativeSet ()))
-                                (characterSet
-                                  (positiveSet (scalarRange U+32 U+37))
-                                  (negativeSet ())))
-                              (characterSet
-                                (positiveSet
-                                  U+39
-                                  U+38)
-                                (negativeSet ())))))
-                        (cat
-                          (∪
-                            (characterSet
-                              (positiveSet U+5F)
-                              (negativeSet ()))
-                            (∪
-                              (∪
-                                (characterSet
-                                  (positiveSet (scalarRange U+61 U+7A))
-                                  (negativeSet ()))
-                                (characterSet
-                                  (positiveSet (scalarRange U+41 U+5A))
-                                  (negativeSet ())))
-                              (characterSet
-                                (positiveSet
-                                  (scalarRange U+2E80 U+2FFF)
-                                  (scalarRange U+20000 U+2FFFD)
-                                  (scalarRange U+3040 U+D7FF)
-                                  (scalarRange U+2100 U+218F)
-                                  (scalarRange U+E0000 U+EFFFD)
-                                  (scalarRange U+3004 U+3007)
-                                  (scalarRange U+C0000 U+CFFFD)
-                                  (scalarRange U+70000 U+7FFFD)
-                                  (scalarRange U+80000 U+8FFFD)
-                                  (scalarRange U+B0000 U+BFFFD)
-                                  (scalarRange U+202
-A U+202E)
-                                  (scalarRange U+2C00 U+2DFF)
-                                  U+A8
-                                  (scalarRange U+C0 U+D6)
-                                  (scalarRange U+40000 U+4FFFD)
-                                  (scalarRange U+60000 U+6FFFD)
-                                  (scalarRange U+F8 U+FF)
-                                  (scalarRange U+1E00 U+1FFF)
-                                  (scalarRange U+10000 U+1FFFD)
-                                  (scalarRange U+200B U+200D)
-                                  (scalarRange U+370 U+167F)
-                                  (scalarRange U+2070 U+20CF)
-                                  (scalarRange U+A0000 U+AFFFD)
-                                  (scalarRange U+D0000 U+DFFFD)
-                                  (scalarRange U+F900 U+FD3D)
-                                  (scalarRange U+3021 U+302F)
-                                  (scalarRange U+30000 U+3FFFD)
-                                  U+AA
-                                  (scalarRange U+2460 U+24FF)
-                                  (scalarRange U+3031 U+303F)
-                                  (scalarRange U+2060 U+206F)
-                                  (scalarRange U+FE30 U+FE44)
-                                  (scalarRange U+180F U+1DBF)
-                                  (scalarRange U+BC U+BE)
-                                  (scalarRange U+FE47 U+FFFD)
-                                  (scalarRange U+B7 U+BA)
-                                  (scalarRange U+2776 U+2793)
-                                  (scalarRange U+50000 U+5FFFD)
-                                  (scalarRange U+FDF0 U+FE1F)
-                                  (scalarRange U+100 U+2FF)
-                                  (scalarRange U+1681 U+180D)
-                                  (scalarRange U+D8 U+F6)
-                                  U+AF
-                                  U+2054
-                                  (scalarRange U+203F U+2040)
-                                  (scalarRange U+FD40 U+FDCF)
-                                  (scalarRange U+90000 U+9FFFD)
-                                  (scalarRange U+B2 U+B5))
-                                (negativeSet ()))))
-                          (*
-                            (∪
-                              (∪
-                                (characterSet
-                                  (positiveSet U+5F)
-                                  (negativeSet ()))
-                                (∪
-                                  (∪
-                                    (characterSet
-                                      (positiveSet (scalarRange U+61 U+7A))
-                                      (negativeSet ()))
-                                    (characterSet
-                                      (positiveSet (scalarRange U+41 U+5A))
-                                      (negativeSet ())))
-                                  (characterSet
-                                    (positiveSet
-                                      (scalarRange U+2E80 U+2FFF)
-                                      (scalarRange U+20000 U+2FFFD)
-                                      (scalarRange U+3040 U+D7FF)
-                                      (scalarRange U+2100 U+218F)
-                                      (scalarRange U+E0000 U+EFFFD)
-                                      (scalarRange U+3004 U+3007)
-                                      (scalarRange U+C0000 U+CFFFD)
-                                      (scalarRange U+70000 U+7FFFD)
-                                      (scalarRange U+80000 U+8FFFD)
-                                      (scalarRange U+B0000 U+BFFFD)
-                                      (scalarRange U+202A U+202E)
-                                      (scalarRange U+2C00 U+2DFF)
-                                      U+A8
-                                      (scalarRange U+C0 U+D6)
-                                      (scalarRange U+40000 U+4FFFD)
-                                      (scalarRange U+60000 U+6FFFD)
-                                      (scalarRange U+F8 U+FF)
-                                      (scalarRange U+1E00 U+1FFF)
-                                      (scalarRange U+10000 U+1FFFD)
-                                      (scalarRange U+200B U+200D)
-                                      (scalarRange U+370 U+167F)
-                                      (scalarRange U+2070 U+20CF)
-                                      (scalarRange U+A0000 U+AFFFD)
-                                      (scalarRange U+D0000 U+DFFFD)
-                                      (scalarRange U+F900 U+FD3D)
-                                      (scalarRange U+3021 U+302F)
-                                      (scalarRange U+30000 U+3FFFD)
-                                      U+AA
-                                      (scalarRange U+2460 U+24FF)
-                                      (scalarRange U+3031 U+303F)
-                                      (scalarRange U+2060 U+206F)
-                                      (scalarRange U+FE30 U+FE44)
-                                      (scalarRange U+180F U+1DBF)
-                                      (scalarRange U+BC U+BE)
-                                      (scalarRange U+FE47 U+FFFD)
-                                      (scalarRange U+B7 U+BA)
-                                      (scalarRange U+2776 U+2793)
-                                      (scalarRange U+50000 U+5FFFD)
-                                      (scalarRange U+FDF0 U+FE1F)
-                                      (scalarRange U+100 U+2FF)
-                                      (scalarRange U+1681 U+180D)
-                                      (scalarRange U+D8 U+F6)
-                                      U+AF
-                                      U+2054
-                                      (scalarRange U+203F U+2040)
-                                      (scalarRange U+FD40 U+FDCF)
-                                      (scalarRange U+90000 U+9FFFD)
-                                      (scalarRange U+B2 U+B5))
-                                    (negativeSet ()))))
-                              (∪
-                                (∪
-                                  (characterSet
-                                    (positiveSet (scalarRange U+300 U+36F))
-                                    (negativeSet ()))
-                                  (∪
-                                    (characterSet
-                                      (positiveSet (scalarRange U+1DC0 U+1DFF))
-                                      (negativeSet ()))
-                                    (∪
-                                      (characterSet
-                                        (positiveSet (scalarRange U+20D0 U+20FF))
-                                        (negativeSet ()))
-                                      (characterSet
-                                        (positiveSet (scalarRange U+FE20 U+FE2F))
-                                        (negativeSet ())))))
-                                (∪
-                                  (∪
-                                    (characterSet
-                                      (positiveSet
-                                        U+30
-                                        U+31)
-                                      (negativeSet ()))
-                                    (characterSet
-                                      (positiveSet (scalarRange U+32 U+37))
-                                      (negativeSet ())))
-                                  (characterSet
-                                    (positiveSet
-                                      U+39
-                                      U+38)
-                                    (negativeSet ())))))))))
+                                      (negativeSet ()))))))))))
                     (cat
                       (characterSet
                         (positiveSet U+29)
@@ -6728,8 +7175,7 @@ A U+202E)
                           (cat
                             (cat
                               (characterSet
-                                (positiveSet U+5C
-)
+                                (positiveSet U+5C)
                                 (negativeSet ()))
                               (cat
                                 (characterSet
@@ -6851,7 +7297,8 @@ A U+202E)
                                               (scalarRange U+41 U+46))
                                             (negativeSet ())))
                                         (∪
-                                          (∪
+
+                                   (∪
                                             (∪
                                               (characterSet
                                                 (positiveSet
@@ -6878,8 +7325,7 @@ A U+202E)
                                             (∪
                                               (characterSet
                                                 (positiveSet
-
-                                   U+30
+                                                  U+30
                                                   U+31)
                                                 (negativeSet ()))
                                               (characterSet
@@ -6986,10 +7432,10 @@ A U+202E)
                                           (cat
                                             (∪
                                               (∪
-                                                (∪
-                                                  (characterSet
 
-                                  (positiveSet
+                    (∪
+                                                  (characterSet
+                                                    (positiveSet
                                                       U+30
                                                       U+31)
                                                     (negativeSet ()))
@@ -7012,8 +7458,7 @@ A U+202E)
                                                   (∪
                                                     (characterSet
                                                       (positiveSet
-
-                                          U+30
+                                                        U+30
                                                         U+31)
                                                       (negativeSet ()))
                                                     (characterSet
@@ -7113,7 +7558,8 @@ A U+202E)
                                                       U+38)
                                                     (negativeSet ())))
                                                 (characterSet
-                                                  (positiveSet
+                                                  (posit
+iveSet
                                                     (scalarRange U+61 U+66)
                                                     (scalarRange U+41 U+46))
                                                   (negativeSet ())))
@@ -7130,15 +7576,15 @@ A U+202E)
                                                         (positiveSet (scalarRange U+32 U+37))
                                                         (negativeSet ())))
                                                     (characterSet
-                                                      (positiveSet
+
+                             (positiveSet
                                                         U+39
                                                         U+38)
                                                       (negativeSet ())))
                                                   (characterSet
                                                     (positiveSet
                                                       (scalarRange U+61 U+66)
-
-                                         (scalarRange U+41 U+46))
+                                                      (scalarRange U+41 U+46))
                                                     (negativeSet ())))
                                                 (cat
                                                   (∪
@@ -7250,7 +7696,8 @@ A U+202E)
                                                       (scalarRange U+61 U+66)
                                                       (scalarRange U+41 U+46))
                                                     (negativeSet ())))
-                                                (cat
+
+         (cat
                                                   (∪
                                                     (∪
                                                       (∪
@@ -7258,8 +7705,7 @@ A U+202E)
                                                           (positiveSet
                                                             U+30
                                                             U+31)
-
-                                                         (negativeSet ()))
+                                                          (negativeSet ()))
                                                         (characterSet
                                                           (positiveSet (scalarRange U+32 U+37))
                                                           (negativeSet ())))
@@ -7365,14 +7811,14 @@ A U+202E)
                                                 (∪
                                                   (∪
                                                     (characterSet
-                                                      (positiveSet
+
+                                             (positiveSet
                                                         U+30
                                                         U+31)
                                                       (negativeSet ()))
                                                     (characterSet
                                                       (positiveSet (scalarRange U+32 U+37))
-
-       (negativeSet ())))
+                                                      (negativeSet ())))
                                                   (characterSet
                                                     (positiveSet
                                                       U+39
@@ -7482,7 +7928,15 @@ A U+202E)
                                                                 (negativeSet ()))
                                                               (characterSet
                                                                 (positiveSet (scalarRange U+32 U+37))
-                                                                (negativeSet ())))
+                                                                (n
+Test Case '-[woodyTests.LexerGeneratorTests testAnalysis_development]' passed (0.599 seconds).
+t Suite 'LexerGeneratorTests' passed at 2018-03-26 20|32| 13.461.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.599 (0.599) seconds
+t Suite 'woodyPackageTests.xctest' passed at 2018-03-26 20|32| 13.461.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.599 (0.599) seconds
+t Suite 'Selected tests' passed at 2018-03-26 20|32| 13.461.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.599 (0.599) seconds
+egativeSet ())))
                                                             (characterSet
                                                               (positiveSet
                                                                 U+39
@@ -7636,27 +8090,20 @@ A U+202E)
               (characterSet
                 (positiveSet (scalarRange U+2500 U+2775))
                 (negativeSet ()))
-              (∪
+
+        (∪
                 (characterSet
                   (positiveSet (scalarRange U+3001 U+3003))
                   (negativeSet ()))
                 (∪
                   (characterSet
-                    (positiveSet (scalarRange U+3008 U+3030))
+                    (positiveSet (scalarRange U+2041 U+2053))
                     (negativeSet ()))
                   (∪
                     (characterSet
-                      (positiveSet (scalarRange U+2041 U+2053))
+                      (positiveSet (scalarRange U+3008 U+3030))
                       (negativeSet ()))
-
-Test Case '-[woodyTests.LexerGeneratorTests testAnalysis_development]' passed (0.728 seconds).
-t Suite 'LexerGeneratorTests' passed at 2018-03-25 22|| 45.437.
-	 Executed 1 test, with 0 failures (0 unexpected) in 0.728 (0.728) seconds
-t Suite 'woodyPackageTests.xctest' passed at 2018-03-25 22|| 45.437.
-	 Executed 1 test, with 0 failures (0 unexpected) in 0.728 (0.728) seconds
-t Suite 'Selected tests' passed at 2018-03-25 22|| 45.437.
-	 Executed 1 test, with 0 failures (0 unexpected) in 0.728 (0.728) seconds
-               (∪
+                    (∪
                       (characterSet
                         (positiveSet
                           U+BB
@@ -7691,59 +8138,57 @@ t Suite 'Selected tests' passed at 2018-03-25 22|| 45.437.
                                 (positiveSet (scalarRange U+2E00 U+2E7F))
                                 (negativeSet ()))
                               (∪
-                                (characterSet
-                                  (positiveSet (scalarRange U+2030 U+203E))
-                                  (negativeSet ()))
                                 (∪
-                                  (∪
-                                    (characterSet
-                                      (positiveSet (scalarRange U+2016 U+2017))
-                                      (negativeSet ()))
-                                    (characterSet
-                                      (positiveSet (scalarRange U+2020 U+2027))
-                                      (negativeSet ())))
+                                  (characterSet
+                                    (positiveSet (scalarRange U+2016 U+2017))
+                                    (negativeSet ()))
+                                  (characterSet
+                                    (positiveSet (scalarRange U+2020 U+2027))
+                                    (negativeSet ())))
+                                (∪
+                                  (characterSet
+                                    (positiveSet (scalarRange U+2030 U+203E))
+                                    (negativeSet ()))
                                   (characterSet
                                     (positiveSet (scalarRange U+2055 U+205E))
                                     (negativeSet ()))))))))))))))))
-      (*
-        (∪
+      (∪
+        ε
+        (+
           (∪
-            (characterSet
-              (positiveSet (scalarRange U+A1 U+A7))
-              (negativeSet ()))
             (∪
               (characterSet
-                (positiveSet
-                  U+21
-                  U+3E
-                  U+5E
-                  U+2B
-                  U+7E
-                  U+2F
-                  U+3F
-                  U+3C
-                  U+2A
-                  U+2D
-                  U+7C
-                  U+25
-                  U+3D
-                  U+26)
+                (positiveSet (scalarRange U+A1 U+A7))
                 (negativeSet ()))
               (∪
                 (characterSet
-                  (positiveSet (scalarRange U+2794 U+2BFF))
+                  (positiveSet
+                    U+21
+                    U+3E
+                    U+5E
+                    U+2B
+                    U+7E
+                    U+2F
+                    U+3F
+                    U+3C
+                    U+2A
+                    U+2D
+                    U+7C
+                    U+25
+                    U+3D
+                    U+26)
                   (negativeSet ()))
                 (∪
                   (characterSet
-                    (positiveSet (scalarRange U+2500 U+2775))
+                    (positiveSet (scalarRange U+2794 U+2BFF))
                     (negativeSet ()))
                   (∪
                     (characterSet
-                      (positiveSet (scalarRange U+3001 U+3003))
+                      (positiveSet (scalarRange U+2500 U+2775))
                       (negativeSet ()))
                     (∪
                       (characterSet
-                        (positiveSet (scalarRange U+3008 U+3030))
+                        (positiveSet (scalarRange U+3001 U+3003))
                         (negativeSet ()))
                       (∪
                         (characterSet
@@ -7751,41 +8196,41 @@ t Suite 'Selected tests' passed at 2018-03-25 22|| 45.437.
                           (negativeSet ()))
                         (∪
                           (characterSet
-                            (positiveSet
-                              U+BB
-                              U+F7
-                              U+D7
-                              (scalarRange U+B0 U+B1)
-                              U+B6
-                              U+BF)
+                            (positiveSet (scalarRange U+3008 U+3030))
                             (negativeSet ()))
                           (∪
-                            (∪
-                              (characterSet
-                                (positiveSet U+AC)
-                                (negativeSet ()))
-                              (characterSet
-                                (positiveSet U+AE)
-                                (negativeSet ())))
+                            (characterSet
+                              (positiveSet
+                                U+BB
+                                U+F7
+                                U+D7
+                                (scalarRange U+B0 U+B1)
+                                U+B6
+                                U+BF)
+                              (negativeSet ()))
                             (∪
                               (∪
                                 (characterSet
-                                  (positiveSet U+A9)
+                                  (positiveSet U+AC)
                                   (negativeSet ()))
                                 (characterSet
-                                  (positiveSet U+AB)
+                                  (positiveSet U+AE)
                                   (negativeSet ())))
                               (∪
-                                (characterSet
-                                  (positiveSet (scalarRange U+2190 U+23FF))
-                                  (negativeSet ()))
                                 (∪
                                   (characterSet
-                                    (positiveSet (scalarRange U+2E00 U+2E7F))
+                                    (positiveSet U+A9)
+                                    (negativeSet ()))
+                                  (characterSet
+                                    (positiveSet U+AB)
+                                    (negativeSet ())))
+                                (∪
+                                  (characterSet
+                                    (positiveSet (scalarRange U+2190 U+23FF))
                                     (negativeSet ()))
                                   (∪
                                     (characterSet
-                                      (positiveSet (scalarRange U+2030 U+203E))
+                                      (positiveSet (scalarRange U+2E00 U+2E7F))
                                       (negativeSet ()))
                                     (∪
                                       (∪
@@ -7795,30 +8240,35 @@ t Suite 'Selected tests' passed at 2018-03-25 22|| 45.437.
                                         (characterSet
                                           (positiveSet (scalarRange U+2020 U+2027))
                                           (negativeSet ())))
-                                      (characterSet
-                                        (positiveSet (scalarRange U+2055 U+205E))
-                                        (negativeSet ()))))))))))))))))
-          (∪
-            (characterSet
-              (positiveSet (scalarRange U+FE00 U+FE0F))
-              (negativeSet ()))
+                                      (∪
+                                        (characterSet
+                                          (positiveSet (scalarRange U+2030 U+203E))
+                                          (negativeSet ()))
+                                        (characterSet
+                                          (positiveSet (scalarRange U+2055 U+205E))
+                                          (negativeSet ()))))))))))))))))
             (∪
               (characterSet
-                (positiveSet (scalarRange U+20D0 U+20FF))
+                (positiveSet (scalarRange U+FE00 U+FE0F))
                 (negativeSet ()))
               (∪
                 (characterSet
-                  (positiveSet (scalarRange U+300 U+36F))
+                  (positiveSet (scalarRange U+20D0 U+20FF))
                   (negativeSet ()))
                 (∪
                   (characterSet
-                    (positiveSet (scalarRange U+E0100 U+E01EF))
+
+      (positiveSet (scalarRange U+300 U+36F))
                     (negativeSet ()))
                   (∪
                     (characterSet
-                      (positiveSet (scalarRange U+1DC0 U+1DFF))
+                      (positiveSet (scalarRange U+E0100 U+E01EF))
                       (negativeSet ()))
-                    (characterSet
-                      (positiveSet (scalarRange U+FE20 U+FE2F))
-                      (negativeSet ())))))))))))
+                    (∪
+                      (characterSet
+                        (positiveSet (scalarRange U+1DC0 U+1DFF))
+                        (negativeSet ()))
+                      (characterSet
+                        (positiveSet (scalarRange U+FE20 U+FE2F))
+                        (negativeSet ()))))))))))))
 )

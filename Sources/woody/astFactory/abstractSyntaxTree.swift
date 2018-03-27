@@ -244,6 +244,41 @@ struct AbstractSyntaxTree: Equatable, Hashable
             }
         }
 
+        var εClosure: Set<Regex>
+        {
+            switch self
+            {
+            case .ε: return [ .ε ]
+
+            case let .oneOrMore(r):
+            return r.εClosure.unionMap { .oneOrMore($0) }
+
+            case let .union(r1, r2): return r1.εClosure.union(r2.εClosure)
+
+            case let .concatenation(l, r) : return [ self ]
+            case .characterSet(_)         : return [ self ]
+            }
+        }
+
+/*
+ *        var isMaybeEpsilon: Bool
+ *        {
+ *            switch self
+ *            {
+ *                case .ε: return true
+ *
+ *                case let .oneOrMore(r): return r.isMaybeEpsilon
+ *
+ *                case let .union(r1, r2): return r1.isMaybeEpsilon ||
+ *                r2.isMaybeEpsilon
+ *
+ *                case let .concatenation(l, r): return l.isMaybeEpsilon
+ *
+ *                case .characterSet(_): return false
+ *            }
+ *        }
+ */
+
         init(regex: Regex, pRepetitionOperator: ParseTree.RepetitionOperator?)
         {
             guard let pRepetitionOperator = pRepetitionOperator

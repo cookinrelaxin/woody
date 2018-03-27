@@ -240,6 +240,7 @@ final class LexerGenerator
 
             while state.isNotEmpty
             {
+                /*print("startState: \(state)")*/
                 let e = sbert[source[dot]]
                 state =
                     e == nil
@@ -250,6 +251,14 @@ final class LexerGenerator
                 {
                     tokenClass = tc
                     endOfToken = dot
+                }
+
+                print("got \(e)")
+                print("endState: \(state)")
+                print("tokenClass: \(tokenClass)")
+                if let endOfToken = endOfToken
+                {
+                    print("representation: \"\(String(source[startOfToken...endOfToken]))\"")
                 }
 
                 dot = source.index(after: dot)
@@ -403,9 +412,20 @@ fileprivate extension AST.Regex
                                              .union(right.move(over: r))
 
         case let .concatenation(left, right):
-            if left.εSimplified == .ε { return right.move(over: r) }
+            let _lεSimplified = left.εSimplified
 
-            return left.εSimplified.move(over: r).unionMap { $0 + right }
+            if _lεSimplified == .ε { return right.move(over: r) }
+
+            let _lmove = _lεSimplified.move(over: r)
+
+            if _lmove.contains(.ε) && right.isMaybeEpsilon
+            {
+                return _lmove.unionMap { regex in regex+right }.union([.ε])
+            }
+            else
+            {
+                return _lmove.unionMap { regex in regex+right }
+            }
 
         case let .characterSet(characterSet):
             return characterSet.contains(r) ? [ .ε ] : []
