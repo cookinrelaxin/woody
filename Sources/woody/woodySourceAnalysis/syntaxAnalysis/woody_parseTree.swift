@@ -1,6 +1,6 @@
 import Foundation
 
-struct ParseTree: Equatable
+struct WoodyParseTree: Equatable
 {
     let regularDescription: RegularDescription
 

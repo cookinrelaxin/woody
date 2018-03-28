@@ -1,6 +1,6 @@
 import Foundation
 
-final class Lexer
+final class WoodyLexicalAnalyzer
 {
     typealias Dot = SourceLines.Index
 

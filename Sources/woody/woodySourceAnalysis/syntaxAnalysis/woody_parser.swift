@@ -24,7 +24,7 @@ fileprivate typealias BasicSetList       = ParseTree.BasicSetList
 fileprivate typealias BasicSets          = ParseTree.BasicSets
 fileprivate typealias Range              = ParseTree.Range
 
-final class Parser
+final class WoodyParser
 {
     private let tokens: [Token]
     let source: SourceLines
@@ -362,5 +362,4 @@ fileprivate extension Parser
 
         return .cat(_character_1, _rangeSeparator, _character_2)
     }
-
 }

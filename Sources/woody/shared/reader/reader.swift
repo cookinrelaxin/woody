@@ -1,6 +1,6 @@
 import Foundation
 
-final class Reader
+final class WoodyReader
 {
     static let encoding: Swift.String.Encoding = .utf8
 

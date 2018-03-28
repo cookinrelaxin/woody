@@ -1,6 +1,6 @@
 import Foundation
 
-struct SourceLines: Equatable, Hashable
+struct Source: Equatable, Hashable
 {
     struct Index: Equatable, Hashable, Comparable, CustomDebugStringConvertible
     {
@@ -27,6 +27,12 @@ struct SourceLines: Equatable, Hashable
 
         var debugDescription: Swift.String
         { return "(Index \(line) \(char))" }
+    }
+
+    struct ClosedRange: Equatable, Hashable
+    {
+        let start : SourceLines.Index
+        let end   : SourceLines.Index
     }
 
     private let data: [[Scalar]]
