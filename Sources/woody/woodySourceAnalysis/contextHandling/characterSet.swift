@@ -149,3 +149,46 @@ _ context: Context)
         }
     }
 }
+
+extension CharacterSet: SEXPPrintable
+{
+    func sexp(_ indentation: String) -> String
+    {
+        let i1 = indentation+standardIndentation
+        let i2 = i1+standardIndentation
+        let pScalars: String
+        let nScalars: String
+
+        if positiveSet.isEmpty { pScalars = i1+"(positiveSet ())" }
+        else if positiveSet.count == 1
+        {
+            pScalars = i1+"(positiveSet \(positiveSet.first!.sexp("")))"
+        }
+        else
+        {
+            pScalars = positiveSet.reduce(i1+"(positiveSet"+"\n")
+            { sexpStr, scalarRange in
+                sexpStr+scalarRange.sexp(i2)+"\n"
+            }.dropLast() + ")"
+        }
+
+        if negativeSet.isEmpty { nScalars = i1+"(negativeSet ())" }
+        else if negativeSet.count == 1
+        {
+            nScalars = i1+"(negativeSet \(negativeSet.first!.sexp("")))"
+        }
+        else
+        {
+            nScalars = negativeSet.reduce(i1+"(negativeSet"+"\n")
+            { sexpStr, scalarRange in
+                sexpStr+scalarRange.sexp(i2)+"\n"
+            }.dropLast() + ")"
+        }
+
+        return indentation+"""
+        (characterSet
+        \(pScalars)
+        \(nScalars))
+        """
+    }
+}

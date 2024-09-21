@@ -1,28 +1,28 @@
 import Foundation
 
-fileprivate typealias RegularDescription = ParseTree.RegularDescription
-fileprivate typealias Rule               = ParseTree.Rule
-fileprivate typealias PossibleRules      = ParseTree.PossibleRules
-fileprivate typealias Regex              = ParseTree.Regex
-fileprivate typealias GroupedRegex       = ParseTree.GroupedRegex
-fileprivate typealias UngroupedRegex     = ParseTree.UngroupedRegex
-fileprivate typealias Union              = ParseTree.Union
-fileprivate typealias SimpleRegex        = ParseTree.SimpleRegex
-fileprivate typealias Concatenation      = ParseTree.Concatenation
-fileprivate typealias BasicRegex         = ParseTree.BasicRegex
-fileprivate typealias ElementaryRegex    = ParseTree.ElementaryRegex
-fileprivate typealias DefinitionMarker   = ParseTree.DefinitionMarker
-fileprivate typealias RepetitionOperator = ParseTree.RepetitionOperator
-fileprivate typealias Set                = ParseTree.Set
-fileprivate typealias SetSubtraction     = ParseTree.SetSubtraction
-fileprivate typealias SimpleSet          = ParseTree.SimpleSet
-fileprivate typealias StandardSet        = ParseTree.StandardSet
-fileprivate typealias LiteralSet         = ParseTree.LiteralSet
-fileprivate typealias BasicSet           = ParseTree.BasicSet
-fileprivate typealias BracketedSet       = ParseTree.BracketedSet
-fileprivate typealias BasicSetList       = ParseTree.BasicSetList
-fileprivate typealias BasicSets          = ParseTree.BasicSets
-fileprivate typealias Range              = ParseTree.Range
+fileprivate typealias RegularDescription = WoodyParseTree.RegularDescription
+fileprivate typealias Rule               = WoodyParseTree.Rule
+fileprivate typealias PossibleRules      = WoodyParseTree.PossibleRules
+fileprivate typealias Regex              = WoodyParseTree.Regex
+fileprivate typealias GroupedRegex       = WoodyParseTree.GroupedRegex
+fileprivate typealias UngroupedRegex     = WoodyParseTree.UngroupedRegex
+fileprivate typealias Union              = WoodyParseTree.Union
+fileprivate typealias SimpleRegex        = WoodyParseTree.SimpleRegex
+fileprivate typealias Concatenation      = WoodyParseTree.Concatenation
+fileprivate typealias BasicRegex         = WoodyParseTree.BasicRegex
+fileprivate typealias ElementaryRegex    = WoodyParseTree.ElementaryRegex
+fileprivate typealias DefinitionMarker   = WoodyParseTree.DefinitionMarker
+fileprivate typealias RepetitionOperator = WoodyParseTree.RepetitionOperator
+fileprivate typealias Set                = WoodyParseTree.Set
+fileprivate typealias SetSubtraction     = WoodyParseTree.SetSubtraction
+fileprivate typealias SimpleSet          = WoodyParseTree.SimpleSet
+fileprivate typealias StandardSet        = WoodyParseTree.StandardSet
+fileprivate typealias LiteralSet         = WoodyParseTree.LiteralSet
+fileprivate typealias BasicSet           = WoodyParseTree.BasicSet
+fileprivate typealias BracketedSet       = WoodyParseTree.BracketedSet
+fileprivate typealias BasicSetList       = WoodyParseTree.BasicSetList
+fileprivate typealias BasicSets          = WoodyParseTree.BasicSets
+fileprivate typealias Range              = WoodyParseTree.Range
 
 final class WoodyParser
 {
@@ -81,7 +81,7 @@ final class WoodyParser
     }
 }
 
-fileprivate extension Parser
+fileprivate extension WoodyParser
 {
     func regularDescription() throws -> RegularDescription
     {

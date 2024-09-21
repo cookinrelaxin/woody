@@ -1,6 +1,6 @@
 import Foundation
 
-extension Lexer.Identifier: SEXPPrintable
+extension WoodyLexer.Identifier: SEXPPrintable
 {
     func sexp(_ indentation: String) -> String
     {
@@ -8,7 +8,7 @@ extension Lexer.Identifier: SEXPPrintable
     }
 }
 
-extension Lexer.HelperDefinitionMarker: SEXPPrintable
+extension WoodyLexer.HelperDefinitionMarker: SEXPPrintable
 {
     func sexp(_ indentation: String) -> String
     {
@@ -16,7 +16,7 @@ extension Lexer.HelperDefinitionMarker: SEXPPrintable
     }
 }
 
-extension Lexer.TokenDefinitionMarker: SEXPPrintable
+extension WoodyLexer.TokenDefinitionMarker: SEXPPrintable
 {
     func sexp(_ indentation: String) -> String
     {
@@ -24,7 +24,7 @@ extension Lexer.TokenDefinitionMarker: SEXPPrintable
     }
 }
 
-extension Lexer.RuleTerminator: SEXPPrintable
+extension WoodyLexer.RuleTerminator: SEXPPrintable
 {
     func sexp(_ indentation: String) -> String
     {
@@ -32,7 +32,7 @@ extension Lexer.RuleTerminator: SEXPPrintable
     }
 }
 
-extension Lexer.GroupLeftDelimiter: SEXPPrintable
+extension WoodyLexer.GroupLeftDelimiter: SEXPPrintable
 {
     func sexp(_ indentation: String) -> String
     {
@@ -40,7 +40,7 @@ extension Lexer.GroupLeftDelimiter: SEXPPrintable
     }
 }
 
-extension Lexer.GroupRightDelimiter: SEXPPrintable
+extension WoodyLexer.GroupRightDelimiter: SEXPPrintable
 {
     func sexp(_ indentation: String) -> String
     {
@@ -48,7 +48,7 @@ extension Lexer.GroupRightDelimiter: SEXPPrintable
     }
 }
 
-extension Lexer.UnionOperator: SEXPPrintable
+extension WoodyLexer.UnionOperator: SEXPPrintable
 {
     func sexp(_ indentation: String) -> String
     {
@@ -56,7 +56,7 @@ extension Lexer.UnionOperator: SEXPPrintable
     }
 }
 
-extension Lexer.ZeroOrMoreOperator: SEXPPrintable
+extension WoodyLexer.ZeroOrMoreOperator: SEXPPrintable
 {
     func sexp(_ indentation: String) -> String
     {
@@ -64,7 +64,7 @@ extension Lexer.ZeroOrMoreOperator: SEXPPrintable
     }
 }
 
-extension Lexer.OneOrMoreOperator: SEXPPrintable
+extension WoodyLexer.OneOrMoreOperator: SEXPPrintable
 {
     func sexp(_ indentation: String) -> String
     {
@@ -72,7 +72,7 @@ extension Lexer.OneOrMoreOperator: SEXPPrintable
     }
 }
 
-extension Lexer.ZeroOrOneOperator: SEXPPrintable
+extension WoodyLexer.ZeroOrOneOperator: SEXPPrintable
 {
     func sexp(_ indentation: String) -> String
     {
@@ -80,7 +80,7 @@ extension Lexer.ZeroOrOneOperator: SEXPPrintable
     }
 }
 
-extension Lexer.String: SEXPPrintable
+extension WoodyLexer.String: SEXPPrintable
 {
     func sexp(_ indentation: String) -> String
     {
@@ -88,7 +88,7 @@ extension Lexer.String: SEXPPrintable
     }
 }
 
-extension Lexer.SetMinus: SEXPPrintable
+extension WoodyLexer.SetMinus: SEXPPrintable
 {
     func sexp(_ indentation: String) -> String
     {
@@ -96,7 +96,7 @@ extension Lexer.SetMinus: SEXPPrintable
     }
 }
 
-extension Lexer.Unicode: SEXPPrintable
+extension WoodyLexer.Unicode: SEXPPrintable
 {
     func sexp(_ indentation: String) -> String
     {
@@ -104,7 +104,7 @@ extension Lexer.Unicode: SEXPPrintable
     }
 }
 
-extension Lexer.Character: SEXPPrintable
+extension WoodyLexer.Character: SEXPPrintable
 {
     func sexp(_ indentation: String) -> String
     {
@@ -112,7 +112,7 @@ extension Lexer.Character: SEXPPrintable
     }
 }
 
-extension Lexer.RangeSeparator: SEXPPrintable
+extension WoodyLexer.RangeSeparator: SEXPPrintable
 {
     func sexp(_ indentation: String) -> String
     {
@@ -120,7 +120,7 @@ extension Lexer.RangeSeparator: SEXPPrintable
     }
 }
 
-extension Lexer.BracketedSetLeftDelimiter: SEXPPrintable
+extension WoodyLexer.BracketedSetLeftDelimiter: SEXPPrintable
 {
     func sexp(_ indentation: String) -> String
     {
@@ -128,7 +128,7 @@ extension Lexer.BracketedSetLeftDelimiter: SEXPPrintable
     }
 }
 
-extension Lexer.BracketedSetRightDelimiter: SEXPPrintable
+extension WoodyLexer.BracketedSetRightDelimiter: SEXPPrintable
 {
     func sexp(_ indentation: String) -> String
     {
@@ -136,7 +136,7 @@ extension Lexer.BracketedSetRightDelimiter: SEXPPrintable
     }
 }
 
-extension Lexer.SetSeparator: SEXPPrintable
+extension WoodyLexer.SetSeparator: SEXPPrintable
 {
     func sexp(_ indentation: String) -> String
     {
@@ -144,7 +144,7 @@ extension Lexer.SetSeparator: SEXPPrintable
     }
 }
 
-extension Lexer.Erroneous: SEXPPrintable
+extension WoodyLexer.Erroneous: SEXPPrintable
 {
     func sexp(_ indentation: String) -> String
     {

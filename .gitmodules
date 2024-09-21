@@ -1,0 +1,9 @@
+[submodule "segment"]
+	path = segment
+	url = ./submodules/segment/
+[submodule "scalar"]
+	path = scalar
+	url = ./submodules/scalar/
+[submodule "sexpPrintable"]
+	path = sexpPrintable
+	url = ./submodules/sexpPrintable/

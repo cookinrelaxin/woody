@@ -1,6 +1,6 @@
 import Foundation
 
-protocol Token
+protocol WoodyToken
 {
     var info           : TokenInfo    { get }
 
@@ -8,7 +8,7 @@ protocol Token
     var asEquatable: AnyToken { get }
 }
 
-extension Token
+extension WoodyToken
 {
     var representation: String
     {
@@ -47,7 +47,7 @@ extension Token
     }
 }
 
-extension Token where Self: Equatable
+extension WoodyToken where Self: Equatable
 {
     func isEqualTo(_ other: Token) -> Bool
     {
@@ -58,14 +58,14 @@ extension Token where Self: Equatable
     var asEquatable: AnyToken { return AnyToken(self) }
 }
 
-struct AnyToken
+struct AnyWoodyToken
 {
     init(_ token: Token) { self.token = token }
 
     fileprivate let token: Token
 }
 
-extension AnyToken: Equatable
+extension AnyWoodyToken: Equatable
 {
     static func ==(lhs: AnyToken, rhs: AnyToken) -> Bool
     {
@@ -73,7 +73,7 @@ extension AnyToken: Equatable
     }
 }
 
-struct TokenInfo: Equatable, Hashable, CustomDebugStringConvertible
+struct WoodyTokenInfo: Equatable, Hashable, CustomDebugStringConvertible
 {
     let startIndex     : SourceLines.Index
     let endIndex       : SourceLines.Index
@@ -103,7 +103,7 @@ struct TokenInfo: Equatable, Hashable, CustomDebugStringConvertible
     { return "(\(startIndex), \(endIndex))" }
 }
 
-enum TokenClass: Hashable, Equatable, CustomDebugStringConvertible
+enum WoodyTokenClass: Hashable, Equatable, CustomDebugStringConvertible
 {
     case identifier
     case helperDefinitionMarker
@@ -183,7 +183,7 @@ enum TokenClass: Hashable, Equatable, CustomDebugStringConvertible
     }
 }
 
-extension Lexer
+extension WoodyLexer
 {
     struct Identifier: Token, Equatable, Hashable
     {
@@ -281,6 +281,21 @@ extension Lexer
         let info: TokenInfo
 
         init(_ info: TokenInfo) { self.info = info }
+
+        lazy var scalarValue: Scalar =
+        {
+            let s = representation
+            switch (s.first!)
+            {
+            case "u":
+                return Scalar(UInt32(s.dropFirst(), radix: 16)!)!
+
+            case "'":
+                return s.dropFirst().unicodeScalars.first!
+
+            default: fatalError()
+            }
+        }()
     }
 
     struct RangeSeparator: Token, Equatable, Hashable

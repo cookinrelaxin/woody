@@ -2,33 +2,32 @@ import XCTest
 import Foundation
 @testable import woody
 
-typealias Identifier                 = Lexer.Identifier
-typealias HelperDefinitionMarker     = Lexer.HelperDefinitionMarker
-typealias TokenDefinitionMarker      = Lexer.TokenDefinitionMarker
-typealias RuleTerminator             = Lexer.RuleTerminator
-typealias GroupLeftDelimiter         = Lexer.GroupLeftDelimiter
-typealias GroupRightDelimiter        = Lexer.GroupRightDelimiter
-typealias UnionOperator              = Lexer.UnionOperator
-typealias ZeroOrMoreOperator         = Lexer.ZeroOrMoreOperator
-typealias OneOrMoreOperator          = Lexer.OneOrMoreOperator
-typealias ZeroOrOneOperator          = Lexer.ZeroOrOneOperator
-typealias String                     = Lexer.String
-typealias SetMinus                   = Lexer.SetMinus
-typealias Unicode                    = Lexer.Unicode
-typealias Character                  = Lexer.Character
-typealias RangeSeparator             = Lexer.RangeSeparator
-typealias BracketedSetLeftDelimiter  = Lexer.BracketedSetLeftDelimiter
-typealias BracketedSetRightDelimiter = Lexer.BracketedSetRightDelimiter
-typealias SetSeparator               = Lexer.SetSeparator
-typealias Erroneous                  = Lexer.Erroneous
-
-class LexerTests: XCTestCase
+class WoodyLexicalAnalysisTests: XCTestCase
 {
+    typealias Identifier                 = WoodyLexer.Identifier
+    typealias HelperDefinitionMarker     = WoodyLexer.HelperDefinitionMarker
+    typealias TokenDefinitionMarker      = WoodyLexer.TokenDefinitionMarker
+    typealias RuleTerminator             = WoodyLexer.RuleTerminator
+    typealias GroupLeftDelimiter         = WoodyLexer.GroupLeftDelimiter
+    typealias GroupRightDelimiter        = WoodyLexer.GroupRightDelimiter
+    typealias UnionOperator              = WoodyLexer.UnionOperator
+    typealias ZeroOrMoreOperator         = WoodyLexer.ZeroOrMoreOperator
+    typealias OneOrMoreOperator          = WoodyLexer.OneOrMoreOperator
+    typealias ZeroOrOneOperator          = WoodyLexer.ZeroOrOneOperator
+    typealias String                     = WoodyLexer.String
+    typealias SetMinus                   = WoodyLexer.SetMinus
+    typealias Unicode                    = WoodyLexer.Unicode
+    typealias Character                  = WoodyLexer.Character
+    typealias RangeSeparator             = WoodyLexer.RangeSeparator
+    typealias BracketedSetLeftDelimiter  = WoodyLexer.BracketedSetLeftDelimiter
+    typealias BracketedSetRightDelimiter = WoodyLexer.BracketedSetRightDelimiter
+    typealias SetSeparator               = WoodyLexer.SetSeparator
+    typealias Erroneous                  = WoodyLexer.Erroneous
+
     @available(macOS 10.11, *)
     func testSwift() throws
     {
-        let url = URL(fileURLWithPath: "swift.woody",
-                      relativeTo: fixtureURL)
+        let url = woodyFixture(named: "swift.woody")
         let coordinator = PipelineCoordinator(url: url)
         let lexer = coordinator.lexer
 
@@ -657,4 +656,3 @@ class LexerTests: XCTestCase
         }
     }
 }
-

@@ -1,2 +1,2 @@
-typealias Scalar = Swift.Unicode.Scalar
+typealias Scalar = UInt32
 typealias ScalarIndex  = String.UnicodeScalarView.Index

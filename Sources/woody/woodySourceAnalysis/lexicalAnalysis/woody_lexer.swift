@@ -1,5 +1,6 @@
 import Foundation
 
+typealias WoodyLexer = WoodyLexicalAnalyzer
 final class WoodyLexicalAnalyzer
 {
     typealias Dot = SourceLines.Index
@@ -99,7 +100,7 @@ final class WoodyLexicalAnalyzer
     }
 }
 
-fileprivate extension Lexer
+fileprivate extension WoodyLexer
 {
     func skipWhitespace() throws
     {

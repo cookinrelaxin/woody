@@ -5,7 +5,7 @@ struct NFA
     typealias State           = Int
     typealias CharacterSet    = AST.CharacterSet
     typealias Regex           = AST.Regex
-    enum Character            { case ε, case range(ElementaryRange) }
+    enum Character            { case ε, range(ElementaryRange) }
     typealias TransitionTable = [ Domain : Range ]
     struct Domain: Hashable
     {
@@ -49,25 +49,28 @@ struct NFA
 
     private init(from regex: Regex,
                  _ start: State,
-                 _ rangeLookup: ElementaryRangeQueryable) -> NFA
+                 _ rangeLookup: ElementaryRangeQueryable)
     {
+        let nfa: NFA
         switch regex
         {
         case .ε:
-            return NFA.fromE(start)
+            nfa = NFA.fromE(start)
 
         case .characterSet(let characterSet):
-            return NFA.fromCharacterSet(characterSet, start, rangeLookup)
+            nfa = NFA.fromCharacterSet(characterSet, start, rangeLookup)
 
         case .oneOrMore(let r):
-            return NFA.fromOneOrMore(r, start, rangeLookup)
+            nfa = NFA.fromOneOrMore(r, start, rangeLookup)
 
         case .union(let r1, let r2):
-            return NFA.fromUnion(r1, r2, start, rangeLookup)
+            nfa = NFA.fromUnion(r1, r2, start, rangeLookup)
 
         case .concatenation(let r1, let r2):
-            return NFA.fromConcatenation(r1, r2, start, rangeLookup)
+            nfa = NFA.fromConcatenation(r1, r2, start, rangeLookup)
         }
+
+        return nfa
     }
 
     static func fromE(_ start: State) -> NFA

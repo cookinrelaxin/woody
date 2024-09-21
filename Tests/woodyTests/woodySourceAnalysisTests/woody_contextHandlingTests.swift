@@ -2,7 +2,7 @@ import XCTest
 import Foundation
 @testable import woody
 
-class ContextHandlerTests: XCTestCase
+class WoodyContextHandlingTests: XCTestCase
 {
     @available(macOS 10.11, *)
     func testBuildAST()
@@ -10,8 +10,6 @@ class ContextHandlerTests: XCTestCase
         let url = URL(fileURLWithPath: "testBuildAST.woody",
                       relativeTo: fixtureURL)
         let coordinator = PipelineCoordinator(url: url)
-
-        /*print(try! coordinator.parser.parseTree())*/
 
         let ast = coordinator.astFactory.abstractSyntaxTree
         let rules = ast.rules
@@ -29,4 +27,3 @@ class ContextHandlerTests: XCTestCase
         /*print(ast)*/
     }
 }
-

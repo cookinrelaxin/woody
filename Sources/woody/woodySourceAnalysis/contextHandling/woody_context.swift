@@ -1,6 +1,6 @@
 import Foundation
 
-struct Context
+struct WoodyContext
 {
     struct OrderedPRegex: Equatable, Hashable
     {
@@ -17,21 +17,34 @@ struct Context
     typealias IDLookup = [String : Set<OrderedPRegex>]
 
     let idLookup: IDLookup
-    let sourceLines: SourceLines
     let boundIdentifiers: Set<String>
 
-    init(idLookup: IDLookup, sourceLines: SourceLines, boundIdentifiers:
-        Set<String>)
+    init(for parseTree: WoodyParseTree)
     {
-        self.idLookup = idLookup
-        self.sourceLines = sourceLines
-        self.boundIdentifiers = boundIdentifiers
+        self.idLookup = makeIDLookup(for: parseTree)
+        self.boundIdentifiers = []
     }
 
-    init(_ context: Context, _ identifier: String)
+    private func makeIDLookup(for parseTree: WoodyParseTree) -> IDLookup
     {
-        idLookup = context.idLookup
-        sourceLines = context.sourceLines
-        boundIdentifiers = context.boundIdentifiers.union([identifier])
+        return parseTree.flattened.enumerated().reduce(IDLookup())
+        { dict, pair in
+            let (i, pRule) = pair
+            var _dict = dict
+
+            switch pRule
+            {
+            case let .cat(id, _, pRegex, _):
+                let key = id.representation
+                if let s = _dict[key]
+                {
+                    let order = s.first!.order
+                    _dict[key] = s.union([OrderedPRegex(pRegex, order)])
+                }
+                else { _dict[key] = [OrderedPRegex(pRegex, i)] }
+            }
+
+            return _dict
+        }
     }
 }

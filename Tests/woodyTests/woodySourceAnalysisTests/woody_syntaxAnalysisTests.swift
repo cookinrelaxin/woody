@@ -2,34 +2,33 @@ import XCTest
 import Foundation
 @testable import woody
 
-fileprivate typealias RegularDescription = ParseTree.RegularDescription
-fileprivate typealias Rule               = ParseTree.Rule
-fileprivate typealias PossibleRules      = ParseTree.PossibleRules
-fileprivate typealias Regex              = ParseTree.Regex
-fileprivate typealias GroupedRegex       = ParseTree.GroupedRegex
-fileprivate typealias UngroupedRegex     = ParseTree.UngroupedRegex
-fileprivate typealias Union              = ParseTree.Union
-fileprivate typealias SimpleRegex        = ParseTree.SimpleRegex
-fileprivate typealias Concatenation      = ParseTree.Concatenation
-fileprivate typealias BasicRegex         = ParseTree.BasicRegex
-fileprivate typealias ElementaryRegex    = ParseTree.ElementaryRegex
-fileprivate typealias DefinitionMarker   = ParseTree.DefinitionMarker
-fileprivate typealias RepetitionOperator = ParseTree.RepetitionOperator
-fileprivate typealias Set                = ParseTree.Set
-fileprivate typealias SetSubtraction     = ParseTree.SetSubtraction
-fileprivate typealias SimpleSet          = ParseTree.SimpleSet
-fileprivate typealias StandardSet        = ParseTree.StandardSet
-fileprivate typealias LiteralSet         = ParseTree.LiteralSet
-fileprivate typealias BasicSet           = ParseTree.BasicSet
-fileprivate typealias BracketedSet       = ParseTree.BracketedSet
-fileprivate typealias BasicSetList       = ParseTree.BasicSetList
-fileprivate typealias BasicSets          = ParseTree.BasicSets
-fileprivate typealias Range              = ParseTree.Range
-
-fileprivate typealias T = TokenInfo
-
-class ParserTests: XCTestCase
+class WoodySyntaxAnalysisTests: XCTestCase
 {
+    typealias RegularDescription = ParseTree.RegularDescription
+    typealias Rule               = ParseTree.Rule
+    typealias PossibleRules      = ParseTree.PossibleRules
+    typealias Regex              = ParseTree.Regex
+    typealias GroupedRegex       = ParseTree.GroupedRegex
+    typealias UngroupedRegex     = ParseTree.UngroupedRegex
+    typealias Union              = ParseTree.Union
+    typealias SimpleRegex        = ParseTree.SimpleRegex
+    typealias Concatenation      = ParseTree.Concatenation
+    typealias BasicRegex         = ParseTree.BasicRegex
+    typealias ElementaryRegex    = ParseTree.ElementaryRegex
+    typealias DefinitionMarker   = ParseTree.DefinitionMarker
+    typealias RepetitionOperator = ParseTree.RepetitionOperator
+    typealias Set                = ParseTree.Set
+    typealias SetSubtraction     = ParseTree.SetSubtraction
+    typealias SimpleSet          = ParseTree.SimpleSet
+    typealias StandardSet        = ParseTree.StandardSet
+    typealias LiteralSet         = ParseTree.LiteralSet
+    typealias BasicSet           = ParseTree.BasicSet
+    typealias BracketedSet       = ParseTree.BracketedSet
+    typealias BasicSetList       = ParseTree.BasicSetList
+    typealias BasicSets          = ParseTree.BasicSets
+    typealias Range              = ParseTree.Range
+    typealias T = TokenInfo
+
     @available(macOS 10.11, *)
     func testParseRule() throws
     {

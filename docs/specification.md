@@ -159,7 +159,7 @@ union               -> simpleRegex unionOperator regex
 simpleRegex         -> concatenation | basicRegex
 concatenation       -> basicRegex simpleRegex
 basicRegex          -> elementaryRegex repetitionOperator?
-elementaryRegex     -> positionOperator | string | identifier | set
+elementaryRegex     -> string | identifier | set
 
 #### Rule Symbols
 In order of appearance in the "Rules" section
@@ -232,20 +232,6 @@ digits   -> hexDigit hexDigit hexDigit hexDigit hexDigit hexDigit
 hexDigit -> [0-9a-fA-F]
 
 ## TODOs
-
-TODO: Read MCD Chapters 4 and 5 on context handling.
 TODO: Revise this specification.
-
-TODO: Consider removing position operators from the language. They don't really
-make sense to use when defining the tokens of a programming language. When would
-you require that the user of your language type a character specifically at the
-beginning or end of a line? Granted, there might be some esoteric use case, but,
-in the interest of YAGNI, it might be better to get rid of them now and later
-think about reintroducting them.
-
-"Always implement things when you actually need them, never when you just
-foresee that you need them."
-
-TODO: Define the scope of the context handler.
 
 ## Misc. notes

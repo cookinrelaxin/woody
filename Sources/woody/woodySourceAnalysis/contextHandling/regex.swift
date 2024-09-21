@@ -185,3 +185,37 @@ indirect enum Regex: Equatable, Hashable
     }
 }
 
+extension Regex: SEXPPrintable
+{
+    func sexp(_ indentation: String) -> String
+    {
+        let i = indentation+standardIndentation
+
+        switch self
+        {
+        case .ε: return indentation+"ε"
+
+        case let .oneOrMore(r):
+            return indentation+"""
+            (+
+            \(r.sexp(i)))
+            """
+
+        case let .union(r1, r2):
+            return indentation+"""
+            (∪
+            \(r1.sexp(i))
+            \(r2.sexp(i)))
+            """
+
+        case let .concatenation(r1, r2):
+            return indentation+"""
+            (cat
+            \(r1.sexp(i))
+            \(r2.sexp(i)))
+            """
+        case let .characterSet(c):
+            return c.sexp(indentation)
+        }
+    }
+}

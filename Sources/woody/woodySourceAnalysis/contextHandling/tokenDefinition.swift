@@ -29,3 +29,17 @@ struct TokenDefinition: Equatable, Hashable
         }
     }
 }
+
+extension TokenDefinition: SEXPPrintable
+{
+    func sexp(_ indentation: String) -> String
+    {
+        let i = indentation+standardIndentation
+        let sexp = indentation+"""
+        (rule \(tokenClass)
+        \(regex.sexp(i)))
+        """
+
+        return sexp
+    }
+}

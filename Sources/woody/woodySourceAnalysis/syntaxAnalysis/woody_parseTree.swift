@@ -173,3 +173,25 @@ struct WoodyParseTree: Equatable
         case cat(Lexer.Character, Lexer.RangeSeparator, Lexer.Character)
     }
 }
+
+extension WoodyParseTree
+{
+    var flattened: [Rule]
+    {
+        var rules = [Rule]()
+
+        switch regularDescription
+        {
+        case let .cat(rule, possibleRules):
+            rules.append(rule)
+
+            switch possibleRules
+            {
+            case let .cat(actualRules):
+                rules.append(contentsOf: actualRules)
+            }
+        }
+
+        return rules
+    }
+}

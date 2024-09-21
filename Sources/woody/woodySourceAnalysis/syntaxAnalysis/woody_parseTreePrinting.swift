@@ -1,6 +1,6 @@
 import Foundation
 
-extension ParseTree.RegularDescription: SEXPPrintable
+extension WoodyParseTree.RegularDescription: SEXPPrintable
 {
     func sexp(_ indentation: Swift.String) -> Swift.String
     {
@@ -18,7 +18,7 @@ extension ParseTree.RegularDescription: SEXPPrintable
     var debugDescription: Swift.String { return sexp("") }
 }
 
-extension ParseTree.Rule: SEXPPrintable
+extension WoodyParseTree.Rule: SEXPPrintable
 {
     func sexp(_ indentation: Swift.String) -> Swift.String
     {
@@ -38,7 +38,7 @@ extension ParseTree.Rule: SEXPPrintable
     var debugDescription: Swift.String { return sexp("") }
 }
 
-extension ParseTree.PossibleRules: SEXPPrintable
+extension WoodyParseTree.PossibleRules: SEXPPrintable
 {
     func sexp(_ indentation: Swift.String) -> Swift.String
     {
@@ -61,7 +61,7 @@ extension ParseTree.PossibleRules: SEXPPrintable
     var debugDescription: Swift.String { return sexp("") }
 }
 
-extension ParseTree.Regex: SEXPPrintable
+extension WoodyParseTree.Regex: SEXPPrintable
 {
     func sexp(_ indentation: Swift.String) -> Swift.String
     {
@@ -83,7 +83,7 @@ extension ParseTree.Regex: SEXPPrintable
     var debugDescription: Swift.String { return sexp("") }
 }
 
-extension ParseTree.GroupedRegex: SEXPPrintable
+extension WoodyParseTree.GroupedRegex: SEXPPrintable
 {
     func sexp(_ indentation: Swift.String) -> Swift.String
     {
@@ -114,7 +114,7 @@ extension ParseTree.GroupedRegex: SEXPPrintable
     var debugDescription: Swift.String { return sexp("") }
 }
 
-extension ParseTree.UngroupedRegex: SEXPPrintable
+extension WoodyParseTree.UngroupedRegex: SEXPPrintable
 {
     func sexp(_ indentation: Swift.String) -> Swift.String
     {
@@ -136,7 +136,7 @@ extension ParseTree.UngroupedRegex: SEXPPrintable
     var debugDescription: Swift.String { return sexp("") }
 }
 
-extension ParseTree.Union: SEXPPrintable
+extension WoodyParseTree.Union: SEXPPrintable
 {
     func sexp(_ indentation: Swift.String) -> Swift.String
     {
@@ -155,7 +155,7 @@ extension ParseTree.Union: SEXPPrintable
     var debugDescription: Swift.String { return sexp("") }
 }
 
-extension ParseTree.SimpleRegex: SEXPPrintable
+extension WoodyParseTree.SimpleRegex: SEXPPrintable
 {
     func sexp(_ indentation: Swift.String) -> Swift.String
     {
@@ -178,7 +178,7 @@ extension ParseTree.SimpleRegex: SEXPPrintable
     var debugDescription: Swift.String { return sexp("") }
 }
 
-extension ParseTree.Concatenation: SEXPPrintable
+extension WoodyParseTree.Concatenation: SEXPPrintable
 {
     func sexp(_ indentation: Swift.String) -> Swift.String
     {
@@ -196,7 +196,7 @@ extension ParseTree.Concatenation: SEXPPrintable
     var debugDescription: Swift.String { return sexp("") }
 }
 
-extension ParseTree.BasicRegex: SEXPPrintable
+extension WoodyParseTree.BasicRegex: SEXPPrintable
 {
     func sexp(_ indentation: Swift.String) -> Swift.String
     {
@@ -221,7 +221,7 @@ extension ParseTree.BasicRegex: SEXPPrintable
     var debugDescription: Swift.String { return sexp("") }
 }
 
-extension ParseTree.ElementaryRegex: SEXPPrintable
+extension WoodyParseTree.ElementaryRegex: SEXPPrintable
 {
     func sexp(_ indentation: Swift.String) -> Swift.String
     {
@@ -250,7 +250,7 @@ extension ParseTree.ElementaryRegex: SEXPPrintable
     var debugDescription: Swift.String { return sexp("") }
 }
 
-extension ParseTree.DefinitionMarker: SEXPPrintable
+extension WoodyParseTree.DefinitionMarker: SEXPPrintable
 {
     func sexp(_ indentation: Swift.String) -> Swift.String
     {
@@ -273,7 +273,7 @@ extension ParseTree.DefinitionMarker: SEXPPrintable
     var debugDescription: Swift.String { return sexp("") }
 }
 
-extension ParseTree.RepetitionOperator: SEXPPrintable
+extension WoodyParseTree.RepetitionOperator: SEXPPrintable
 {
     func sexp(_ indentation: Swift.String) -> Swift.String
     {
@@ -302,7 +302,7 @@ extension ParseTree.RepetitionOperator: SEXPPrintable
     var debugDescription: Swift.String { return sexp("") }
 }
 
-extension ParseTree.Set: SEXPPrintable
+extension WoodyParseTree.Set: SEXPPrintable
 {
     func sexp(_ indentation: Swift.String) -> Swift.String
     {
@@ -327,7 +327,7 @@ extension ParseTree.Set: SEXPPrintable
     var debugDescription: Swift.String { return sexp("") }
 }
 
-extension ParseTree.SetSubtraction: SEXPPrintable
+extension WoodyParseTree.SetSubtraction: SEXPPrintable
 {
     func sexp(_ indentation: Swift.String) -> Swift.String
     {
@@ -345,7 +345,7 @@ extension ParseTree.SetSubtraction: SEXPPrintable
     var debugDescription: Swift.String { return sexp("") }
 }
 
-extension ParseTree.SimpleSet: SEXPPrintable
+extension WoodyParseTree.SimpleSet: SEXPPrintable
 {
     func sexp(_ indentation: Swift.String) -> Swift.String
     {
@@ -367,7 +367,7 @@ extension ParseTree.SimpleSet: SEXPPrintable
     var debugDescription: Swift.String { return sexp("") }
 }
 
-extension ParseTree.StandardSet: SEXPPrintable
+extension WoodyParseTree.StandardSet: SEXPPrintable
 {
     func sexp(_ indentation: Swift.String) -> Swift.String
     {
@@ -384,7 +384,7 @@ extension ParseTree.StandardSet: SEXPPrintable
     var debugDescription: Swift.String { return sexp("") }
 }
 
-extension ParseTree.LiteralSet: SEXPPrintable
+extension WoodyParseTree.LiteralSet: SEXPPrintable
 {
     func sexp(_ indentation: Swift.String) -> Swift.String
     {
@@ -406,7 +406,7 @@ extension ParseTree.LiteralSet: SEXPPrintable
     var debugDescription: Swift.String { return sexp("") }
 }
 
-extension ParseTree.BasicSet: SEXPPrintable
+extension WoodyParseTree.BasicSet: SEXPPrintable
 {
     func sexp(_ indentation: Swift.String) -> Swift.String
     {
@@ -429,7 +429,7 @@ extension ParseTree.BasicSet: SEXPPrintable
     var debugDescription: Swift.String { return sexp("") }
 }
 
-extension ParseTree.BracketedSet: SEXPPrintable
+extension WoodyParseTree.BracketedSet: SEXPPrintable
 {
     func sexp(_ indentation: Swift.String) -> Swift.String
     {
@@ -449,7 +449,7 @@ extension ParseTree.BracketedSet: SEXPPrintable
     var debugDescription: Swift.String { return sexp("") }
 }
 
-extension ParseTree.BasicSetList: SEXPPrintable
+extension WoodyParseTree.BasicSetList: SEXPPrintable
 {
     func sexp(_ indentation: Swift.String) -> Swift.String
     {
@@ -472,7 +472,7 @@ extension ParseTree.BasicSetList: SEXPPrintable
     var debugDescription: Swift.String { return sexp("") }
 }
 
-extension ParseTree.BasicSets: SEXPPrintable
+extension WoodyParseTree.BasicSets: SEXPPrintable
 {
     func sexp(_ indentation: Swift.String) -> Swift.String
     {
@@ -491,7 +491,7 @@ extension ParseTree.BasicSets: SEXPPrintable
     var debugDescription: Swift.String { return sexp("") }
 }
 
-extension ParseTree.Range: SEXPPrintable
+extension WoodyParseTree.Range: SEXPPrintable
 {
     func sexp(_ indentation: Swift.String) -> Swift.String
     {
